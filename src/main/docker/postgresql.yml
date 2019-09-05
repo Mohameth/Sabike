@@ -1,0 +1,11 @@
+version: '2'
+services:
+  sabike-postgresql:
+    image: postgres:11.4
+    # volumes:
+    #     - ~/volumes/jhipster/Sabike/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=Sabike
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432

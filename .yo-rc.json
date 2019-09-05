@@ -1,0 +1,67 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.sabi.bikes"
+    },
+    "jhipsterVersion": "6.2.0",
+    "applicationType": "gateway",
+    "baseName": "Sabike",
+    "packageName": "com.sabi.bikes",
+    "packageFolder": "com/sabi/bikes",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MmE0NzAxN2EzNGQ2YjRkYzhjOTUzNDBkOWUxMzYwNjdjMjNhY2UyZDc1OWRjOWJmMTljNzU0YjU4NTU1NTZjNmQ2MWM1ZmY4ZjNkYzI2OGUyMzZhZDgyMjExZjI1ZjlhOGJkZWFhNzUwYTJjNmYwM2VhNzg2NDZhODQ1MmZjYTE=",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "testFrameworks": ["gatling"],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-docker",
+        "version": "2.5.0"
+      },
+      {
+        "name": "generator-jhipster-swagger-cli",
+        "version": "3.0.1"
+      },
+      {
+        "name": "generator-codegen",
+        "version": "0.3.1"
+      },
+      {
+        "name": "generator-jhipster-stripe-payment",
+        "version": "1.0.9"
+      },
+      {
+        "name": "generator-jhipster-paypal",
+        "version": "1.0.5"
+      },
+      {
+        "name": "generator-jhipster-angular-material-integration",
+        "version": "1.0.17"
+      },
+      {
+        "name": "generator-jhipster-administration-database",
+        "version": "1.0.4"
+      }
+    ],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}
