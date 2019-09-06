@@ -1,0 +1,93 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sABIKEUser">
+            <h2><span>SABIKE User</span> {{sABIKEUser.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>User Id</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.userId}}</span>
+                </dd>
+                <dt><span>Password</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.password}}</span>
+                </dd>
+                <dt><span>Email</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.email}}</span>
+                </dd>
+                <dt><span>First</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.first}}</span>
+                </dd>
+                <dt><span>Last</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.last}}</span>
+                </dd>
+                <dt><span>Is Admin</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.isAdmin}}</span>
+                </dd>
+                <dt><span>Delivery Address Number</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.deliveryAddressNumber}}</span>
+                </dd>
+                <dt><span>Delivery Address Street</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.deliveryAddressStreet}}</span>
+                </dd>
+                <dt><span>Delivery Address City</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.deliveryAddressCity}}</span>
+                </dd>
+                <dt><span>Delivery Address Postal Code</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.deliveryAddressPostalCode}}</span>
+                </dd>
+                <dt><span>Delivery Address Country</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.deliveryAddressCountry}}</span>
+                </dd>
+                <dt><span>Billing Address Number</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.billingAddressNumber}}</span>
+                </dd>
+                <dt><span>Billing Address Street</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.billingAddressStreet}}</span>
+                </dd>
+                <dt><span>Billing Address City</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.billingAddressCity}}</span>
+                </dd>
+                <dt><span>Billing Address Postal Code</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.billingAddressPostalCode}}</span>
+                </dd>
+                <dt><span>Billing Address Country</span></dt>
+                <dd>
+                    <span>{{sABIKEUser.billingAddressCountry}}</span>
+                </dd>
+                <dt><span>Order Id</span></dt>
+                <dd>
+                    <div *ngIf="sABIKEUser.orderId">
+                        <a [routerLink]="['/sabike-commande', sABIKEUser.orderId?.id, 'view']">{{sABIKEUser.orderId?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sabike-user', sABIKEUser.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

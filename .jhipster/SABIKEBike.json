@@ -1,0 +1,32 @@
+{
+    "name": "SABIKEBike",
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "SABIKEBikeType",
+            "fieldValues": "VTT,COURSE,VILLE,BMX"
+        },
+        {
+            "fieldName": "size",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "speeds",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "color",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190906091150",
+    "entityTableName": "sabike_bike",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

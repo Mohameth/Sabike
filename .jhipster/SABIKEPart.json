@@ -1,0 +1,25 @@
+{
+    "name": "SABIKEPart",
+    "fields": [
+        {
+            "fieldName": "category",
+            "fieldType": "SABIKEPartCategory",
+            "fieldValues": "TRANSMISSION,DIRECTION"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "SABIKEPartCategoryType",
+            "fieldValues": "GUIDON,POTENCE,CHAINE,PEDALIER"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190906091151",
+    "entityTableName": "sabike_part",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

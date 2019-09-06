@@ -1,0 +1,89 @@
+enum SABIKECommandeStatus {
+    PENDING,
+    VALIDATED,
+    SHIPPED,
+    RECEIVED
+}
+
+entity SABIKEUser {
+	userId Integer,
+    password String,
+    email String,
+    first String,
+    last String,
+    isAdmin Boolean,
+    deliveryAddressNumber String,
+    deliveryAddressStreet String,
+    deliveryAddressCity String,
+    deliveryAddressPostalCode String,
+    deliveryAddressCountry String,
+    billingAddressNumber String,
+    billingAddressStreet String,
+    billingAddressCity String,
+    billingAddressPostalCode String,
+    billingAddressCountry String
+}
+
+entity SABIKEArticle {
+	articleId Integer,
+    price Float,
+    name String,
+    stock Integer,
+    picture Integer // picture ID => images stored in a folder
+}
+
+entity SABIKECart {
+	cartId Integer
+}
+
+entity SABIKECommande { // Order reserved keyword
+	orderId Integer,
+    number String,
+    status SABIKECommandeStatus,
+    orderDate LocalDate,
+    orderItems String
+}
+
+enum SABIKEBikeType {
+    VTT,
+    COURSE,
+    VILLE,
+    BMX
+}
+
+entity SABIKEBike {
+	type SABIKEBikeType,
+    size Float,
+    speeds Integer,
+    color String
+}
+
+enum SABIKEPartCategory {
+    TRANSMISSION,
+    DIRECTION
+}
+
+enum SABIKEPartCategoryType {
+    GUIDON,
+    POTENCE,
+    CHAINE,
+    PEDALIER
+}
+
+entity SABIKEPart {
+	category SABIKEPartCategory,
+    type SABIKEPartCategoryType
+}
+
+
+relationship ManyToMany {
+	SABIKEArticle{cartId} to SABIKECart{articleId}
+}
+
+relationship OneToOne {
+	SABIKECart{userId} to SABIKEUser{cartId}
+}
+
+relationship OneToMany {
+	SABIKECommande{userId} to SABIKEUser{orderId}
+}

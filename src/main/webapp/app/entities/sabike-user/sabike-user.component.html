@@ -1,0 +1,93 @@
+<div>
+    <h2 id="page-heading">
+        <span>SABIKE Users</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sabike-user" [routerLink]="['/sabike-user/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new SABIKE User
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="sABIKEUsers?.length === 0">
+        <span>No sABIKEUsers found</span>
+    </div>
+    <div class="table-responsive" *ngIf="sABIKEUsers?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>User Id</span></th>
+            <th><span>Password</span></th>
+            <th><span>Email</span></th>
+            <th><span>First</span></th>
+            <th><span>Last</span></th>
+            <th><span>Is Admin</span></th>
+            <th><span>Delivery Address Number</span></th>
+            <th><span>Delivery Address Street</span></th>
+            <th><span>Delivery Address City</span></th>
+            <th><span>Delivery Address Postal Code</span></th>
+            <th><span>Delivery Address Country</span></th>
+            <th><span>Billing Address Number</span></th>
+            <th><span>Billing Address Street</span></th>
+            <th><span>Billing Address City</span></th>
+            <th><span>Billing Address Postal Code</span></th>
+            <th><span>Billing Address Country</span></th>
+            <th><span>Order Id</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sABIKEUser of sABIKEUsers ;trackBy: trackId">
+                <td><a [routerLink]="['/sabike-user', sABIKEUser.id, 'view' ]">{{sABIKEUser.id}}</a></td>
+                <td>{{sABIKEUser.userId}}</td>
+                <td>{{sABIKEUser.password}}</td>
+                <td>{{sABIKEUser.email}}</td>
+                <td>{{sABIKEUser.first}}</td>
+                <td>{{sABIKEUser.last}}</td>
+                <td>{{sABIKEUser.isAdmin}}</td>
+                <td>{{sABIKEUser.deliveryAddressNumber}}</td>
+                <td>{{sABIKEUser.deliveryAddressStreet}}</td>
+                <td>{{sABIKEUser.deliveryAddressCity}}</td>
+                <td>{{sABIKEUser.deliveryAddressPostalCode}}</td>
+                <td>{{sABIKEUser.deliveryAddressCountry}}</td>
+                <td>{{sABIKEUser.billingAddressNumber}}</td>
+                <td>{{sABIKEUser.billingAddressStreet}}</td>
+                <td>{{sABIKEUser.billingAddressCity}}</td>
+                <td>{{sABIKEUser.billingAddressPostalCode}}</td>
+                <td>{{sABIKEUser.billingAddressCountry}}</td>
+                <td>
+                    <div *ngIf="sABIKEUser.orderId">
+                        <a [routerLink]="['/sabike-commande', sABIKEUser.orderId?.id, 'view' ]" >{{sABIKEUser.orderId?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/sabike-user', sABIKEUser.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-user', sABIKEUser.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-user', { outlets: { popup: sABIKEUser.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+{
+    "name": "SABIKECart",
+    "fields": [
+        {
+            "fieldName": "cartId",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "sABIKEUser",
+            "otherEntityRelationshipName": "cartId",
+            "relationshipName": "userId",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityName": "sABIKEArticle",
+            "otherEntityRelationshipName": "cartId",
+            "relationshipName": "articleId",
+            "otherEntityField": "id",
+            "ownerSide": false
+        }
+    ],
+    "changelogDate": "20190906091148",
+    "entityTableName": "sabike_cart",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

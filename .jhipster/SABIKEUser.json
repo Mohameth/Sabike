@@ -1,0 +1,94 @@
+{
+    "name": "SABIKEUser",
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "password",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "first",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "last",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isAdmin",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "deliveryAddressNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryAddressStreet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryAddressCity",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryAddressPostalCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryAddressCountry",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "billingAddressNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "billingAddressStreet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "billingAddressCity",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "billingAddressPostalCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "billingAddressCountry",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "sABIKECart",
+            "otherEntityRelationshipName": "userId",
+            "relationshipName": "cartId",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sABIKECommande",
+            "otherEntityRelationshipName": "userId",
+            "relationshipName": "orderId",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190906091146",
+    "entityTableName": "sabike_user",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

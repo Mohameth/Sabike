@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sABIKEArticle">
+            <h2><span>SABIKE Article</span> {{sABIKEArticle.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Article Id</span></dt>
+                <dd>
+                    <span>{{sABIKEArticle.articleId}}</span>
+                </dd>
+                <dt><span>Price</span></dt>
+                <dd>
+                    <span>{{sABIKEArticle.price}}</span>
+                </dd>
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{sABIKEArticle.name}}</span>
+                </dd>
+                <dt><span>Stock</span></dt>
+                <dd>
+                    <span>{{sABIKEArticle.stock}}</span>
+                </dd>
+                <dt><span>Picture</span></dt>
+                <dd>
+                    <span>{{sABIKEArticle.picture}}</span>
+                </dd>
+                <dt><span>Cart Id</span></dt>
+                <dd>
+                    <span *ngFor="let cartId of sABIKEArticle.cartIds; let last = last">
+                        <a [routerLink]="['/sabike-cart', cartId?.id, 'view' ]">{{cartId.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sabike-article', sABIKEArticle.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

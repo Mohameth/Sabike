@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sABIKEBike">
+            <h2><span>SABIKE Bike</span> {{sABIKEBike.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Type</span></dt>
+                <dd>
+                    <span>{{sABIKEBike.type}}</span>
+                </dd>
+                <dt><span>Size</span></dt>
+                <dd>
+                    <span>{{sABIKEBike.size}}</span>
+                </dd>
+                <dt><span>Speeds</span></dt>
+                <dd>
+                    <span>{{sABIKEBike.speeds}}</span>
+                </dd>
+                <dt><span>Color</span></dt>
+                <dd>
+                    <span>{{sABIKEBike.color}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sabike-bike', sABIKEBike.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

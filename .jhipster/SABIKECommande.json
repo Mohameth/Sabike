@@ -1,0 +1,43 @@
+{
+    "name": "SABIKECommande",
+    "fields": [
+        {
+            "fieldName": "orderId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "number",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "SABIKECommandeStatus",
+            "fieldValues": "PENDING,VALIDATED,SHIPPED,RECEIVED"
+        },
+        {
+            "fieldName": "orderDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "orderItems",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sABIKEUser",
+            "otherEntityRelationshipName": "orderId",
+            "relationshipName": "userId"
+        }
+    ],
+    "changelogDate": "20190906091149",
+    "entityTableName": "sabike_commande",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

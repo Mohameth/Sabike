@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span>SABIKE Articles</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sabike-article" [routerLink]="['/sabike-article/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new SABIKE Article
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="sABIKEArticles?.length === 0">
+        <span>No sABIKEArticles found</span>
+    </div>
+    <div class="table-responsive" *ngIf="sABIKEArticles?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Article Id</span></th>
+            <th><span>Price</span></th>
+            <th><span>Name</span></th>
+            <th><span>Stock</span></th>
+            <th><span>Picture</span></th>
+            <th><span>Cart Id</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sABIKEArticle of sABIKEArticles ;trackBy: trackId">
+                <td><a [routerLink]="['/sabike-article', sABIKEArticle.id, 'view' ]">{{sABIKEArticle.id}}</a></td>
+                <td>{{sABIKEArticle.articleId}}</td>
+                <td>{{sABIKEArticle.price}}</td>
+                <td>{{sABIKEArticle.name}}</td>
+                <td>{{sABIKEArticle.stock}}</td>
+                <td>{{sABIKEArticle.picture}}</td>
+                <td>
+                    <span *ngFor="let cartId of sABIKEArticle.cartIds; let last = last">
+                            <a class="form-control-static" [routerLink]="['/sabike-cart', cartId?.id, 'view' ]">{{cartId.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/sabike-article', sABIKEArticle.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-article', sABIKEArticle.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-article', { outlets: { popup: sABIKEArticle.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

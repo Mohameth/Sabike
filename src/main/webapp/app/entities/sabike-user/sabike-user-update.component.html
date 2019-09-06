@@ -1,0 +1,111 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-sabike-user-heading">Create or edit a SABIKE User</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userId">User Id</label>
+                    <input type="number" class="form-control" name="userId" id="field_userId"
+                           formControlName="userId"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_password">Password</label>
+                    <input type="text" class="form-control" name="password" id="field_password"
+                           formControlName="password"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                           formControlName="email"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_first">First</label>
+                    <input type="text" class="form-control" name="first" id="field_first"
+                           formControlName="first"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_last">Last</label>
+                    <input type="text" class="form-control" name="last" id="field_last"
+                           formControlName="last"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_isAdmin">Is Admin</label>
+                    <input type="checkbox" class="form-control" name="isAdmin" id="field_isAdmin"
+                           formControlName="isAdmin"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryAddressNumber">Delivery Address Number</label>
+                    <input type="text" class="form-control" name="deliveryAddressNumber" id="field_deliveryAddressNumber"
+                           formControlName="deliveryAddressNumber"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryAddressStreet">Delivery Address Street</label>
+                    <input type="text" class="form-control" name="deliveryAddressStreet" id="field_deliveryAddressStreet"
+                           formControlName="deliveryAddressStreet"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryAddressCity">Delivery Address City</label>
+                    <input type="text" class="form-control" name="deliveryAddressCity" id="field_deliveryAddressCity"
+                           formControlName="deliveryAddressCity"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryAddressPostalCode">Delivery Address Postal Code</label>
+                    <input type="text" class="form-control" name="deliveryAddressPostalCode" id="field_deliveryAddressPostalCode"
+                           formControlName="deliveryAddressPostalCode"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryAddressCountry">Delivery Address Country</label>
+                    <input type="text" class="form-control" name="deliveryAddressCountry" id="field_deliveryAddressCountry"
+                           formControlName="deliveryAddressCountry"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_billingAddressNumber">Billing Address Number</label>
+                    <input type="text" class="form-control" name="billingAddressNumber" id="field_billingAddressNumber"
+                           formControlName="billingAddressNumber"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_billingAddressStreet">Billing Address Street</label>
+                    <input type="text" class="form-control" name="billingAddressStreet" id="field_billingAddressStreet"
+                           formControlName="billingAddressStreet"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_billingAddressCity">Billing Address City</label>
+                    <input type="text" class="form-control" name="billingAddressCity" id="field_billingAddressCity"
+                           formControlName="billingAddressCity"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_billingAddressPostalCode">Billing Address Postal Code</label>
+                    <input type="text" class="form-control" name="billingAddressPostalCode" id="field_billingAddressPostalCode"
+                           formControlName="billingAddressPostalCode"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_billingAddressCountry">Billing Address Country</label>
+                    <input type="text" class="form-control" name="billingAddressCountry" id="field_billingAddressCountry"
+                           formControlName="billingAddressCountry"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_orderId">Order Id</label>
+                    <select class="form-control" id="field_orderId" name="orderId" formControlName="orderId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="sABIKECommandeOption.id === editForm.get('orderId').value?.id ? editForm.get('orderId').value : sABIKECommandeOption" *ngFor="let sABIKECommandeOption of sabikecommandes; trackBy: trackSABIKECommandeById">{{sABIKECommandeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

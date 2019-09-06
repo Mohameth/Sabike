@@ -14,6 +14,15 @@
     <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091146_added_entity_SABIKEUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091147_added_entity_SABIKEArticle.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091148_added_entity_SABIKECart.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091149_added_entity_SABIKECommande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091150_added_entity_SABIKEBike.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091151_added_entity_SABIKEPart.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190906091146_added_entity_constraints_SABIKEUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091147_added_entity_constraints_SABIKEArticle.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190906091148_added_entity_constraints_SABIKECart.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

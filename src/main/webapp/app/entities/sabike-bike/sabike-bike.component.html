@@ -1,0 +1,63 @@
+<div>
+    <h2 id="page-heading">
+        <span>SABIKE Bikes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sabike-bike" [routerLink]="['/sabike-bike/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new SABIKE Bike
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="sABIKEBikes?.length === 0">
+        <span>No sABIKEBikes found</span>
+    </div>
+    <div class="table-responsive" *ngIf="sABIKEBikes?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Type</span></th>
+            <th><span>Size</span></th>
+            <th><span>Speeds</span></th>
+            <th><span>Color</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sABIKEBike of sABIKEBikes ;trackBy: trackId">
+                <td><a [routerLink]="['/sabike-bike', sABIKEBike.id, 'view' ]">{{sABIKEBike.id}}</a></td>
+                <td>{{sABIKEBike.type}}</td>
+                <td>{{sABIKEBike.size}}</td>
+                <td>{{sABIKEBike.speeds}}</td>
+                <td>{{sABIKEBike.color}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/sabike-bike', sABIKEBike.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-bike', sABIKEBike.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sabike-bike', { outlets: { popup: sABIKEBike.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

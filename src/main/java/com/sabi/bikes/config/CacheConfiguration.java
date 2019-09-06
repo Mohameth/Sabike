@@ -43,6 +43,15 @@ public class CacheConfiguration {
             createCache(cm, com.sabi.bikes.domain.User.class.getName());
             createCache(cm, com.sabi.bikes.domain.Authority.class.getName());
             createCache(cm, com.sabi.bikes.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.sabi.bikes.domain.SABIKEUser.class.getName());
+            createCache(cm, com.sabi.bikes.domain.SABIKEArticle.class.getName());
+            createCache(cm, com.sabi.bikes.domain.SABIKEArticle.class.getName() + ".cartIds");
+            createCache(cm, com.sabi.bikes.domain.SABIKECart.class.getName());
+            createCache(cm, com.sabi.bikes.domain.SABIKECart.class.getName() + ".articleIds");
+            createCache(cm, com.sabi.bikes.domain.SABIKECommande.class.getName());
+            createCache(cm, com.sabi.bikes.domain.SABIKECommande.class.getName() + ".userIds");
+            createCache(cm, com.sabi.bikes.domain.SABIKEBike.class.getName());
+            createCache(cm, com.sabi.bikes.domain.SABIKEPart.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
