@@ -61,6 +61,7 @@ export class DialogConnectComponent implements AfterViewInit {
 
   login() {
     // console.log('++++++ login called', this._username, this._password);
+    // todo rememberMe !!
     this.loginService
       .login({
         username: this._username,
@@ -68,19 +69,19 @@ export class DialogConnectComponent implements AfterViewInit {
         rememberMe: false
       })
       .then(() => {
-        console.log(1);
+        // console.log(1);
         this.authenticationError = false;
         this.activeModal.dismiss('login success');
         if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
           this.router.navigate(['']);
         }
-        console.log(2);
+        // console.log(2);
         this.eventManager.broadcast({
           name: 'authenticationSuccess',
           content: 'Sending Authentication Success'
         });
 
-        console.log(3);
+        // console.log(3);
 
         // previousState was set in the authExpiredInterceptor before being redirected to login modal.
         // since login is successful, go to stored previousState and clear previousState
