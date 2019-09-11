@@ -17,6 +17,72 @@
     </div>
     <span class="example-spacer"></span>
 
+    <!-- Admin management -->
+    <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        type="button"
+        aria-label="ToolbarButton account"
+        [matMenuTriggerFor]="menuAdmin"
+        mat-icon-button>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Admin icon">verified_user</mat-icon>
+    </button>
+    <mat-menu #menuAdmin="matMenu"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}">
+        <button mat-menu-item
+                routerLink="admin/user-management"
+                routerLinkActive="active">
+            User management
+        </button>
+        <button mat-menu-item
+                routerLink="admin/jhi-tracker"
+                routerLinkActive="active">
+            User tracker
+        </button>
+        <button mat-menu-item
+                routerLink="admin/jhi-metrics"
+                routerLinkActive="active">
+            Metrics
+        </button>
+        <button mat-menu-item
+                routerLink="admin/jhi-health"
+                routerLinkActive="active">
+            Health
+        </button>
+        <button mat-menu-item
+                routerLink="admin/jhi-configuration"
+                routerLinkActive="active">
+            Configuration
+        </button>
+        <button mat-menu-item
+                routerLink="admin/audits"
+                routerLinkActive="active">
+            Audits
+        </button>
+        <button mat-menu-item
+                routerLink="admin/logs"
+                routerLinkActive="active">
+            Logs
+        </button>
+        <button mat-menu-item
+                routerLink="admin/docs"
+                routerLinkActive="active">
+            API
+        </button>
+        <!--            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">-->
+        <!--                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>-->
+        <!--                <span>Database</span>-->
+        <!--            </a>-->
+<!--        <button mat-menu-item href='./h2-console'>-->
+<!--            Database-->
+<!--&lt;!&ndash;            TODO debug h2 for dev&ndash;&gt;-->
+<!--&lt;!&ndash;            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">&ndash;&gt;-->
+<!--&lt;!&ndash;                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span>Database</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </a>&ndash;&gt;-->
+<!--        </button>-->
+    </mat-menu>
+
     <!-- Account management -->
     <button type="button"
             aria-label="ToolbarButton account"
@@ -51,6 +117,12 @@
             Se déconnecter
         </button>
     </mat-menu>
+
+    <!--  HOW TO DETECT IF ADMIN -->
+    <!--    <button mat-menu-item-->
+    <!--            *jhiHasAnyAuthority="'ROLE_ADMIN'">-->
+    <!--        Se déconnecter-->
+    <!--    </button>-->
 
     <!-- Cart management -->
     <button type="button" aria-label="ToolbarButton cart" mat-icon-button>
