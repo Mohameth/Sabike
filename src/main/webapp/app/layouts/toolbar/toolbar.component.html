@@ -1,0 +1,34 @@
+<mat-toolbar color="primary" [class.mat-elevation-z2]="true">
+<!--    <button-->
+<!--        type="button"-->
+<!--        aria-label="Toggle sidenav"-->
+<!--        mat-icon-button>-->
+<!--        &lt;!&ndash;-->
+<!--    (click)="drawer.toggle()"-->
+<!--    *ngIf="isHandset$ | async"-->
+<!--    &ndash;&gt;-->
+<!--        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>-->
+<!--    </button>-->
+    <span id="toolbar-main-title">SABIKE</span>
+    <!--  <button mat-button (click)="onButtonNavigationClick('velos')">VÉLOS</button>-->
+    <!--  <button mat-button (click)="onButtonNavigationClick('pieces')">PIÈCES</button>-->
+    <div id="toolbar-search-area">
+        <jhi-search></jhi-search>
+    </div>
+    <span class="example-spacer"></span>
+
+    <button type="button"
+            aria-label="ToolbarButton account"
+            [matMenuTriggerFor]="menuAccount"
+            mat-icon-button>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Account icon">account_circle</mat-icon>
+    </button>
+    <mat-menu #menuAccount="matMenu">
+        <button mat-menu-item (click)="openConnectDialog()">Se connecter</button>
+        <button mat-menu-item>Créer un compte</button>
+    </mat-menu>
+    <button type="button" aria-label="ToolbarButton cart" mat-icon-button>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon">shopping_cart</mat-icon>
+    </button>
+
+</mat-toolbar>

@@ -1,8 +1,76 @@
-<div class="modal-header">
-    <h4 class="modal-title">Sign in</h4>
-    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span aria-hidden="true">x</span>
-    </button>
-</div>
+<!--&lt;!&ndash;<div class="modal-header">&ndash;&gt;-->
+<!--<h1 mat-dialog-title>Se connecter</h1>-->
+<!--&lt;!&ndash;    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">&ndash;&gt;-->
+<!--&lt;!&ndash;        <span aria-hidden="true">x</span>&ndash;&gt;-->
+<!--&lt;!&ndash;    </button>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<mat-dialog-content>-->
+<!--    <div class="col-md-8">-->
+<!--        <div class="alert alert-danger" *ngIf="authenticationError">-->
+<!--            <strong>Failed to sign in!</strong> Please check your credentials and try again.-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="col-md-8">-->
+<!--        <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">-->
+
+<!--            <mat-form-field>-->
+<!--                <input matInput-->
+<!--                       type="text" class="form-control" name="username" id="username"-->
+<!--                       placeholder="Your username"-->
+<!--                       formControlName="username">-->
+<!--                &lt;!&ndash;            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>&ndash;&gt;-->
+<!--            </mat-form-field>-->
+
+
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label class="username-label" for="username">Login</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="text" class="form-control" name="username" id="username2"&ndash;&gt;-->
+<!--&lt;!&ndash;                       placeholder="Your username"&ndash;&gt;-->
+<!--&lt;!&ndash;                       formControlName="username">&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--            <mat-form-field>-->
+<!--                <input matInput-->
+<!--                       type="password" class="form-control" name="password" id="password"-->
+<!--                       placeholder="Your password"-->
+<!--                       formControlName="password">-->
+<!--&lt;!&ndash;                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"&ndash;&gt;-->
+<!--&lt;!&ndash;                        [attr.aria-pressed]="hide">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+<!--            </mat-form-field>-->
+
+<!--&lt;!&ndash;                        <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <label for="password">Password</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input type="password" class="form-control" name="password" id="password2"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   placeholder="Your password"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   formControlName="password">&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--            <div class="form-check">-->
+<!--                <label class="form-check-label" for="rememberMe">-->
+<!--                    <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe"-->
+<!--                           formControlName="rememberMe">-->
+<!--                    <span>Remember me</span>-->
+<!--                </label>-->
+<!--            </div>-->
+<!--            <button mat-raised-button type="submit" class="btn btn-primary">Sign in</button>-->
+<!--        </form>-->
+<!--        <p></p>-->
+<!--        <div class="alert alert-warning">-->
+<!--            <a class="alert-link" (click)="requestResetPassword()">Did you forget your password?</a>-->
+<!--        </div>-->
+<!--        <div class="alert alert-warning">-->
+<!--            <span>You don't have an account yet?</span>-->
+<!--            <a class="alert-link" (click)="register()">Register a new account</a>-->
+<!--        </div>-->
+<!--</mat-dialog-content>-->
+
+
+
+<!--************************************************************************************************-->
+<!--BASE CODE-->
+<!--************************************************************************************************-->
+
 <div class="modal-body">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -14,17 +82,20 @@
             <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
                 <div class="form-group">
                     <label class="username-label" for="username">Login</label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Your username"
+                    <input type="text" class="form-control" name="username" id="username"
+                           placeholder="Your username"
                            formControlName="username">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Your password"
+                    <input type="password" class="form-control" name="password" id="password"
+                           placeholder="Your password"
                            formControlName="password">
                 </div>
                 <div class="form-check">
                     <label class="form-check-label" for="rememberMe">
-                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" formControlName="rememberMe">
+                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe"
+                               formControlName="rememberMe">
                         <span>Remember me</span>
                     </label>
                 </div>
@@ -41,3 +112,39 @@
         </div>
     </div>
 </div>
+
+
+
+<!--************************************************************************************************-->
+<!--SABIKE-->
+<!--************************************************************************************************-->
+<!--<h1 mat-dialog-title>Se connecter</h1>-->
+<!--&lt;!&ndash;content&ndash;&gt;-->
+<!--<mat-dialog-content>-->
+<!--    <div id="dialog-connect-content-div">-->
+<!--        <form [formGroup]="loginForm">-->
+<!--            <mat-form-field>-->
+<!--                <input matInput required-->
+<!--                       name="username" id="username" placeholder="Your username"-->
+<!--                       formControlName="username">-->
+<!--                &lt;!&ndash;            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>&ndash;&gt;-->
+<!--            </mat-form-field>-->
+<!--            <mat-form-field>-->
+<!--                <input matInput-->
+<!--                       name="password" id="password"-->
+<!--                       placeholder="Your password"-->
+<!--                       formControlName="password"-->
+<!--                       [type]="hide ? 'password' : 'text'">-->
+<!--                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"-->
+<!--                        [attr.aria-pressed]="hide">-->
+<!--                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>-->
+<!--                </button>-->
+<!--            </mat-form-field>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</mat-dialog-content>-->
+<!--&lt;!&ndash;actions&ndash;&gt;-->
+<!--<mat-dialog-actions align="end">-->
+<!--    <button mat-button mat-dialog-close>ANNULER</button>-->
+<!--    <button mat-button (click)="onLoginClick()" cdkFocusInitial>SE CONNECTER</button>-->
+<!--</mat-dialog-actions>-->

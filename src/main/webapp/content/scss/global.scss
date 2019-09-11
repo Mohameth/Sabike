@@ -6,6 +6,10 @@
 Bootstrap tweaks
 ===============================================================*/
 
+body {
+  margin: 0px;
+}
+
 body,
 h1,
 h2,
@@ -49,10 +53,10 @@ Generic styles
 .ng-valid.required {
   border-left: 5px solid green;
 }
-
-.ng-invalid:not(form) {
-  border-left: 5px solid red;
-}
+//
+//.ng-invalid:not(form) {
+//  border-left: 5px solid red;
+//}
 
 /* other generic styles */
 

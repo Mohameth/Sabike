@@ -1,20 +1,23 @@
-// Base
-import { Component, AfterViewInit, Renderer, ElementRef, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-// NG
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { JhiEventManager } from 'ng-jhipster';
-// Services
-import { LoginService } from 'app/core/login/login.service';
-import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { LoginService, StateStorageService } from 'app/core';
+import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+export interface DialogData {
+  username: string;
+  password: string;
+  rememberMe: boolean;
+}
 
 @Component({
-  selector: 'jhi-login-modal',
-  templateUrl: './login.component.html'
+  selector: 'jhi-dialog-connect',
+  templateUrl: './dialog-connect.component.html',
+  styleUrls: ['./dialog-connect.component.scss']
 })
-export class JhiLoginModalComponent implements AfterViewInit {
+export class DialogConnectComponent implements AfterViewInit {
   authenticationError: boolean;
 
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -25,8 +28,12 @@ export class JhiLoginModalComponent implements AfterViewInit {
     rememberMe: [false]
   });
 
+  _username: string;
+  _password: string;
+  _rememberMe: boolean;
+
   constructor(
-    public dialogRef: MatDialogRef<JhiLoginModalComponent>,
+    public dialogRef: MatDialogRef<DialogConnectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private eventManager: JhiEventManager,
     private loginService: LoginService,
@@ -53,12 +60,12 @@ export class JhiLoginModalComponent implements AfterViewInit {
   }
 
   login() {
-    console.log('++++++ login called');
+    // console.log('++++++ login called', this._username, this._password);
     this.loginService
       .login({
-        username: this.loginForm.get('username').value,
-        password: this.loginForm.get('password').value,
-        rememberMe: this.loginForm.get('rememberMe').value
+        username: this._username,
+        password: this._password,
+        rememberMe: false
       })
       .then(() => {
         console.log(1);
@@ -105,42 +112,5 @@ export class JhiLoginModalComponent implements AfterViewInit {
 
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' : this.email.hasError('email') ? 'Not a valid email' : '';
-  }
-
-  onLoginClick() {
-    console.log('test');
-    this.loginService
-      .login({
-        username: this.loginForm.get('username').value,
-        password: this.loginForm.get('password').value,
-        rememberMe: this.loginForm.get('rememberMe').value
-      })
-      .then(() => {
-        console.log(1);
-        this.authenticationError = false;
-        this.activeModal.dismiss('login success');
-        if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
-          this.router.navigate(['']);
-        }
-        console.log(2);
-        this.eventManager.broadcast({
-          name: 'authenticationSuccess',
-          content: 'Sending Authentication Success'
-        });
-
-        console.log(3);
-
-        // previousState was set in the authExpiredInterceptor before being redirected to login modal.
-        // since login is successful, go to stored previousState and clear previousState
-        const redirect = this.stateStorageService.getUrl();
-        if (redirect) {
-          console.log(4, 'redirect');
-          this.stateStorageService.storeUrl(null);
-          this.router.navigateByUrl(redirect);
-        }
-      })
-      .catch(() => {
-        this.authenticationError = true;
-      });
   }
 }
