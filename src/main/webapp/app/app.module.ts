@@ -27,6 +27,25 @@ import { MatToolbarModule } from '@angular/material';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavigationDrawerComponent } from './layouts/navigation-drawer/navigation-drawer.component';
+import { MatButtonModule } from '@angular/material/button';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -46,7 +65,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SabikeAppRoutingModule,
     MatToolbarModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatButtonModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTreeModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatCardModule,
+    MatGridListModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ],
   declarations: [
     JhiMainComponent,
@@ -56,7 +95,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FooterComponent,
     DialogConnectComponent,
     ToolbarComponent,
-    SearchComponent
+    SearchComponent,
+    NavigationDrawerComponent
   ],
   providers: [
     NgbActiveModal,

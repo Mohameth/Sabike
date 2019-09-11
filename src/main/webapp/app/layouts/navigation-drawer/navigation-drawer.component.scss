@@ -1,0 +1,48 @@
+#nav-left-root {
+  width: 300px;
+  //background: aqua;
+}
+
+.type-icon {
+  color: #757575;
+  margin-right: 5px;
+}
+
+.hoverable:hover {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#nav-left-root-label-category,
+#nav-left-root-label-filters {
+  margin-left: 16px;
+}
+
+#nav-left-root-filter-prices {
+  display: flex;
+}
+
+.nav-left-root-filter-price {
+  //max-width: 100px;
+  width: 80px;
+  //margin-left: 16px;
+}
+
+#nav-left-root-filter-price-validate {
+  margin-left: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+#nav-left-root-divider {
+  margin: 8px;
+}
+
+#nav-root {
+  background-color: white;
+  min-height: 100%;
+}

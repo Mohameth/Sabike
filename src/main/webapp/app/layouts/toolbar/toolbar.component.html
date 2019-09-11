@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" [class.mat-elevation-z2]="true">
+<mat-toolbar color="primary" [class.mat-elevation-z8]="true">
     <!--    <button-->
     <!--        type="button"-->
     <!--        aria-label="Toggle sidenav"-->
@@ -87,7 +87,9 @@
     <button type="button"
             aria-label="ToolbarButton account"
             [matMenuTriggerFor]="menuAccount"
-            mat-icon-button>
+            mat-icon-button
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
         <mat-icon class="example-icon" aria-hidden="false" aria-label="Account icon">account_circle</mat-icon>
     </button>
     <mat-menu
@@ -100,7 +102,9 @@
             Se connecter
         </button>
         <button mat-menu-item
-                *ngSwitchCase="false">
+                *ngSwitchCase="false"
+                routerLink="register"
+                routerLinkActive="active"> <!-- on utilise le router pour la creation de compte -->
             Créer un compte
         </button>
         <button mat-menu-item

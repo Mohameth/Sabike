@@ -53,6 +53,7 @@ Generic styles
 .ng-valid.required {
   border-left: 5px solid green;
 }
+
 //
 //.ng-invalid:not(form) {
 //  border-left: 5px solid red;
@@ -108,6 +109,7 @@ Custom alerts for notification
 .alerts {
   .alert {
     text-overflow: ellipsis;
+
     pre {
       background: none;
       border: none;
@@ -116,22 +118,28 @@ Custom alerts for notification
       padding: 0;
       margin: 0;
     }
+
     .popover pre {
       font-size: 10px;
     }
   }
+
   .jhi-toast {
     position: fixed;
     width: 100%;
+
     &.left {
       left: 5px;
     }
+
     &.right {
       right: 5px;
     }
+
     &.top {
       top: 55px;
     }
+
     &.bottom {
       bottom: 55px;
     }
@@ -158,6 +166,7 @@ entity detail page css
     dt {
       margin-bottom: 15px;
     }
+
     dd {
       border-bottom: 1px solid #eee;
       padding-left: 180px;
@@ -187,4 +196,23 @@ ui bootstrap tweaks
 
 button:focus {
   outline: none;
+}
+
+#main-root {
+  display: flex;
+  //height: 100%;
+  //padding-bottom: 16px;
+}
+
+#main-root-left {
+  width: 320px;
+  //margin-top: -16px;
+  //padding-top: 16px;
+}
+
+#main-root-right {
+  width: 100%;
+  padding: 16px;
+  margin-left: 16px;
+  //background: #000066;
 }
