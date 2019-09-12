@@ -73,14 +73,14 @@
         <!--                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>-->
         <!--                <span>Database</span>-->
         <!--            </a>-->
-<!--        <button mat-menu-item href='./h2-console'>-->
-<!--            Database-->
-<!--&lt;!&ndash;            TODO debug h2 for dev&ndash;&gt;-->
-<!--&lt;!&ndash;            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">&ndash;&gt;-->
-<!--&lt;!&ndash;                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>&ndash;&gt;-->
-<!--&lt;!&ndash;                <span>Database</span>&ndash;&gt;-->
-<!--&lt;!&ndash;            </a>&ndash;&gt;-->
-<!--        </button>-->
+        <!--        <button mat-menu-item href='./h2-console'>-->
+        <!--            Database-->
+        <!--&lt;!&ndash;            TODO debug h2 for dev&ndash;&gt;-->
+        <!--&lt;!&ndash;            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">&ndash;&gt;-->
+        <!--&lt;!&ndash;                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <span>Database</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;            </a>&ndash;&gt;-->
+        <!--        </button>-->
     </mat-menu>
 
     <!-- Account management -->
@@ -129,7 +129,11 @@
     <!--    </button>-->
 
     <!-- Cart management -->
-    <button type="button" aria-label="ToolbarButton cart" mat-icon-button>
+    <button type="button"
+            aria-label="ToolbarButton cart"
+            mat-icon-button
+            routerLink="cart"
+            routerLinkActive="active">
         <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon">shopping_cart</mat-icon>
     </button>
 </mat-toolbar>

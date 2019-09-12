@@ -50,6 +50,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { GridArticleComponent } from 'app/sabike/components/grid-article/grid-article.component';
 import { CardArticleComponent } from 'app/sabike/components/card-article/card-article.component';
 import { DetailsArticleComponent } from 'app/sabike/activities/article-details/details-article.component';
+import { CartComponent } from './sabike/activities/cart/cart.component';
+import { ListCartComponent } from './sabike/components/list-cart/list-cart.component';
+import { ItemListCartComponent } from './sabike/components/list-cart/item-list-cart/item-list-cart.component';
 
 @NgModule({
   imports: [
@@ -104,7 +107,10 @@ import { DetailsArticleComponent } from 'app/sabike/activities/article-details/d
     ListArticlesComponent,
     GridArticleComponent,
     CardArticleComponent,
-    DetailsArticleComponent
+    DetailsArticleComponent,
+    CartComponent,
+    ListCartComponent,
+    ItemListCartComponent
   ],
   providers: [
     NgbActiveModal,

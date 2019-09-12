@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { errorRoute, navbarRoute } from './layouts';
-import { articlesRoute } from 'app/sabike/activities/articles.route';
+import { activitiesRoute } from 'app/sabike/activities/activities.route';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 
-const LAYOUT_ROUTES = [navbarRoute, ...articlesRoute, ...errorRoute];
+const LAYOUT_ROUTES = [navbarRoute, ...activitiesRoute, ...errorRoute];
 
 @NgModule({
   imports: [
