@@ -198,6 +198,10 @@ button:focus {
   outline: none;
 }
 
+body {
+  background-color: white;
+}
+
 #main-root {
   display: flex;
   height: 100%;
@@ -216,4 +220,24 @@ button:focus {
   padding: 16px;
   margin-left: 16px;
   //background: #000066;
+}
+
+footer {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #3f51b5;
+  color: white;
+}
+
+.footer-section {
+  margin: 16px;
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer-contact,
+#footer-logo {
+  border-right: 5px solid #7f7f7f;
 }
