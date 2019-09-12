@@ -1,3 +1,44 @@
+#home-root {
+  width: 100%;
+}
+
+#home-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-row {
+  display: flex;
+  max-height: 150px;
+}
+
+#home-description {
+}
+
+#home-description-left {
+  width: 30%;
+}
+
+#home-description-right {
+  width: 70%;
+}
+
+#home-advantages {
+}
+
+#home-advantages-left {
+  width: 70%;
+}
+
+#home-advantages-right {
+  width: 30%;
+}
+
+.images {
+  max-height: 100%;
+}
+
 /* ==========================================================================
 Main page styles
 ========================================================================== */
