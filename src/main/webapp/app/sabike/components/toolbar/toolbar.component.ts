@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { MatDialog } from '@angular/material';
-import { DialogConnectComponent } from 'app/layouts/dialog-connect/dialog-connect.component';
+import { DialogConnectComponent } from 'app/sabike/components/dialog-connect/dialog-connect.component';
 // Services
 import { AccountService, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';

@@ -20,15 +20,15 @@ import { SabikeEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
-import { DialogConnectComponent } from './layouts/dialog-connect/dialog-connect.component';
-import { ToolbarComponent } from './layouts/toolbar/toolbar.component';
-import { SearchComponent } from './layouts/toolbar/search/search.component';
+import { DialogConnectComponent } from './sabike/components/dialog-connect/dialog-connect.component';
+import { ToolbarComponent } from './sabike/components/toolbar/toolbar.component';
+import { SearchComponent } from './sabike/components/toolbar/search/search.component';
 import { MatToolbarModule } from '@angular/material';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationDrawerComponent } from './layouts/navigation-drawer/navigation-drawer.component';
-import { ListArticlesComponent } from 'app/layouts/articles/list-articles/list-articles.component';
+import { NavigationDrawerComponent } from './sabike/components/navigation-drawer/navigation-drawer.component';
+import { ListArticlesComponent } from 'app/sabike/activities/articles-list/list-articles.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -47,9 +47,9 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
-import { GridArticleComponent } from 'app/layouts/articles/grid-article/grid-article.component';
-import { CardArticleComponent } from 'app/layouts/articles/card-article/card-article.component';
-import { DetailsArticleComponent } from 'app/layouts/articles/details-article/details-article.component';
+import { GridArticleComponent } from 'app/sabike/components/grid-article/grid-article.component';
+import { CardArticleComponent } from 'app/sabike/components/card-article/card-article.component';
+import { DetailsArticleComponent } from 'app/sabike/activities/article-details/details-article.component';
 
 @NgModule({
   imports: [

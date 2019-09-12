@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { ListArticlesComponent } from 'app/layouts/articles/list-articles/list-articles.component';
-import { DetailsArticleComponent } from 'app/layouts/articles/details-article/details-article.component';
+import { ListArticlesComponent } from 'app/sabike/activities/articles-list/list-articles.component';
+import { DetailsArticleComponent } from 'app/sabike/activities/article-details/details-article.component';
 
 export const articlesRoute: Routes = [
   {
