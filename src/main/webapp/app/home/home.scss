@@ -1,4 +1,6 @@
 #home-root {
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
@@ -10,7 +12,7 @@
 
 .home-row {
   display: flex;
-  max-height: 150px;
+  max-height: 115px;
 }
 
 #home-description {
@@ -37,6 +39,19 @@
 
 .images {
   max-height: 100%;
+}
+
+#home-icons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.home-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 125px;
 }
 
 /* ==========================================================================
