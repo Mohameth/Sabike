@@ -16,15 +16,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    //    @Query(value = "FROM Product WHERE bikeCategory=?1")
-//    List<Product> getAllByBikeCategory(String choice);
-
     @Query("FROM Product WHERE bike_category = ?1")
-//    @Query(value = "SELECT Product FROM Product WHERE bikeCategory=:category")
     List<Product> getAllByBikeCategory(Pageable pageable, String chosenCategory);
 
-
-//    @Query("FROM Product WHERE bikeCategory=?1")
-//    List<Product> getAllByBikeCategory(String choice);
-
+    @Query("FROM Product WHERE part_category = ?1")
+    List<Product> getAllByPartCategory(Pageable pageable, String category);
 }

@@ -25,39 +25,13 @@ export class ListArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // console.log('================================================ 1');
-    this.productService
-      .query()
-      .pipe(
-        filter((res: HttpResponse<IProduct[]>) => res.ok),
-        map((res: HttpResponse<IProduct[]>) => res.body)
-      )
-      .subscribe(
-        (res: IProduct[]) => {
-          this.products = res;
-          console.log('================================================ 2');
-          console.log(this.products);
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    // this.productService.find(1).subscribe(
-    //   message => console.log(message)
-    // );
-
-    // console.log();
     const parameter = this.router.url.split('/')[2];
     if (parameter === 'VTT' || parameter === 'Route') {
-      // this.productService
-      //   .getBikes('ROAD')
-      //   // .pipe(
-      //   //   filter((res: HttpResponse<IProduct[]>) => res.ok),
-      //   //   map((res: HttpResponse<IProduct[]>) => res.body)
-      //   // )
-      //   .subscribe(
-      //     message => {
-      //       console.log(message);
-      //     }
-      //   );
+      this.productService
+        .getBikes('ROAD') // TODO not hardcode
+        .subscribe(message => {
+          console.log(message);
+        });
     } else {
       // this.productService.getPart(parameter);
     }

@@ -36,7 +36,9 @@ export class ProductService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  // SABIKE
+
   getBikes(category: string): Observable<HttpResponse<any>> {
-    return this.http.get<IProduct>(`${this.resourceUrl}/bycategory/${category}`, { observe: 'response' });
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}`, { observe: 'response' });
   }
 }

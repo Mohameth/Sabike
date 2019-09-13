@@ -128,9 +128,22 @@ public class ProductResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/products/bycategory/{category}")
-    public ResponseEntity<List<Product>> findProductByCategory(Pageable pageable, @PathVariable String category) {
+    // SABIKE
+
+    @GetMapping("/products/bybikecategory/{category}")
+    public ResponseEntity<List<Product>> findProductByBikeCategory(Pageable pageable, @PathVariable String category) {
         List<Product> products = productRepository.getAllByBikeCategory(pageable, category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    @GetMapping("/products/bypartcategory/{category}")
+    public ResponseEntity<List<Product>> findProductByPartCategory(
+        Pageable pageable,
+        @PathVariable String category
+    ){
+        List<Product> products = productRepository.getAllByPartCategory(pageable, category);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+
 }
