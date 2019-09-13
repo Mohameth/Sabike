@@ -35,4 +35,8 @@ export class ProductService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  // getBikes(category: string): Observable<HttpResponse<any>> {
+  //   return this.http.get<IProduct>(`${this.resourceUrl}/${category}`, { observe: 'response' });
+  // }
 }

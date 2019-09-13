@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,7 +84,6 @@ public class ProductResource {
     /**
      * {@code GET  /products} : get all the products.
      *
-
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
@@ -124,5 +124,16 @@ public class ProductResource {
         log.debug("REST request to delete Product : {}", id);
         productRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/products/")
+    public List<Product> findByCategoryContains(@Param("cat") String category) {
+        log.debug("========================================================================================================================");
+        log.debug("========================================================================================================================");
+        log.debug("========================================================================================================================");
+        log.debug("========================================================================================================================");
+        log.debug("REST request to get Products by category : {}", category);
+        return productRepository.getAllByBikeCategory(category);
     }
 }
