@@ -9,7 +9,10 @@
     <!--    &ndash;&gt;-->
     <!--        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>-->
     <!--    </button>-->
-    <span id="toolbar-main-title">SABIKE</span>
+    <button mat-button>
+        SABIKE
+    </button>
+    <!--    <span id="toolbar-main-title"></span>-->
     <!--  <button mat-button (click)="onButtonNavigationClick('velos')">VÉLOS</button>-->
     <!--  <button mat-button (click)="onButtonNavigationClick('pieces')">PIÈCES</button>-->
     <div id="toolbar-search-area">
@@ -93,8 +96,8 @@
         <mat-icon class="example-icon" aria-hidden="false" aria-label="Account icon">account_circle</mat-icon>
     </button>
     <mat-menu
-        #menuAccount="matMenu"
-        [ngSwitch]="isAuthenticated()">
+      #menuAccount="matMenu"
+      [ngSwitch]="isAuthenticated()">
         <button
             mat-menu-item
             (click)="openConnectDialog()"

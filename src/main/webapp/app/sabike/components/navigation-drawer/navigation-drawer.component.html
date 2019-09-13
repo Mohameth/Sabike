@@ -36,9 +36,7 @@
 
 
     <mat-divider id="nav-left-root-divider"></mat-divider>
-
-
-    <div id="nav-left-root-label-filters">
+    <div id="nav-left-root-label-filters" *ngIf="shouldHideFilters()">
         <p>Filtres</p>
         <form>
             <div id="nav-left-root-filter-prices">

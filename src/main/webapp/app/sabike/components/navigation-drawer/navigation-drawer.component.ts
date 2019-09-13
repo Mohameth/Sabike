@@ -4,6 +4,7 @@ import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { files } from './example-data';
 import { NavigationServiceService } from 'app/navigation/navigation-service.service';
+import { Router } from '@angular/router';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -38,7 +39,7 @@ export class NavigationDrawerComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationServiceService) {
+  constructor(private navigationService: NavigationServiceService, private router: Router) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
@@ -78,7 +79,7 @@ export class NavigationDrawerComponent {
     return {
       name: node.name,
       type: node.type,
-      level: level,
+      level,
       expandable: !!node.children
     };
   }
@@ -107,5 +108,12 @@ export class NavigationDrawerComponent {
     // console.log(item);
     if (item === 'VTT') {
     }
+  }
+
+  /**
+   * On devrait cacher les filtres si on est pas en train de regarder des articles.
+   */
+  shouldHideFilters() {
+    return this.router.url.startsWith('/articles/', 0);
   }
 }
