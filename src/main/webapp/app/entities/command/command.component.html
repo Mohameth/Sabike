@@ -1,0 +1,69 @@
+<div>
+    <h2 id="page-heading">
+        <span>Commands</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-command" [routerLink]="['/command/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new Command
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="commands?.length === 0">
+        <span>No commands found</span>
+    </div>
+    <div class="table-responsive" *ngIf="commands?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>State</span></th>
+            <th><span>Order Date</span></th>
+            <th><span>Total Amount</span></th>
+            <th><span>Payment Date</span></th>
+            <th><span>Client</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let command of commands ;trackBy: trackId">
+                <td><a [routerLink]="['/command', command.id, 'view' ]">{{command.id}}</a></td>
+                <td>{{command.state}}</td>
+                <td>{{command.orderDate | date:'mediumDate'}}</td>
+                <td>{{command.totalAmount}}</td>
+                <td>{{command.paymentDate | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="command.client">
+                        <a [routerLink]="['/client', command.client?.id, 'view' ]" >{{command.client?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/command', command.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/command', command.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/command', { outlets: { popup: command.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

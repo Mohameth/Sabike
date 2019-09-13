@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="product">
+            <h2><span>Product</span> {{product.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Price</span></dt>
+                <dd>
+                    <span>{{product.price}}</span>
+                </dd>
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{product.name}}</span>
+                </dd>
+                <dt><span>Stock</span></dt>
+                <dd>
+                    <span>{{product.stock}}</span>
+                </dd>
+                <dt><span>Picture</span></dt>
+                <dd>
+                    <span>{{product.picture}}</span>
+                </dd>
+                <dt><span>Brand</span></dt>
+                <dd>
+                    <span>{{product.brand}}</span>
+                </dd>
+                <dt><span>Type</span></dt>
+                <dd>
+                    <span>{{product.type}}</span>
+                </dd>
+                <dt><span>Bike Category</span></dt>
+                <dd>
+                    <span>{{product.bikeCategory}}</span>
+                </dd>
+                <dt><span>Bike Size</span></dt>
+                <dd>
+                    <span>{{product.bikeSize}}</span>
+                </dd>
+                <dt><span>Bike Seeds</span></dt>
+                <dd>
+                    <span>{{product.bikeSeeds}}</span>
+                </dd>
+                <dt><span>Bike Color</span></dt>
+                <dd>
+                    <span>{{product.bikeColor}}</span>
+                </dd>
+                <dt><span>Part Category</span></dt>
+                <dd>
+                    <span>{{product.partCategory}}</span>
+                </dd>
+                <dt><span>Part Category Type</span></dt>
+                <dd>
+                    <span>{{product.partCategoryType}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product', product.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

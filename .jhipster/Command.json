@@ -1,0 +1,45 @@
+{
+    "name": "Command",
+    "fields": [
+        {
+            "fieldName": "state",
+            "fieldType": "OrderState",
+            "fieldValues": "PENDING,VALIDATED,SHIPPED,RECEIVED"
+        },
+        {
+            "fieldName": "orderDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "totalAmount",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "paymentDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "client",
+            "otherEntityName": "client",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "orderItems",
+            "otherEntityRelationshipName": "command",
+            "relationshipName": "orderItems"
+        }
+    ],
+    "changelogDate": "20190913082009",
+    "entityTableName": "command",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
