@@ -19,7 +19,7 @@ export const activitiesRoute: Routes = [
     component: HomeComponent
   },
   {
-    path: 'cart',
+    path: 'mycart',
     component: CartComponent
   }
 ];
