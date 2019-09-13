@@ -20,6 +20,50 @@
     </div>
     <span class="example-spacer"></span>
 
+    <!-- Entities -->
+    <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
+        type="button"
+        aria-label="ToolbarButton account"
+        [matMenuTriggerFor]="menuEntities"
+        mat-icon-button>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Admin icon">view_module</mat-icon>
+    </button>
+    <mat-menu #menuEntities="matMenu"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}">
+        <button mat-menu-item
+                routerLink="client"
+                routerLinkActive="active">
+            Client
+        </button>
+        <button mat-menu-item
+                routerLink="address"
+                routerLinkActive="active">
+            Address
+        </button>
+        <button mat-menu-item
+                routerLink="product"
+                routerLinkActive="active">
+            Product
+        </button>
+        <button mat-menu-item
+                routerLink="cart"
+                routerLinkActive="active">
+            Cart
+        </button>
+        <button mat-menu-item
+                routerLink="command"
+                routerLinkActive="active">
+            Command
+        </button>
+        <button mat-menu-item
+                routerLink="order-items"
+                routerLinkActive="active">
+            Order items
+        </button>
+    </mat-menu>
+
     <!-- Admin management -->
     <button
         *jhiHasAnyAuthority="'ROLE_ADMIN'"
