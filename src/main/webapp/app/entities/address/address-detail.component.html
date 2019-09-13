@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="address">
+            <h2><span>Address</span> {{address.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Delivery Number</span></dt>
+                <dd>
+                    <span>{{address.deliveryNumber}}</span>
+                </dd>
+                <dt><span>Delivery Street</span></dt>
+                <dd>
+                    <span>{{address.deliveryStreet}}</span>
+                </dd>
+                <dt><span>Delivery City</span></dt>
+                <dd>
+                    <span>{{address.deliveryCity}}</span>
+                </dd>
+                <dt><span>Delivery Postal Code</span></dt>
+                <dd>
+                    <span>{{address.deliveryPostalCode}}</span>
+                </dd>
+                <dt><span>Delivery Country</span></dt>
+                <dd>
+                    <span>{{address.deliveryCountry}}</span>
+                </dd>
+                <dt><span>Client</span></dt>
+                <dd>
+                    <div *ngIf="address.client">
+                        <a [routerLink]="['/client', address.client?.id, 'view']">{{address.client?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/address', address.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

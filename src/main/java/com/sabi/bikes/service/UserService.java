@@ -2,8 +2,10 @@ package com.sabi.bikes.service;
 
 import com.sabi.bikes.config.Constants;
 import com.sabi.bikes.domain.Authority;
+import com.sabi.bikes.domain.Client;
 import com.sabi.bikes.domain.User;
 import com.sabi.bikes.repository.AuthorityRepository;
+import com.sabi.bikes.repository.ClientRepository;
 import com.sabi.bikes.repository.UserRepository;
 import com.sabi.bikes.security.AuthoritiesConstants;
 import com.sabi.bikes.security.SecurityUtils;
@@ -37,14 +39,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final ClientRepository clientRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, ClientRepository clientRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -87,7 +92,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password) {
+    public User registerUser(UserDTO userDTO, String password, String phone) {
         userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
             boolean removed = removeNonActivatedUser(existingUser);
             if (!removed) {
@@ -120,6 +125,12 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        Client client = new Client();
+        client.setUser(newUser);
+        client.setPhoneNumber(phone);
+        clientRepository.save(client);
+
         return newUser;
     }
 

@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-address-heading">Create or edit a Address</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryNumber">Delivery Number</label>
+                    <input type="text" class="form-control" name="deliveryNumber" id="field_deliveryNumber"
+                           formControlName="deliveryNumber"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryStreet">Delivery Street</label>
+                    <input type="text" class="form-control" name="deliveryStreet" id="field_deliveryStreet"
+                           formControlName="deliveryStreet"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryCity">Delivery City</label>
+                    <input type="text" class="form-control" name="deliveryCity" id="field_deliveryCity"
+                           formControlName="deliveryCity"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryPostalCode">Delivery Postal Code</label>
+                    <input type="text" class="form-control" name="deliveryPostalCode" id="field_deliveryPostalCode"
+                           formControlName="deliveryPostalCode"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryCountry">Delivery Country</label>
+                    <input type="text" class="form-control" name="deliveryCountry" id="field_deliveryCountry"
+                           formControlName="deliveryCountry"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <select class="form-control" id="field_client" name="client" formControlName="client">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="clientOption.id === editForm.get('client').value?.id ? editForm.get('client').value : clientOption" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

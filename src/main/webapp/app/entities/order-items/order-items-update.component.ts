@@ -1,0 +1,159 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { JhiAlertService } from 'ng-jhipster';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { OrderItemsService } from './order-items.service';
+import { ICart } from 'app/shared/model/cart.model';
+import { CartService } from 'app/entities/cart';
+import { ICommand } from 'app/shared/model/command.model';
+import { CommandService } from 'app/entities/command';
+import { IProduct } from 'app/shared/model/product.model';
+import { ProductService } from 'app/entities/product';
+
+@Component({
+  selector: 'jhi-order-items-update',
+  templateUrl: './order-items-update.component.html'
+})
+export class OrderItemsUpdateComponent implements OnInit {
+  isSaving: boolean;
+
+  carts: ICart[];
+
+  commands: ICommand[];
+
+  products: IProduct[];
+
+  editForm = this.fb.group({
+    id: [],
+    quantity: [],
+    paidPrice: [],
+    cart: [],
+    command: [],
+    product: []
+  });
+
+  constructor(
+    protected jhiAlertService: JhiAlertService,
+    protected orderItemsService: OrderItemsService,
+    protected cartService: CartService,
+    protected commandService: CommandService,
+    protected productService: ProductService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit() {
+    this.isSaving = false;
+    this.activatedRoute.data.subscribe(({ orderItems }) => {
+      this.updateForm(orderItems);
+    });
+    this.cartService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<ICart[]>) => mayBeOk.ok),
+        map((response: HttpResponse<ICart[]>) => response.body)
+      )
+      .subscribe((res: ICart[]) => (this.carts = res), (res: HttpErrorResponse) => this.onError(res.message));
+    this.commandService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<ICommand[]>) => mayBeOk.ok),
+        map((response: HttpResponse<ICommand[]>) => response.body)
+      )
+      .subscribe((res: ICommand[]) => (this.commands = res), (res: HttpErrorResponse) => this.onError(res.message));
+    this.productService
+      .query({ filter: 'orderitems-is-null' })
+      .pipe(
+        filter((mayBeOk: HttpResponse<IProduct[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IProduct[]>) => response.body)
+      )
+      .subscribe(
+        (res: IProduct[]) => {
+          if (!this.editForm.get('product').value || !this.editForm.get('product').value.id) {
+            this.products = res;
+          } else {
+            this.productService
+              .find(this.editForm.get('product').value.id)
+              .pipe(
+                filter((subResMayBeOk: HttpResponse<IProduct>) => subResMayBeOk.ok),
+                map((subResponse: HttpResponse<IProduct>) => subResponse.body)
+              )
+              .subscribe(
+                (subRes: IProduct) => (this.products = [subRes].concat(res)),
+                (subRes: HttpErrorResponse) => this.onError(subRes.message)
+              );
+          }
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+  }
+
+  updateForm(orderItems: IOrderItems) {
+    this.editForm.patchValue({
+      id: orderItems.id,
+      quantity: orderItems.quantity,
+      paidPrice: orderItems.paidPrice,
+      cart: orderItems.cart,
+      command: orderItems.command,
+      product: orderItems.product
+    });
+  }
+
+  previousState() {
+    window.history.back();
+  }
+
+  save() {
+    this.isSaving = true;
+    const orderItems = this.createFromForm();
+    if (orderItems.id !== undefined) {
+      this.subscribeToSaveResponse(this.orderItemsService.update(orderItems));
+    } else {
+      this.subscribeToSaveResponse(this.orderItemsService.create(orderItems));
+    }
+  }
+
+  private createFromForm(): IOrderItems {
+    return {
+      ...new OrderItems(),
+      id: this.editForm.get(['id']).value,
+      quantity: this.editForm.get(['quantity']).value,
+      paidPrice: this.editForm.get(['paidPrice']).value,
+      cart: this.editForm.get(['cart']).value,
+      command: this.editForm.get(['command']).value,
+      product: this.editForm.get(['product']).value
+    };
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IOrderItems>>) {
+    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  }
+
+  protected onSaveSuccess() {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError() {
+    this.isSaving = false;
+  }
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  trackCartById(index: number, item: ICart) {
+    return item.id;
+  }
+
+  trackCommandById(index: number, item: ICommand) {
+    return item.id;
+  }
+
+  trackProductById(index: number, item: IProduct) {
+    return item.id;
+  }
+}

@@ -1,0 +1,77 @@
+<div>
+    <h2 id="page-heading">
+        <span>Order Items</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-order-items" [routerLink]="['/order-items/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new Order Items
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="orderItems?.length === 0">
+        <span>No orderItems found</span>
+    </div>
+    <div class="table-responsive" *ngIf="orderItems?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Quantity</span></th>
+            <th><span>Paid Price</span></th>
+            <th><span>Cart</span></th>
+            <th><span>Command</span></th>
+            <th><span>Product</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let orderItems of orderItems ;trackBy: trackId">
+                <td><a [routerLink]="['/order-items', orderItems.id, 'view' ]">{{orderItems.id}}</a></td>
+                <td>{{orderItems.quantity}}</td>
+                <td>{{orderItems.paidPrice}}</td>
+                <td>
+                    <div *ngIf="orderItems.cart">
+                        <a [routerLink]="['/cart', orderItems.cart?.id, 'view' ]" >{{orderItems.cart?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orderItems.command">
+                        <a [routerLink]="['/command', orderItems.command?.id, 'view' ]" >{{orderItems.command?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orderItems.product">
+                        <a [routerLink]="['/product', orderItems.product?.id, 'view' ]" >{{orderItems.product?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/order-items', orderItems.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/order-items', orderItems.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/order-items', { outlets: { popup: orderItems.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

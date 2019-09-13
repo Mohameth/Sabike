@@ -1,0 +1,79 @@
+<div>
+    <h2 id="page-heading">
+        <span>Products</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-product" [routerLink]="['/product/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create a new Product
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="products?.length === 0">
+        <span>No products found</span>
+    </div>
+    <div class="table-responsive" *ngIf="products?.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Price</span></th>
+            <th><span>Name</span></th>
+            <th><span>Stock</span></th>
+            <th><span>Picture</span></th>
+            <th><span>Brand</span></th>
+            <th><span>Type</span></th>
+            <th><span>Bike Category</span></th>
+            <th><span>Bike Size</span></th>
+            <th><span>Bike Seeds</span></th>
+            <th><span>Bike Color</span></th>
+            <th><span>Part Category</span></th>
+            <th><span>Part Category Type</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of products ;trackBy: trackId">
+                <td><a [routerLink]="['/product', product.id, 'view' ]">{{product.id}}</a></td>
+                <td>{{product.price}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.stock}}</td>
+                <td>{{product.picture}}</td>
+                <td>{{product.brand}}</td>
+                <td>{{product.type}}</td>
+                <td>{{product.bikeCategory}}</td>
+                <td>{{product.bikeSize}}</td>
+                <td>{{product.bikeSeeds}}</td>
+                <td>{{product.bikeColor}}</td>
+                <td>{{product.partCategory}}</td>
+                <td>{{product.partCategoryType}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/product', product.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/product', product.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/product', { outlets: { popup: product.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

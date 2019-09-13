@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="command">
+            <h2><span>Command</span> {{command.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>State</span></dt>
+                <dd>
+                    <span>{{command.state}}</span>
+                </dd>
+                <dt><span>Order Date</span></dt>
+                <dd>
+                    <span>{{command.orderDate}}</span>
+                </dd>
+                <dt><span>Total Amount</span></dt>
+                <dd>
+                    <span>{{command.totalAmount}}</span>
+                </dd>
+                <dt><span>Payment Date</span></dt>
+                <dd>
+                    <span>{{command.paymentDate}}</span>
+                </dd>
+                <dt><span>Client</span></dt>
+                <dd>
+                    <div *ngIf="command.client">
+                        <a [routerLink]="['/client', command.client?.id, 'view']">{{command.client?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/command', command.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

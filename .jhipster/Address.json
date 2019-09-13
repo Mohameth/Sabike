@@ -1,0 +1,43 @@
+{
+    "name": "Address",
+    "fields": [
+        {
+            "fieldName": "deliveryNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryStreet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryCity",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryPostalCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deliveryCountry",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "client",
+            "otherEntityRelationshipName": "address",
+            "relationshipName": "client",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190913082006",
+    "entityTableName": "address",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

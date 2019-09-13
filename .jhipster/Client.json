@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "cart",
+            "otherEntityRelationshipName": "client",
+            "relationshipName": "cart",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "command",
+            "otherEntityRelationshipName": "client",
+            "relationshipName": "order"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "address",
+            "otherEntityRelationshipName": "client",
+            "relationshipName": "address"
+        },
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": true,
+            "otherEntityRelationshipName": "client"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20190913082005",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "no",
+    "entityTableName": "client",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

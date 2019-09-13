@@ -1,0 +1,103 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-product-heading">Create or edit a Product</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                           formControlName="price"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_stock">Stock</label>
+                    <input type="number" class="form-control" name="stock" id="field_stock"
+                           formControlName="stock"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_picture">Picture</label>
+                    <input type="text" class="form-control" name="picture" id="field_picture"
+                           formControlName="picture"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_brand">Brand</label>
+                    <input type="text" class="form-control" name="brand" id="field_brand"
+                           formControlName="brand"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_type">Type</label>
+                    <select class="form-control" name="type" formControlName="type" id="field_type">
+                        <option value="BIKE">BIKE</option>
+                        <option value="PART">PART</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bikeCategory">Bike Category</label>
+                    <select class="form-control" name="bikeCategory" formControlName="bikeCategory" id="field_bikeCategory">
+                        <option value="MOUNTAIN">MOUNTAIN</option>
+                        <option value="ROAD">ROAD</option>
+                        <option value="EBIKE">EBIKE</option>
+                        <option value="BMX">BMX</option>
+                        <option value="TEST">TEST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bikeSize">Bike Size</label>
+                    <input type="text" class="form-control" name="bikeSize" id="field_bikeSize"
+                           formControlName="bikeSize"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bikeSeeds">Bike Seeds</label>
+                    <input type="number" class="form-control" name="bikeSeeds" id="field_bikeSeeds"
+                           formControlName="bikeSeeds"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_bikeColor">Bike Color</label>
+                    <input type="text" class="form-control" name="bikeColor" id="field_bikeColor"
+                           formControlName="bikeColor"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_partCategory">Part Category</label>
+                    <select class="form-control" name="partCategory" formControlName="partCategory" id="field_partCategory">
+                        <option value="TRANSMISSION">TRANSMISSION</option>
+                        <option value="DIRECTION">DIRECTION</option>
+                        <option value="WHEEL">WHEEL</option>
+                        <option value="FRAME">FRAME</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_partCategoryType">Part Category Type</label>
+                    <select class="form-control" name="partCategoryType" formControlName="partCategoryType" id="field_partCategoryType">
+                        <option value="HANDLEBAR">HANDLEBAR</option>
+                        <option value="STEM">STEM</option>
+                        <option value="CHAIN">CHAIN</option>
+                        <option value="PEDAL">PEDAL</option>
+                        <option value="TIRE">TIRE</option>
+                        <option value="RIM">RIM</option>
+                        <option value="TOPTUBE">TOPTUBE</option>
+                        <option value="DOWNTUBE">DOWNTUBE</option>
+                    </select>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
