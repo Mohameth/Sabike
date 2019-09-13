@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-card-article',
@@ -6,9 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./card-article.component.scss']
 })
 export class CardArticleComponent implements OnInit {
+  private data: any;
+  @Input() item: any;
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('WE ARE IN THE CARD!', this.item);
+  }
+
+  setData(dataArticle) {
+    this.data = dataArticle;
+  }
 
   onButtonSeeDetailsClick(articleId: number) {}
 }

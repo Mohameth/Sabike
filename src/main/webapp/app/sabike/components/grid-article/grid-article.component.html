@@ -4,51 +4,57 @@
 
 <!--  <mat-grid-tile *ngFor="let a of articles"> TODO -->
 <!--    <app-card-article [myArticle]="a"></app-card-article>TODO-->
-<mat-grid-list id="mygrid" cols="3" rowHeight="1:1">
+<!--<mat-grid-list id="mygrid" cols="3" rowHeight="1:1">-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <app-card-article></app-card-article>-->
+<!--    </mat-grid-tile>-->
+<!--</mat-grid-list>-->
+
+<mat-grid-list id="mygrid" cols="3" rowHeight="1:1" *ngFor="let item of listOfItems">
     <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <app-card-article></app-card-article>
+<!--        {{ card }}-->
+        <app-card-article [ngModel]=item ngDefaultControl></app-card-article>
     </mat-grid-tile>
 </mat-grid-list>
-
 
 
 <!--<mat-grid-list cols=3" rowHeight="1:1">-->
