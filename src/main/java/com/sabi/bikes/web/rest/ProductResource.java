@@ -9,7 +9,9 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -126,14 +128,9 @@ public class ProductResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 
-
-    @GetMapping("/products/")
-    public List<Product> findByCategoryContains(@Param("cat") String category) {
-        log.debug("========================================================================================================================");
-        log.debug("========================================================================================================================");
-        log.debug("========================================================================================================================");
-        log.debug("========================================================================================================================");
-        log.debug("REST request to get Products by category : {}", category);
-        return productRepository.getAllByBikeCategory(category);
+    @GetMapping("/products/bycategory/{category}")
+    public ResponseEntity<List<Product>> findProductByCategory(Pageable pageable, @PathVariable String category) {
+        List<Product> products = productRepository.getAllByBikeCategory(pageable, category);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }
