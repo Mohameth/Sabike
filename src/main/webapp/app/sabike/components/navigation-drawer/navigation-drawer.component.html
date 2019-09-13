@@ -1,0 +1,54 @@
+<div id="nav-root">
+    <p id="nav-left-root-label-category" style="padding-top: 16px;">Choix de catégorie</p>
+    <mat-tree id="nav-left-root" [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node
+            class="hoverable"
+            *matTreeNodeDef="let node" matTreeNodeToggle
+            matTreeNodePadding
+            matRipple (click)="onListClick(node.name)"
+            routerLink="/articles/{{node.name}}">
+            <button mat-icon-button></button>
+            <!--    <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">-->
+            <!--      {{ node.type === 'directions_bike' ? '' : 'folder' }}-->
+            <!--    </mat-icon>-->
+            {{node.name}}
+        </mat-tree-node>
+
+        <mat-tree-node
+            class="hoverable"
+            *matTreeNodeDef="let node; when: hasChild"
+            matTreeNodePadding
+            matRipple
+            (click)="onListClick(node.name)">
+            <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+            </button>
+            <!--    <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">-->
+            <!--      {{ node.type ==='file' ? 'description' : 'folder' }}-->
+            <!--    </mat-icon>-->
+            <!--    <button type="button"></button>-->
+            {{node.name}}
+        </mat-tree-node>
+    </mat-tree>
+
+
+    <mat-divider id="nav-left-root-divider"></mat-divider>
+    <div id="nav-left-root-label-filters" *ngIf="shouldHideFilters()">
+        <p>Filtres</p>
+        <form>
+            <div id="nav-left-root-filter-prices">
+                <mat-form-field class="nav-left-root-filter-price">
+                    <input matInput type="number" placeholder="Prix min">
+                </mat-form-field>
+                <mat-form-field class="nav-left-root-filter-price" style="margin-left: 16px;">
+                    <input matInput type="number" placeholder="Prix max">
+                </mat-form-field>
+                <button id="nav-left-root-filter-price-validate" mat-raised-button color="accent">Appliquer</button>
+            </div>
+            <mat-checkbox>En stock</mat-checkbox>
+        </form>
+    </div>
+</div>

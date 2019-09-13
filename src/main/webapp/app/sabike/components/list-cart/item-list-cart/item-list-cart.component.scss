@@ -1,0 +1,53 @@
+mat-card {
+  margin-bottom: 16px;
+}
+.item-list-cart-root {
+  height: 140px;
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  width: 600px;
+  //max-width: 700px;
+  //min-width: 420px;
+}
+
+.item-list-cart-left {
+  width: 25%;
+  max-width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-list-cart-middle-product {
+  margin-left: 16px;
+  width: 50%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.item-list-cart-middle-quantity {
+  width: 15%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.item-list-cart-right {
+  margin-left: 16px;
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-list-cart-img {
+  width: 100%;
+}
+
+#select-quantity {
+  width: 80px;
+}

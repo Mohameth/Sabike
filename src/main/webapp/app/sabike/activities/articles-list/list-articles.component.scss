@@ -1,0 +1,30 @@
+#articles-body {
+  height: 100%;
+}
+#article-grid-top {
+  display: flex;
+}
+#left {
+  width: 20%;
+  //align-self: start;
+}
+#right {
+  width: 40%;
+  //align-self: end;
+}
+#article-grid-top-placeholder {
+  width: 40%;
+}
+
+//#root {
+//  display: flex;
+//  height: 100%;
+//}
+//#left {
+//  width: 300px;
+//  margin-top: 16px;
+//}
+//#right {
+//  width: 100%;
+//  padding: 16px;
+//}

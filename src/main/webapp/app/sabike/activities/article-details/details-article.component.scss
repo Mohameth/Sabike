@@ -1,0 +1,46 @@
+#details-root {
+  margin-top: 50px;
+  display: flex;
+}
+
+#details-image-container {
+  width: 30%;
+}
+
+#details-descr-title {
+  display: inline-block;
+}
+
+#details-image {
+  width: 100%;
+}
+
+#details-right {
+  width: 70%;
+  margin-left: 16px;
+}
+
+#details-description-container {
+  display: flex;
+}
+
+#details-description {
+  width: 80%;
+}
+
+#details-buttons {
+  //width:20%;
+  //background: grey;
+}
+
+#details-bucket-button {
+  //background: aqua;
+}
+
+#details-select-quantity {
+  width: 80px;
+}
+
+#details-button-add-to-cart {
+  margin-left: 16px;
+}

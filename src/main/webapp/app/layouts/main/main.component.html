@@ -1,11 +1,20 @@
 <jhi-page-ribbon></jhi-page-ribbon>
-<div>
-    <router-outlet name="navbar"></router-outlet>
+<div [ngSwitch]="">
+    <router-outlet name="toolbar"></router-outlet>
 </div>
-<div class="container-fluid">
-    <div class="card jh-card">
-        <router-outlet></router-outlet>
-        <router-outlet name="popup"></router-outlet>
+
+<div id="main-root">
+    <!--    Left - Navigation / Filters-->
+    <div id="main-root-left" [class.mat-elevation-z4]="true">
+        <app-navigation-drawer></app-navigation-drawer>
     </div>
-    <jhi-footer></jhi-footer>
+    <!--  Content  -->
+    <div id="main-root-right">
+
+        <router-outlet></router-outlet>
+        <!--        <router-outlet name="popup"></router-outlet>-->
+    </div>
+
 </div>
+
+<jhi-footer></jhi-footer>
