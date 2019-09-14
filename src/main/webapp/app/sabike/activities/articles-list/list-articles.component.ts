@@ -30,7 +30,7 @@ export class ListArticlesComponent implements OnInit {
       this.productService
         .getBikes('ROAD') // TODO not hardcode
         .subscribe(message => {
-          console.log(message);
+          this.products = message.body;
         });
     } else {
       // this.productService.getPart(parameter);

@@ -11,9 +11,13 @@
 <!--      A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
 <!--      bred for hunting.-->
 <!--    </p>-->
-    <mat-card-title>{{data.title}}</mat-card-title>
-    <mat-card-subtitle>{{data.prix}} €</mat-card-subtitle>
-    <mat-card-subtitle>Stock : {{data.stock}}</mat-card-subtitle>
+    <mat-card-title>{{product.name}}</mat-card-title>
+    <mat-card-subtitle>{{product.price}} €</mat-card-subtitle>
+
+    <mat-card-subtitle *ngIf="product.stock > 0; else unavailable" class="available">En stock</mat-card-subtitle>
+    <ng-template #unavailable>
+        <mat-card-subtitle  class="unavailable">Non disponible</mat-card-subtitle>
+    </ng-template>
   </mat-card-content>
   <mat-card-actions align="end">
     <button mat-button
