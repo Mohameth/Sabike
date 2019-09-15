@@ -27,7 +27,7 @@ import { MatToolbarModule } from '@angular/material';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationDrawerComponent } from './sabike/components/navigation-drawer/navigation-drawer.component';
+import { NavigationDrawerComponent } from './sabike/components/navigationpanel/navigation-drawer.component';
 import { ListArticlesComponent } from 'app/sabike/activities/articles-list/list-articles.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';

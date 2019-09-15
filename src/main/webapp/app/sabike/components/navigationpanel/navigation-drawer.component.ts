@@ -25,7 +25,7 @@ export interface FlatTreeNode {
 }
 
 @Component({
-  selector: 'app-navigation-drawer',
+  selector: 'navigationPanel',
   templateUrl: './navigation-drawer.component.html',
   styleUrls: ['./navigation-drawer.component.scss']
 })

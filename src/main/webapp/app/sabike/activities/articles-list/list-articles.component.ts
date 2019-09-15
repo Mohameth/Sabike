@@ -31,6 +31,8 @@ export class ListArticlesComponent implements OnInit {
         .getBikes('ROAD') // TODO not hardcode
         .subscribe(message => {
           console.log(message);
+          this.products = message.body;
+          console.log(this.products);
         });
     } else {
       // this.productService.getPart(parameter);
@@ -47,5 +49,9 @@ export class ListArticlesComponent implements OnInit {
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  onButtonSeeDetailsClick(number: any) {
+    console.log('==== SHOULD show ', number);
   }
 }

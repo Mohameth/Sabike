@@ -1,40 +1,41 @@
 <!--<app-data-table></app-data-table>-->
 <div id="articles-body">
-  <mat-card-title>Vélos > VTT</mat-card-title>
+    <mat-card-title>Vélos > VTT</mat-card-title>
 
-  <div id="article-grid-top">
-<!--    <div>-->
-<!--      &lt;!&ndash;      <p>YOLO</p>&ndash;&gt;-->
+    <div id="article-grid-top">
+        <!--    <div>-->
+        <!--      &lt;!&ndash;      <p>YOLO</p>&ndash;&gt;-->
 
-<!--    </div>-->
-    <mat-form-field id="left">
-      <mat-label>Filtre (facultatif)</mat-label>
-      <mat-select [(value)]="selected">
-        <mat-option>None</mat-option>
-        <mat-option value="option1">Prix croissant</mat-option>
-        <mat-option value="option2">Prix décroissant</mat-option>
-        <mat-option value="option3">Autre filtre</mat-option>
-      </mat-select>
-    </mat-form-field>
+        <!--    </div>-->
+        <mat-form-field id="left">
+            <mat-label>Filtre (facultatif)</mat-label>
+            <mat-select [(value)]="selected">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Prix croissant</mat-option>
+                <mat-option value="option2">Prix décroissant</mat-option>
+                <mat-option value="option3">Autre filtre</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <span id="article-grid-top-placeholder"></span>
+        <span id="article-grid-top-placeholder"></span>
 
-<!--    <mat-paginator id="right"-->
-<!--                   #paginator-->
-<!--                   [length]=17-->
-<!--                   [pageIndex]="0"-->
-<!--                   [pageSize]="20"-->
-<!--                   [pageSizeOptions]="[20, 40, 60]">-->
-<!--    </mat-paginator>-->
+        <mat-paginator id="right"
+                       #paginator
+                       [length]=17
+                       [pageIndex]="0"
+                       [pageSize]="20"
+                       [pageSizeOptions]="[20, 40, 60]">
+        </mat-paginator>
 
-  </div>
+    </div>
 
-<!--  <app-grid-article></app-grid-article>-->
+    <jhi-grid-article>
+    </jhi-grid-article>
 
-<!--  <mat-paginator #paginator-->
-<!--                 [length]=17-->
-<!--                 [pageIndex]="0"-->
-<!--                 [pageSize]="20"-->
-<!--                 [pageSizeOptions]="[20, 40, 60]">-->
-<!--  </mat-paginator>-->
+    <mat-paginator #paginator
+                   [length]=17
+                   [pageIndex]="0"
+                   [pageSize]="20"
+                   [pageSizeOptions]="[20, 40, 60]">
+    </mat-paginator>
 </div>

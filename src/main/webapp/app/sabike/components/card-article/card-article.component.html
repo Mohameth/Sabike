@@ -1,27 +1,17 @@
 <mat-card class="example-card">
-<!--  <mat-card-header>-->
-<!--    <div mat-card-avatar class="example-header-image"></div>-->
-<!--    <mat-card-title>Shiba Inu</mat-card-title>-->
-<!--    <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
-<!--  </mat-card-header>-->
-  <img id="card-article-image" mat-card-image src="../../../../content/images/velo.jpg">
-  <mat-card-content>
-<!--    <p>-->
-<!--      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
-<!--      A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
-<!--      bred for hunting.-->
-<!--    </p>-->
-    <mat-card-title>{{data.title}}</mat-card-title>
-    <mat-card-subtitle>{{data.prix}} €</mat-card-subtitle>
-    <mat-card-subtitle>Stock : {{data.stock}}</mat-card-subtitle>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-button
-            (click)="onButtonSeeDetailsClick(123)"
-            routerLink="/articles/VTT/123"> <!-- TODO: fetch categ & title & convert space to "-" -->
-      <!-- TODO de manière dynamIqUE-->
-      VOIR
-    </button>
-    <button mat-button>AJOUTER</button>
-  </mat-card-actions>
+    <img id="card-article-image" mat-card-image src="../../../../content/images/velo.jpg">
+    <mat-card-content>
+        <mat-card-title>{{product.name}}</mat-card-title>
+        <mat-card-subtitle>{{product.price}} €</mat-card-subtitle>
+        <mat-card-subtitle>Stock : {{product.stock}}</mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-button
+                (click)="onButtonSeeDetailsClick(product.id)"
+                routerLink="/articles/VTT/{{product.id}}"> <!-- TODO: fetch categ & title & convert space to "-" -->
+            <!-- TODO de manière dynamIqUE-->
+            VOIR
+        </button>
+        <button mat-button (click)="testRouter()">AJOUTER</button>
+    </mat-card-actions>
 </mat-card>
