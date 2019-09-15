@@ -3,15 +3,18 @@
     <mat-card-content>
         <mat-card-title>{{product.name}}</mat-card-title>
         <mat-card-subtitle>{{product.price}} €</mat-card-subtitle>
-        <mat-card-subtitle>Stock : {{product.stock}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="product.stock > 0; else unavailable" class="available">En stock</mat-card-subtitle>
+        <ng-template #unavailable>
+            <mat-card-subtitle class="unavailable">Non disponible</mat-card-subtitle>
+        </ng-template>
     </mat-card-content>
     <mat-card-actions align="end">
         <button mat-button
-                (click)="onButtonSeeDetailsClick(product.id)"
-                routerLink="/articles/VTT/{{product.id}}"> <!-- TODO: fetch categ & title & convert space to "-" -->
+                (click)="onButtonSeeDetailsClick(123)"
+                routerLink="/articles/VTT/123"> <!-- TODO: fetch categ & title & convert space to "-" -->
             <!-- TODO de manière dynamIqUE-->
             VOIR
         </button>
-        <button mat-button (click)="testRouter()">AJOUTER</button>
+        <button mat-button>AJOUTER</button>
     </mat-card-actions>
 </mat-card>

@@ -1,8 +1,5 @@
 <mat-grid-list id="mygrid" cols="3" rowHeight="1:1">
-    <mat-grid-tile *ngFor="let item of products">
-        <!--    <mat-grid-tile *ngFor="let product in products">-->
-        <jhi-card-article [product]="item"></jhi-card-article>
-        <!--    <jhi-card-article *ngFor="let data in products"></jhi-card-article>-->
-        <!--        <jhi-card-article [ngModel]=item ngDefaultControl></jhi-card-article>-->
+    <mat-grid-tile *ngFor="let product of products">
+        <app-card-article [product]=product ngDefaultControl></app-card-article>
     </mat-grid-tile>
 </mat-grid-list>

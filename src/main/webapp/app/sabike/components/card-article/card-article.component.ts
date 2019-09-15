@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IProduct, Product } from 'app/shared/model/product.model';
-import { Router } from '@angular/router';
+import { IProduct } from 'app/shared/model/product.model';
 
 @Component({
   selector: 'jhi-card-article',
@@ -9,20 +8,9 @@ import { Router } from '@angular/router';
 })
 export class CardArticleComponent implements OnInit {
   @Input() product: IProduct;
-
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit() {}
 
-  // setData(dataArticle) {
-  //   this.data = dataArticle;
-  // }
-
   onButtonSeeDetailsClick(articleId: number) {}
-
-  testRouter() {
-    console.log(this.router.url);
-    console.log(this.router.url.length);
-    console.log(this.router.url.split('/').length);
-  }
 }
