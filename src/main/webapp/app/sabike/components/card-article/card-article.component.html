@@ -9,10 +9,14 @@
         </ng-template>
     </mat-card-content>
     <mat-card-actions align="end">
-        <button mat-button
-                (click)="onButtonSeeDetailsClick(123)"
-                routerLink="/articles/VTT/123"> <!-- TODO: fetch categ & title & convert space to "-" -->
-            <!-- TODO de manière dynamIqUE-->
+        <button *ngIf="product.type === 'BIKE'"
+                mat-button
+                routerLink="/articles/{{product.bikeCategory}}/{{product.id}}">
+            VOIR
+        </button>
+        <button *ngIf="product.type === 'PART'"
+                mat-button
+                routerLink="/articles/{{product.partCategoryType}}/{{product.id}}">
             VOIR
         </button>
         <button mat-button>AJOUTER</button>

@@ -25,7 +25,7 @@ export interface FlatTreeNode {
 }
 
 @Component({
-  selector: 'navigationPanel',
+  selector: 'jhi-navigation-panel',
   templateUrl: './navigation-drawer.component.html',
   styleUrls: ['./navigation-drawer.component.scss']
 })

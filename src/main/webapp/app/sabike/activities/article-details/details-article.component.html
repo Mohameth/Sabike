@@ -1,39 +1,47 @@
 <mat-card-title>Vélos > VTT > 123</mat-card-title>
 
 <div id="details-root">
-  <div id="details-image-container">
-    <img id="details-image" src="../../../../content/images/velo.jpg">
-  </div>
-
-  <div id="details-right">
-    <mat-card-title>123</mat-card-title>
-    <br>
-    <span id="details-descr-title"><h4 style="display: inline-block"> 500€ </h4> - <h4 style="display: inline-block"> En stock </h4></span>
-    <div id="details-description-container">
-      <div id="details-description">
-        <p>Description - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis sagittis leo, sit amet
-          pulvinar ipsum. Donec rhoncus nibh nisl, in varius risus blandit elementum. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Nullam sollicitudin urna metus, vel scelerisque ligula pharetra id. Morbi non
-          aliquam ligula, nec consectetur turpis. Morbi non eleifend est, et vestibulum arcu. Suspendisse pellentesque
-          ex quis quam aliquam, eu hendrerit elit tincidunt. </p>
-      </div>
+    <div id="details-image-container">
+        <img id="details-image" src="../../../../content/images/velo.jpg">
     </div>
-    <div id="details-buttons">
-      <mat-form-field id="details-select-quantity">
-        <mat-label>Quantité</mat-label>
-        <mat-select [(value)]="selectedQuantity">
-          <mat-option value="1">1</mat-option>
-          <mat-option value="2">2</mat-option>
-          <mat-option value="3">3</mat-option>
-          <mat-option value="4">4</mat-option>
-          <mat-option value="5">5</mat-option>
-        </mat-select>
-      </mat-form-field>
 
-      <button id="details-button-add-to-cart" mat-raised-button color="accent">
-        <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">shopping_basket</mat-icon>
-        AJOUTER
-      </button>
+    <div id="details-right">
+        <mat-card-title>{{product.name}}</mat-card-title>
+        <br>
+        <span id="details-descr-title">
+            <h4 style="display: inline-block"> {{product.price}}$ - En stock</h4>
+        </span>
+        <div id="details-description-container">
+            <div id="details-description">
+                <p>
+                    Description - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis sagittis leo,
+                    sit amet
+                    pulvinar ipsum. Donec rhoncus nibh nisl, in varius risus blandit elementum. Lorem ipsum dolor sit
+                    amet,
+                    consectetur adipiscing elit. Nullam sollicitudin urna metus, vel scelerisque ligula pharetra id.
+                    Morbi non
+                    aliquam ligula, nec consectetur turpis. Morbi non eleifend est, et vestibulum arcu. Suspendisse
+                    pellentesque
+                    ex quis quam aliquam, eu hendrerit elit tincidunt.
+                </p>
+            </div>
+        </div>
+        <div id="details-buttons">
+            <mat-form-field id="details-select-quantity">
+                <mat-label>Quantité</mat-label>
+                <mat-select [(value)]="selectedQuantity">
+                    <mat-option value="1">1</mat-option>
+                    <mat-option value="2">2</mat-option>
+                    <mat-option value="3">3</mat-option>
+                    <mat-option value="4">4</mat-option>
+                    <mat-option value="5">5</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button id="details-button-add-to-cart" mat-raised-button color="accent">
+                <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">shopping_basket</mat-icon>
+                AJOUTER
+            </button>
+        </div>
     </div>
-  </div>
 </div>
