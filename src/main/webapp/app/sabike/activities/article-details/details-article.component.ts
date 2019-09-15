@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationServiceService } from 'app/navigation/navigation-service.service';
 import { ProductService } from 'app/entities/product';
-import { IProduct } from 'app/shared/model/product.model';
+import { IProduct, Product } from 'app/shared/model/product.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class DetailsArticleComponent implements OnInit {
   selectedQuantity = '1';
 
-  @Input() private product: IProduct;
+  @Input() private product: Product;
 
   constructor(private navigationServiceService: NavigationServiceService, private productService: ProductService, private router: Router) {}
 

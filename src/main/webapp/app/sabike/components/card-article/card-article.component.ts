@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IProduct } from 'app/shared/model/product.model';
-import { ProductService } from 'app/entities/product';
-import { Router } from '@angular/router';
+import { IProduct, Product } from 'app/shared/model/product.model';
 
 @Component({
   selector: 'jhi-card-article',
@@ -9,18 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./card-article.component.scss']
 })
 export class CardArticleComponent implements OnInit {
-  @Input() product: IProduct;
+  @Input() product: Product;
 
-  constructor(private service: ProductService, private router: Router) {}
+  constructor() {}
 
-  ngOnInit() {
-    console.log('++++++++++++++++++++');
-    console.log('++++++++++++++++++++');
-    console.log('++++++++++++++++++++');
-    console.log(this.product);
-  }
-
-  onButtonSeeDetailsClick() {
-    this.service.requestDetails(this.product);
-  }
+  ngOnInit() {}
 }

@@ -1,8 +1,8 @@
 <div id="articles-body">
     <mat-card-title>Vélos > VTT</mat-card-title>
 
-    <div id="article-grid-top">
-        <mat-form-field id="left">
+    <div id="article-grid-filters">
+        <mat-form-field>
             <mat-label>Filtre (facultatif)</mat-label>
             <mat-select [(value)]="selected">
                 <mat-option>None</mat-option>
@@ -11,21 +11,24 @@
                 <mat-option value="option3">Autre filtre</mat-option>
             </mat-select>
         </mat-form-field>
-        <span id="article-grid-top-placeholder"></span>
+<!--        <span id="article-grid-top-placeholder"></span>-->
     </div>
 
-    <mat-paginator id="right"
-                   #paginator
-                   [length]=17
-                   [pageIndex]="0"
-                   [pageSize]="20"
-                   [pageSizeOptions]="[20, 40, 60]">
-    </mat-paginator>
-    <jhi-grid-article [products]="products"></jhi-grid-article>
-    <mat-paginator #paginator
-                   [length]=17
-                   [pageIndex]="0"
-                   [pageSize]="20"
-                   [pageSizeOptions]="[20, 40, 60]">
-    </mat-paginator>
+    <div id="article-grid-wrapper">
+        <mat-paginator class="article-grid-paginator-top"
+                       #paginator
+                       [length]=17
+                       [pageIndex]="0"
+                       [pageSize]="20"
+                       [pageSizeOptions]="[20, 40, 60]">
+        </mat-paginator>
+        <jhi-grid-article class="block-end justify-start" [products]="products"></jhi-grid-article>
+        <mat-paginator class="article-grid-paginator-bottom"
+                       #paginator
+                       [length]=17
+                       [pageIndex]="0"
+                       [pageSize]="20"
+                       [pageSizeOptions]="[20, 40, 60]">
+        </mat-paginator>
+    </div>
 </div>
