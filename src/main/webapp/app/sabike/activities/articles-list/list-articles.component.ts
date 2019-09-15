@@ -25,8 +25,9 @@ export class ListArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const parameter = this.router.url.split('/')[2];
-    if (parameter === 'VTT' || parameter === 'Route') {
+    const parameter = this.router.url.split('/')[2].toLowerCase();
+    console.log('+++++++++++++++++++++ ', parameter);
+    if (parameter === 'mountain' || parameter === 'road' || parameter === 'bmx' || parameter === 'ebike' || parameter === 'city') {
       this.productService
         .getBikes('ROAD') // TODO not hardcode
         .subscribe(message => {

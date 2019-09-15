@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { files } from './example-data';
+import { sabike_paths } from './navigation-nodes';
 import { NavigationServiceService } from 'app/navigation/navigation-service.service';
 import { Router } from '@angular/router';
 
@@ -26,10 +26,10 @@ export interface FlatTreeNode {
 
 @Component({
   selector: 'jhi-navigation-panel',
-  templateUrl: './navigation-drawer.component.html',
-  styleUrls: ['./navigation-drawer.component.scss']
+  templateUrl: './navigation-panel.component.html',
+  styleUrls: ['./navigation-panel.component.scss']
 })
-export class NavigationDrawerComponent {
+export class NavigationPanelComponent {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -44,7 +44,7 @@ export class NavigationDrawerComponent {
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.dataSource.data = files;
+    this.dataSource.data = sabike_paths;
 
     this.navigationService.listenNavigation().subscribe(message => {
       // console.log('recu le message ', message);
@@ -54,8 +54,6 @@ export class NavigationDrawerComponent {
       this.treeControl.dataNodes.forEach(cb => {
         console.log(cb);
       });
-      this.treeControl.collapseAll();
-
       // TODO use the message diretly to find the good one
       if (message === 'velos') {
         this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
@@ -105,9 +103,7 @@ export class NavigationDrawerComponent {
   }
 
   onListClick(item) {
-    // console.log(item);
-    if (item === 'VTT') {
-    }
+    this.treeControl.collapseAll();
   }
 
   /**
