@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -124,5 +126,23 @@ public class ProductResource {
         log.debug("REST request to delete Product : {}", id);
         productRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/products/search/{name}")
+    public ResponseEntity<List<Product>> findProductByName(Pageable pageable, @PathVariable String name) {
+        List<Product> products = productRepository.getProductsByName(pageable, name);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> findAllProducts(Pageable pageable) {
+        List<Product> products = productRepository.getMyProducts(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/searchLike/{name}")
+    public ResponseEntity<List<Product>> findProductsByName(Pageable pageable, @PathVariable String name) {
+        List<Product> products = productRepository.searchByNameLike(pageable, name);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }
