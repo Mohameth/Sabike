@@ -3,7 +3,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { sabike_paths } from './navigation-nodes';
-import { NavigationServiceService } from 'app/navigation/navigation-service.service';
+import { NavigationService } from 'app/sabike/services/navigation-service';
 import { Router } from '@angular/router';
 
 /** File node data with possible child nodes. */
@@ -39,7 +39,7 @@ export class NavigationPanelComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationServiceService, private router: Router) {
+  constructor(private navigationService: NavigationService, private router: Router) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);

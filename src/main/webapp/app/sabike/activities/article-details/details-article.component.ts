@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavigationServiceService } from 'app/navigation/navigation-service.service';
+import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
 import { IProduct, Product } from 'app/shared/model/product.model';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ export class DetailsArticleComponent implements OnInit {
 
   @Input() private product: Product;
 
-  constructor(private navigationServiceService: NavigationServiceService, private productService: ProductService, private router: Router) {}
+  constructor(private navigationServiceService: NavigationService, private productService: ProductService, private router: Router) {}
 
   ngOnInit() {
     this.navigationServiceService.removeFilters();
