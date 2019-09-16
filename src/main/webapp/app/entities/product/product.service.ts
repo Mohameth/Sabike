@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IProduct } from 'app/shared/model/product.model';
+import { ICart } from 'app/shared/model/cart.model';
 
 type EntityResponseType = HttpResponse<IProduct>;
 type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -54,7 +55,7 @@ export class ProductService {
   requestDetailsListener(): Observable<IProduct> {
     return this.currentProduct.asObservable();
   }
-  
+
   getProductsName(name: string): Observable<HttpResponse<IProduct[]>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/search/${name}`, { observe: 'response' });
   }
@@ -65,4 +66,10 @@ export class ProductService {
 
   getProductsNameLike(name: string): Observable<HttpResponse<IProduct[]>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/searchLike/${name}`, { observe: 'response' });
+  }
+
+  // SABIKE
+  reserveQuantityProduct(productToUpdate: IProduct): Observable<EntityResponseType> {
+    return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
+  }
 }

@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { ICart } from 'app/shared/model/cart.model';
+import { ProductService } from 'app/entities/product';
+import { IProduct } from 'app/shared/model/product.model';
 
 type EntityResponseType = HttpResponse<ICart>;
 type EntityArrayResponseType = HttpResponse<ICart[]>;
@@ -16,7 +18,7 @@ type EntityArrayResponseType = HttpResponse<ICart[]>;
 export class CartService {
   public resourceUrl = SERVER_API_URL + 'api/carts';
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, private productService: ProductService) {}
 
   create(cart: ICart): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(cart);
@@ -71,4 +73,6 @@ export class CartService {
     }
     return res;
   }
+
+  // SABIKE
 }

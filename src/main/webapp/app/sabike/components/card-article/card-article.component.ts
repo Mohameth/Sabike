@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IProduct, Product } from 'app/shared/model/product.model';
+import { CartService } from 'app/entities/cart';
+import { ProductService } from 'app/entities/product';
 
 @Component({
   selector: 'jhi-card-article',
@@ -9,7 +11,27 @@ import { IProduct, Product } from 'app/shared/model/product.model';
 export class CardArticleComponent implements OnInit {
   @Input() product: Product;
 
-  constructor() {}
+  private i_product: IProduct;
+
+  constructor(private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit() {}
+
+  addToCart(productId: number, quantity: number) {
+    this.productService.find(productId).subscribe(message => {
+      this.i_product = message.body;
+      // now we can decrease
+      if (this.i_product.stock < quantity) {
+        // NOpe
+        console.log('++++++ NOPE ++++++');
+      } else {
+        console.log('++++++ WILL DECREASE ++++++');
+        this.i_product.stock = this.i_product.stock - quantity;
+        this.productService.reserveQuantityProduct(this.i_product).subscribe(response => {
+          console.log('++++++ DECREASED ++++++');
+          console.log(response);
+        });
+      }
+    });
+  }
 }
