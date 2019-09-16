@@ -1,21 +1,48 @@
 <div id="home-root">
     <div id="home-info">
-        <div class="home-row" id="home-description">
-            <div id="home-description-left">
-                <img class="images" id="image-description" mat-card-image src="../../content/images/bike-home.jpg">
-            </div>
-            <div id="home-description-right">
-                <h1>Sabike - <strong>LE</strong> site de e-commerce de vélo et de pièces</h1>
-                <p>Choisissez le vélo idéal parmi notre grande sélection</p>
-            </div>
+<!--        <div class="home-row" id="home-description">-->
+<!--            <div id="home-description-left">-->
+<!--                <img class="images" id="image-description" mat-card-image src="../../content/images/bike-home.jpg">-->
+<!--            </div>-->
+<!--            <div id="home-description-right">-->
+<!--                <h1>Sabike - <strong>LE</strong> site de e-commerce de vélo et de pièces</h1>-->
+<!--                <p>Choisissez le vélo idéal parmi notre grande sélection</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="home-row" id="home-advantages">-->
+<!--            <div id="home-advantages-left">-->
+<!--                <p>Réparez et assembler des vélos sans plus attendre en trouvant la pièce qu'il vous faut</p>-->
+<!--                <p>Fiable et sécurisé, Sabike s'assure de votre satisfaction</p>-->
+<!--            </div>-->
+<!--            <div id="home-advantages-right">-->
+<!--                <img class="images" id="image-advantages" mat-card-image src="../../content/images/bike2-home.jpg">-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div id="title-container">
+            <h1>You are looking for a bike or parts of a bike? SABIKE is here for you.</h1>
         </div>
-        <div class="home-row" id="home-advantages">
-            <div id="home-advantages-left">
-                <p>Réparez et assembler des vélos sans plus attendre en trouvant la pièce qu'il vous faut</p>
-                <p>Fiable et sécurisé, Sabike s'assure de votre satisfaction</p>
+
+        <div id="home-category-row">
+            <div id="velos" class="home-category">
+                <mat-card class="card">
+                    <mat-card-content  routerLink = "path">
+                        <img class="images" id="home-bike-image" mat-card-image src="../../content/images/bike3-home.jpg">
+                        <div class="home-category-overlay">
+                            <h6 class="text">Our bikes</h6>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-            <div id="home-advantages-right">
-                <img class="images" id="image-advantages" mat-card-image src="../../content/images/bike2-home.jpg">
+            <div id="pieces" class="home-category">
+                <mat-card class="card">
+                    <mat-card-content  routerLink = "path">
+                        <img class="images" id="home-piece-image" mat-card-image src="../../content/images/part-home.jpg">
+                        <div class="home-category-overlay">
+                            <h6 class="text">Bike parts</h6>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </div>
 

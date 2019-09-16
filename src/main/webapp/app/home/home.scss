@@ -4,26 +4,34 @@
   width: 100%;
 }
 
+#title-container {
+  display: flex;
+  justify-content: center;
+}
+#title-container h1 {
+  font-family: Velino, serif;
+  font-size: 3em;
+  font-style: italic;
+  text-align: center;
+  width: 80%;
+  margin-bottom: 1em;
+}
+
 #home-info {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.home-row {
+#home-category-row {
   display: flex;
-  max-height: 115px;
+  justify-content: space-evenly;
+  margin-bottom: 50px;
 }
 
-#home-description {
-}
-
-#home-description-left {
-  width: 30%;
-}
-
-#home-description-right {
-  width: 70%;
+.home-category {
+  width: 40%;
+  padding: 1em;
 }
 
 #home-advantages {
@@ -38,7 +46,44 @@
 }
 
 .images {
-  max-height: 100%;
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.card:hover .home-category-overlay {
+  opacity: 0.6;
+}
+
+.home-category-overlay {
+}
+
+.text {
+  color: white;
+  top: 40%;
+  position: relative;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.home-category-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: black;
+  text-align: center;
+}
+
+.home-category-details:hover {
+  display: block;
 }
 
 #home-icons {
