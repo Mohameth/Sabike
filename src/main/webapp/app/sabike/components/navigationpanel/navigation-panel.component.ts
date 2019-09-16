@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { files } from './example-data';
-import { NavigationServiceService } from 'app/navigation/navigation-service.service';
+import { sabike_paths } from './navigation-nodes';
+import { NavigationService } from 'app/sabike/services/navigation-service';
 import { Router } from '@angular/router';
 
 /** File node data with possible child nodes. */
@@ -25,11 +25,11 @@ export interface FlatTreeNode {
 }
 
 @Component({
-  selector: 'app-navigation-drawer',
-  templateUrl: './navigation-drawer.component.html',
-  styleUrls: ['./navigation-drawer.component.scss']
+  selector: 'jhi-navigation-panel',
+  templateUrl: './navigation-panel.component.html',
+  styleUrls: ['./navigation-panel.component.scss']
 })
-export class NavigationDrawerComponent {
+export class NavigationPanelComponent {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -39,30 +39,28 @@ export class NavigationDrawerComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationServiceService, private router: Router) {
+  constructor(private navigationService: NavigationService, private router: Router) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.dataSource.data = files;
+    this.dataSource.data = sabike_paths;
 
-    this.navigationService.listenNavigation().subscribe(message => {
-      // console.log('recu le message ', message);
-      // console.log(this.dataSource.data[0]);
-      console.log(this.treeControl.dataNodes);
-      // this.treeControl.expandAll();
-      this.treeControl.dataNodes.forEach(cb => {
-        console.log(cb);
-      });
-      this.treeControl.collapseAll();
-
-      // TODO use the message diretly to find the good one
-      if (message === 'velos') {
-        this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
-      } else {
-        this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
-      }
-    });
+    // this.navigationService.listenNavigation().subscribe(message => {
+    //   // console.log('recu le message ', message);
+    //   // console.log(this.dataSource.data[0]);
+    //   // console.log(this.treeControl.dataNodes);
+    //   // this.treeControl.expandAll();
+    //   this.treeControl.dataNodes.forEach(cb => {
+    //     console.log(cb);
+    //   });
+    //   // TODO use the message diretly to find the good one
+    //   if (message === 'velos') {
+    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
+    //   } else {
+    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
+    //   }
+    // });
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
@@ -105,9 +103,7 @@ export class NavigationDrawerComponent {
   }
 
   onListClick(item) {
-    // console.log(item);
-    if (item === 'VTT') {
-    }
+    // this.treeControl.collapseAll();
   }
 
   /**
