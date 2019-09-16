@@ -1,23 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
-import { filter, map } from 'rxjs/operators';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IClient } from 'app/shared/model/client.model';
 import { IProduct } from 'app/shared/model/product.model';
 import { JhiAlertService } from 'ng-jhipster';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
-import {
-  ActivationEnd,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  ResolveEnd,
-  ResolveStart,
-  Router,
-  RoutesRecognized
-} from '@angular/router';
+import { NavigationError, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'jhi-articles',
@@ -47,9 +35,9 @@ export class ListArticlesComponent implements OnInit {
         });
       }
     });
-    
+
     //     this.service.addFilters(); TODO Show filters if not shown!!
-    
+
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
         // Show loading indicator
