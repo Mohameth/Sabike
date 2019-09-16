@@ -4,7 +4,7 @@
     <div id="toolbar-search-area">
         <jhi-search></jhi-search>
     </div>
-  
+
     <span class="example-spacer"></span>
 
     <!-- Entities -->
@@ -168,6 +168,10 @@
             mat-icon-button
             routerLink="mycart"
             routerLinkActive="active">
-        <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon">shopping_cart</mat-icon>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon"
+                  matBadge="{{numberOfItems}}"
+                  matBadgeColor="warn">
+            shopping_cart
+        </mat-icon>
     </button>
 </mat-toolbar>

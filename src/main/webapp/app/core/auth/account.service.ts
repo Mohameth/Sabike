@@ -8,7 +8,7 @@ import { JhiTrackerService } from '../tracker/tracker.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private userIdentity: any;
+  private _userIdentity: any;
   private authenticated = false;
   private authenticationState = new Subject<any>();
 
@@ -23,18 +23,18 @@ export class AccountService {
   }
 
   authenticate(identity) {
-    this.userIdentity = identity;
+    this._userIdentity = identity;
     this.authenticated = identity !== null;
-    this.authenticationState.next(this.userIdentity);
+    this.authenticationState.next(this._userIdentity);
   }
 
   hasAnyAuthority(authorities: string[]): boolean {
-    if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
+    if (!this.authenticated || !this._userIdentity || !this._userIdentity.authorities) {
       return false;
     }
 
     for (let i = 0; i < authorities.length; i++) {
-      if (this.userIdentity.authorities.includes(authorities[i])) {
+      if (this._userIdentity.authorities.includes(authorities[i])) {
         return true;
       }
     }
@@ -59,13 +59,13 @@ export class AccountService {
 
   identity(force?: boolean): Promise<Account> {
     if (force) {
-      this.userIdentity = undefined;
+      this._userIdentity = undefined;
     }
 
     // check and see if we have retrieved the userIdentity data from the server.
     // if we have, reuse it by immediately resolving
-    if (this.userIdentity) {
-      return Promise.resolve(this.userIdentity);
+    if (this._userIdentity) {
+      return Promise.resolve(this._userIdentity);
     }
 
     // retrieve the userIdentity data from the server, update the identity object, and then resolve.
@@ -74,24 +74,24 @@ export class AccountService {
       .then(response => {
         const account: Account = response.body;
         if (account) {
-          this.userIdentity = account;
+          this._userIdentity = account;
           this.authenticated = true;
           this.trackerService.connect();
-          console.log('============>', this.userIdentity);
+          console.log('============>', this._userIdentity);
         } else {
-          this.userIdentity = null;
+          this._userIdentity = null;
           this.authenticated = false;
         }
-        this.authenticationState.next(this.userIdentity);
-        return this.userIdentity;
+        this.authenticationState.next(this._userIdentity);
+        return this._userIdentity;
       })
       .catch(err => {
         if (this.trackerService.stompClient && this.trackerService.stompClient.connected) {
           this.trackerService.disconnect();
         }
-        this.userIdentity = null;
+        this._userIdentity = null;
         this.authenticated = false;
-        this.authenticationState.next(this.userIdentity);
+        this.authenticationState.next(this._userIdentity);
         return null;
       });
   }
@@ -101,7 +101,7 @@ export class AccountService {
   }
 
   isIdentityResolved(): boolean {
-    return this.userIdentity !== undefined;
+    return this._userIdentity !== undefined;
   }
 
   getAuthenticationState(): Observable<any> {
@@ -109,6 +109,15 @@ export class AccountService {
   }
 
   getImageUrl(): string {
-    return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
+    return this.isIdentityResolved() ? this._userIdentity.imageUrl : null;
   }
+
+  // SABIKE
+  get userIdentityId(): number {
+    return this._userIdentity.id;
+  }
+
+  // set userIdentity(value: any) {
+  //   this._userIdentity = value;
+  // }
 }

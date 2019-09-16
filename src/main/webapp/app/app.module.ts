@@ -53,6 +53,7 @@ import { DetailsArticleComponent } from 'app/sabike/activities/article-details/d
 import { CartComponent } from './sabike/activities/cart/cart.component';
 import { ListCartComponent } from './sabike/components/list-cart/list-cart.component';
 import { ItemListCartComponent } from './sabike/components/list-cart/item-list-cart/item-list-cart.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { ItemListCartComponent } from './sabike/components/list-cart/item-list-c
     MatCheckboxModule,
     MatMenuModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatBadgeModule
   ],
   declarations: [
     JhiMainComponent,

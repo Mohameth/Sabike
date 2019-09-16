@@ -38,7 +38,11 @@
                 </mat-select>
             </mat-form-field>
 
-            <button id="details-button-add-to-cart" mat-raised-button color="accent">
+            <button
+                id="details-button-add-to-cart"
+                mat-raised-button
+                color="accent"
+                (click)="addToCart(product.id, selectedQuantity)">
                 <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">shopping_basket</mat-icon>
                 AJOUTER
             </button>

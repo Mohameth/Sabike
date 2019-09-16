@@ -26,4 +26,6 @@ export class DetailsArticleComponent implements OnInit {
       this.product = message.body;
     });
   }
+
+  addToCart(productId: number, selectedQuantity: string) {}
 }
