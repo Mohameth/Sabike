@@ -54,4 +54,15 @@ export class ProductService {
   requestDetailsListener(): Observable<IProduct> {
     return this.currentProduct.asObservable();
   }
+  
+  getProductsName(name: string): Observable<HttpResponse<IProduct[]>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/search/${name}`, { observe: 'response' });
+  }
+
+  getMyProducts(): Observable<HttpResponse<IProduct[]>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/search`, { observe: 'response' });
+  }
+
+  getProductsNameLike(name: string): Observable<HttpResponse<IProduct[]>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/searchLike/${name}`, { observe: 'response' });
 }

@@ -6,6 +6,8 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IClient } from 'app/shared/model/client.model';
 import { IProduct } from 'app/shared/model/product.model';
 import { JhiAlertService } from 'ng-jhipster';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { CommunicationService } from 'app/sabike/services/communication.service';
 import {
   ActivationEnd,
   NavigationEnd,
@@ -27,13 +29,27 @@ export class ListArticlesComponent implements OnInit {
   products: IProduct[];
 
   constructor(
-    private navigationService: NavigationService,
     private productService: ProductService,
     protected jhiAlertService: JhiAlertService,
+    private communication: CommunicationService,
+    private navigationService: NavigationService,
     private router: Router
   ) {}
 
   ngOnInit() {
+    this.communication.getSearchedValue().subscribe(msg => {
+      const parameter = this.router.url.split('/')[2];
+      if (this.router.url.split('/')[1] === 'search') {
+        this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
+          this.products = message.body;
+          console.log('msg value of : ', msg.valueOf());
+          console.log('IN LIST message : ', message);
+        });
+      }
+    });
+    
+    //     this.service.addFilters(); TODO Show filters if not shown!!
+    
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
         // Show loading indicator
