@@ -35,8 +35,8 @@ describe('Service Tests', () => {
         'AAAAAAA',
         0,
         'AAAAAAA',
-        PartCategory.TRANSMISSION,
-        PartCategoryType.HANDLEBAR
+        PartCategory.FRAMES_FORKS,
+        PartCategoryType.FRAMES
       );
     });
 

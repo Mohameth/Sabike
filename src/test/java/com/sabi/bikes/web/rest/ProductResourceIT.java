@@ -70,11 +70,11 @@ public class ProductResourceIT {
     private static final String DEFAULT_BIKE_COLOR = "AAAAAAAAAA";
     private static final String UPDATED_BIKE_COLOR = "BBBBBBBBBB";
 
-    private static final PartCategory DEFAULT_PART_CATEGORY = PartCategory.TRANSMISSION;
-    private static final PartCategory UPDATED_PART_CATEGORY = PartCategory.DIRECTION;
+    private static final PartCategory DEFAULT_PART_CATEGORY = PartCategory.FRAMES_FORKS;
+    private static final PartCategory UPDATED_PART_CATEGORY = PartCategory.DRIVETRAIN;
 
-    private static final PartCategoryType DEFAULT_PART_CATEGORY_TYPE = PartCategoryType.HANDLEBAR;
-    private static final PartCategoryType UPDATED_PART_CATEGORY_TYPE = PartCategoryType.STEM;
+    private static final PartCategoryType DEFAULT_PART_CATEGORY_TYPE = PartCategoryType.FORKS;
+    private static final PartCategoryType UPDATED_PART_CATEGORY_TYPE = PartCategoryType.SADDLE;
 
     @Autowired
     private ProductRepository productRepository;
@@ -233,7 +233,7 @@ public class ProductResourceIT {
             .andExpect(jsonPath("$.[*].partCategory").value(hasItem(DEFAULT_PART_CATEGORY.toString())))
             .andExpect(jsonPath("$.[*].partCategoryType").value(hasItem(DEFAULT_PART_CATEGORY_TYPE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getProduct() throws Exception {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<IProduct[]>;
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   public resourceUrl = SERVER_API_URL + 'api/products';
+  private currentProduct = new Subject<IProduct>();
 
   constructor(protected http: HttpClient) {}
 
@@ -36,6 +37,24 @@ export class ProductService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  // SABIKE
+
+  getBikes(category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}`, { observe: 'response' });
+  }
+
+  // Details handler
+  requestDetails(product: IProduct) {
+    console.log('CHANGIN PRODUCT ', this.currentProduct);
+    console.log('with  ', product);
+    this.currentProduct.next(product);
+    console.log('to ', this.currentProduct);
+  }
+
+  requestDetailsListener(): Observable<IProduct> {
+    return this.currentProduct.asObservable();
+  }
+  
   getProductsName(name: string): Observable<HttpResponse<IProduct[]>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/search/${name}`, { observe: 'response' });
   }
@@ -46,5 +65,4 @@ export class ProductService {
 
   getProductsNameLike(name: string): Observable<HttpResponse<IProduct[]>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/searchLike/${name}`, { observe: 'response' });
-  }
 }

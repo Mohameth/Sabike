@@ -1,23 +1,10 @@
 <mat-toolbar color="primary" [class.mat-elevation-z8]="true">
-    <!--    <button-->
-    <!--        type="button"-->
-    <!--        aria-label="Toggle sidenav"-->
-    <!--        mat-icon-button>-->
-    <!--        &lt;!&ndash;-->
-    <!--    (click)="drawer.toggle()"-->
-    <!--    *ngIf="isHandset$ | async"-->
-    <!--    &ndash;&gt;-->
-    <!--        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>-->
-    <!--    </button>-->
-    <button mat-button routerLink="">
-        SABIKE
-    </button>
-    <!--    <span id="toolbar-main-title"></span>-->
-    <!--  <button mat-button (click)="onButtonNavigationClick('velos')">VÉLOS</button>-->
-    <!--  <button mat-button (click)="onButtonNavigationClick('pieces')">PIÈCES</button>-->
+    <span id="toolbar-main-title" routerLink="/">SABIKE</span>
+
     <div id="toolbar-search-area">
         <jhi-search></jhi-search>
     </div>
+  
     <span class="example-spacer"></span>
 
     <!-- Entities -->
@@ -140,8 +127,8 @@
         <mat-icon class="example-icon" aria-hidden="false" aria-label="Account icon">account_circle</mat-icon>
     </button>
     <mat-menu
-      #menuAccount="matMenu"
-      [ngSwitch]="isAuthenticated()">
+        #menuAccount="matMenu"
+        [ngSwitch]="isAuthenticated()">
         <button
             mat-menu-item
             (click)="openConnectDialog()"

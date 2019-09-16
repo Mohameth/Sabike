@@ -3,21 +3,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 
-import { NavigationDrawerComponent } from './navigation-drawer.component';
+import { NavigationPanelComponent } from './navigation-panel.component';
 
 describe('NavigationDrawerComponent', () => {
-  let component: NavigationDrawerComponent;
-  let fixture: ComponentFixture<NavigationDrawerComponent>;
+  let component: NavigationPanelComponent;
+  let fixture: ComponentFixture<NavigationPanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [NavigationDrawerComponent],
+      declarations: [NavigationPanelComponent],
       imports: [MatButtonModule, MatIconModule, MatTreeModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavigationDrawerComponent);
+    fixture = TestBed.createComponent(NavigationPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

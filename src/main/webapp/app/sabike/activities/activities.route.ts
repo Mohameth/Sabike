@@ -8,11 +8,11 @@ import { NavbarComponent } from 'app/layouts';
 
 export const activitiesRoute: Routes = [
   {
-    path: 'articles/:name',
+    path: 'articles/:category',
     component: ListArticlesComponent
   },
   {
-    path: 'articles/:name/:articleId',
+    path: 'articles/:category/:articleId',
     component: DetailsArticleComponent
   },
   {

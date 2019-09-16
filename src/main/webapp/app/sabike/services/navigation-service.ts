@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class NavigationServiceService {
+export class NavigationService {
   private navigation = new Subject<any>();
   private subject = new Subject<boolean>();
 
