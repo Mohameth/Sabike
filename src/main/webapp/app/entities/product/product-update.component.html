@@ -7,7 +7,7 @@
                 <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
+                           readonly/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_price">Price</label>
@@ -43,12 +43,13 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_bikeCategory">Bike Category</label>
-                    <select class="form-control" name="bikeCategory" formControlName="bikeCategory" id="field_bikeCategory">
-                        <option value="MOUNTAIN">MOUNTAIN</option>
-                        <option value="ROAD">ROAD</option>
-                        <option value="EBIKE">EBIKE</option>
+                    <select class="form-control" name="bikeCategory" formControlName="bikeCategory"
+                            id="field_bikeCategory">
+                        <option value="MOUNTAIN">Mountain</option>
+                        <option value="ROAD">Road</option>
+                        <option value="EBIKE">EBike</option>
                         <option value="BMX">BMX</option>
-                        <option value="TEST">CITY</option>
+                        <option value="TEST">City</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -68,33 +69,58 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_partCategory">Part Category</label>
-                    <select class="form-control" name="partCategory" formControlName="partCategory" id="field_partCategory">
-                        <option value="TRANSMISSION">TRANSMISSION</option>
-                        <option value="DIRECTION">DIRECTION</option>
-                        <option value="WHEEL">WHEEL</option>
-                        <option value="FRAME">FRAME</option>
+                    <select class="form-control" name="partCategory" formControlName="partCategory"
+                            id="field_partCategory">
+                        <option value="STEERING">Steering</option>
+                        <option value="SADDLE_SEATPOST">Saddle / Seatpost</option>
+                        <option value="DRIVETRAIN">Drivetrain</option>
+                        <option value="WHEELS_TYRES">Wheels / Tyres</option>
+                        <option value="BRAKES">Brakes</option>
+                        <option value="FRAMES_FORKS">Frames / Forks</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_partCategoryType">Part Category Type</label>
-                    <select class="form-control" name="partCategoryType" formControlName="partCategoryType" id="field_partCategoryType">
-                        <option value="HANDLEBAR">HANDLEBAR</option>
-                        <option value="STEM">STEM</option>
-                        <option value="CHAIN">CHAIN</option>
-                        <option value="PEDAL">PEDAL</option>
-                        <option value="TIRE">TIRE</option>
-                        <option value="RIM">RIM</option>
-                        <option value="TOPTUBE">TOPTUBE</option>
-                        <option value="DOWNTUBE">DOWNTUBE</option>
+                    <select class="form-control" name="partCategoryType" formControlName="partCategoryType"
+                            id="field_partCategoryType">
+                        <!-- STEERING -->
+                        <option value="STEMS">Stems</option>
+                        <option value="HANDLEBARS">Handlebars</option>
+                        <option value="HEADSET">Headset</option>
+                        <!-- SADDLE_SEATPOST -->
+                        <option value="SADDLE">Saddle</option>
+                        <option value="SEAT_POST">Seat post</option>
+                        <option value="SEAT_CLAMP">Seat clamp</option>
+                        <!-- DRIVETRAIN -->
+                        <option value="DERAILLEUR">Derailleur</option>
+                        <option value="CHAINS">Chains</option>
+                        <option value="CRANKSETS">Cranksets</option>
+                        <option value="PEDALS">Pedals</option>
+                        <option value="STRAPS">Straps</option>
+                        <!-- WHEELS_TYRES -->
+                        <option value="TYRES">Tyres</option>
+                        <option value="ALLOY_CARBON_WHEELS">Alloy/Carbon wheels</option>
+                        <option value="WIRE_SPOKED_WHEELS">Wire spoked wheels</option>
+                        <option value="BOYAUX">Boyaux</option>
+                        <!-- BRAKES -->
+                        <option value="BRAKE_LEVERS">Brake levers</option>
+                        <option value="BRAKE_CABLES">Brake cables</option>
+                        <option value="BRAKE_CALIPERS">Brake calipers</option>
+                        <option value="BRAKE_PADS">Brake pads</option>
+                        <!-- FRAMES_FORKS -->
+                        <option value="FRAME_KITS">Frame kits</option>
+                        <option value="FRAMES">Frames</option>
+                        <option value="FORKS">Forks</option>
                     </select>
                 </div>
 
             </div>
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                        class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>

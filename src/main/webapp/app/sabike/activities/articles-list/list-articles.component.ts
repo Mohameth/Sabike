@@ -25,14 +25,96 @@ export class ListArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const parameter = this.router.url.split('/')[2].toLowerCase();
+    const parameter = this.router.url.split('/')[2];
     console.log('+++++++++++++++++++++ ', parameter);
-    if (parameter === 'mountain' || parameter === 'road' || parameter === 'bmx' || parameter === 'ebike' || parameter === 'city') {
-      this.productService
-        .getBikes('ROAD') // TODO not hardcode
-        .subscribe(message => {
+
+    // Navigation switch
+    switch (parameter) {
+      // Bikes categories
+      case 'mountain':
+      case 'road':
+      case 'city':
+      case 'ebike':
+      case 'bmx':
+        this.productService.getBikes(parameter.toLocaleUpperCase()).subscribe(message => {
           this.products = message.body;
         });
+        break;
+
+      // Parts - Steering (direction en fr)
+      case 'stems': {
+        break;
+      }
+      case 'handlebars': {
+        break;
+      }
+      case 'headset': {
+        break;
+      }
+      // Parts - Saddle / seatpost (assise en fr)
+      case 'saddle': {
+        break;
+      }
+      case 'seat-posts': {
+        break;
+      }
+      case 'seat-clamps': {
+        break;
+      }
+      // Parts - Drivetrain
+      case 'derailleur': {
+        break;
+      }
+      case 'chains': {
+        break;
+      }
+      case 'cranksets': {
+        break;
+      }
+      case 'pedals': {
+        break;
+      }
+      case 'straps': {
+        break;
+      }
+      // Parts - Wheels / tyres
+      case 'tyres': {
+        break;
+      }
+      case 'alloy-carbon-wheels': {
+        break;
+      }
+      case 'wire-spoked-wheels': {
+        break;
+      }
+      case 'boyaux': {
+        break;
+      }
+      // Parts - Brakes
+      case 'brake-levers': {
+        break;
+      }
+      case 'brake-cables': {
+        break;
+      }
+      case 'brake-calipers': {
+        break;
+      }
+      case 'brake-pads': {
+        break;
+      }
+      // Parts - Frames / Forks
+      case 'frame-kits': {
+        break;
+      }
+      case 'frames': {
+        break;
+      }
+      case 'forks': {
+        break;
+      }
+    }
+    if (parameter === 'mountain' || parameter === 'road' || parameter === 'bmx' || parameter === 'ebike' || parameter === 'city') {
     } else {
       // this.productService.getPart(parameter);
     }

@@ -46,21 +46,21 @@ export class NavigationPanelComponent {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    this.navigationService.listenNavigation().subscribe(message => {
-      // console.log('recu le message ', message);
-      // console.log(this.dataSource.data[0]);
-      console.log(this.treeControl.dataNodes);
-      // this.treeControl.expandAll();
-      this.treeControl.dataNodes.forEach(cb => {
-        console.log(cb);
-      });
-      // TODO use the message diretly to find the good one
-      if (message === 'velos') {
-        this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
-      } else {
-        this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
-      }
-    });
+    // this.navigationService.listenNavigation().subscribe(message => {
+    //   // console.log('recu le message ', message);
+    //   // console.log(this.dataSource.data[0]);
+    //   // console.log(this.treeControl.dataNodes);
+    //   // this.treeControl.expandAll();
+    //   this.treeControl.dataNodes.forEach(cb => {
+    //     console.log(cb);
+    //   });
+    //   // TODO use the message diretly to find the good one
+    //   if (message === 'velos') {
+    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
+    //   } else {
+    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
+    //   }
+    // });
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
@@ -103,7 +103,7 @@ export class NavigationPanelComponent {
   }
 
   onListClick(item) {
-    this.treeControl.collapseAll();
+    // this.treeControl.collapseAll();
   }
 
   /**

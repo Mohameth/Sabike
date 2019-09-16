@@ -3,11 +3,11 @@ export const sabike_paths = [
     name: 'Bikes',
     type: 'folder',
     children: [
-      { name: 'Mountain', type: 'node' },
-      { name: 'Road', type: 'node' },
-      { name: 'City', type: 'node' },
-      { name: 'EBike', type: 'node' },
-      { name: 'BMX', type: 'node' }
+      { name: 'Mountain', type: 'mountain' },
+      { name: 'Road', type: 'road' },
+      { name: 'City', type: 'city' },
+      { name: 'EBike', type: 'ebike' },
+      { name: 'BMX', type: 'bmx' }
     ]
   },
   {
@@ -17,65 +17,52 @@ export const sabike_paths = [
       {
         name: 'Steering',
         type: 'folder',
-        children: [
-          { name: 'Stems', type: 'node' },
-          { name: 'Handlebars', type: 'node' },
-          { name: 'Handlebar tape', type: 'node' },
-          { name: 'Handlebar grip', type: 'node' },
-          { name: 'Headset', type: 'node' },
-          { name: 'Handlebar end plugs', type: 'node' },
-          { name: 'Clip-on Aerobars', type: 'node' }
-        ]
+        children: [{ name: 'Stems', type: 'stems' }, { name: 'Handlebars', type: 'handlebars' }, { name: 'Headset', type: 'headset' }]
       },
       {
         name: 'Saddle / Seatpost',
         type: 'folder',
-        children: [{ name: 'Saddle', type: 'node' }, { name: 'Seat posts', type: 'node' }, { name: 'Seat clamps', type: 'node' }]
+        children: [
+          { name: 'Saddle', type: 'saddle' },
+          { name: 'Seat posts', type: 'seat-posts' },
+          { name: 'Seat clamps', type: 'seat-clamps' }
+        ]
       },
       {
         name: 'Drivetrain',
         type: 'folder',
         children: [
-          { name: 'Derailleur cable', type: 'node' },
-          { name: 'Chains', type: 'node' },
-          { name: 'Cranksets', type: 'node' },
-          { name: 'Pedals', type: 'node' },
-          { name: 'Straps', type: 'node' },
-          { name: 'Bottom brackets', type: 'node' },
-          { name: 'Sprockets / Freewheels', type: 'node' },
-          { name: 'Clipless pedals', type: 'node' }
+          { name: 'Derailleur cable', type: 'derailleur' },
+          { name: 'Chains', type: 'chains' },
+          { name: 'Cranksets', type: 'cranksets' },
+          { name: 'Pedals', type: 'pedals' },
+          { name: 'Straps', type: 'straps' }
         ]
       },
       {
         name: 'Wheels / Tyres',
         type: 'folder',
         children: [
-          { name: 'Tyres', type: 'node' },
-          { name: 'Inner tubes', type: 'node' },
-          { name: 'Rim tapes', type: 'node' },
-          { name: 'Alloy and carbon wheels', type: 'node' },
-          { name: 'Wire-spoked wheels', type: 'node' },
-          { name: 'Hub nuts', type: 'node' },
-          { name: 'Disc wheels', type: 'node' },
-          { name: 'Hubs', type: 'node' },
-          { name: 'Rim', type: 'node' },
-          { name: 'Boyaux', type: 'node' }
+          { name: 'Tyres', type: 'tyres' },
+          { name: 'Alloy and carbon wheels', type: 'alloy-carbon-wheels' },
+          { name: 'Wire-spoked wheels', type: 'wire-spoked-wheels' },
+          { name: 'Boyaux', type: 'boyaux' }
         ]
       },
       {
         name: 'Brakes',
         type: 'folder',
         children: [
-          { name: 'Brake levers', type: 'node' },
-          { name: 'Brake cables', type: 'node' },
-          { name: 'Brake calipers', type: 'node' },
-          { name: 'Brake pads', type: 'node' }
+          { name: 'Brake levers', type: 'brake-levers' },
+          { name: 'Brake cables', type: 'brake-cables' },
+          { name: 'Brake calipers', type: 'brake-calipers' },
+          { name: 'Brake pads', type: 'brake-pads' }
         ]
       },
       {
         name: 'Frames / Forks',
         type: 'folder',
-        children: [{ name: 'Frame kits', type: 'node' }, { name: 'Frames', type: 'node' }, { name: 'Forks', type: 'node' }]
+        children: [{ name: 'Frame kits', type: 'frame-kits' }, { name: 'Frames', type: 'frames' }, { name: 'Forks', type: 'forks' }]
       }
     ]
   }

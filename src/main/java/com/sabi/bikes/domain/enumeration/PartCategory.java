@@ -4,5 +4,10 @@ package com.sabi.bikes.domain.enumeration;
  * The PartCategory enumeration.
  */
 public enum PartCategory {
-    TRANSMISSION, DIRECTION, WHEEL, FRAME
+    STEERING,
+    SADDLE_SEATPOST,
+    DRIVETRAIN,
+    WHEELS_TYRES,
+    BRAKES,
+    FRAMES_FORKS,
 }
