@@ -4,22 +4,22 @@
         <img class="item-list-cart-img" src="../../../../../content/images/velo.jpg">
     </div>
     <div class="item-list-cart-middle-product">
-        <p class="mat-h4" style="font-weight: bold;">Nom du produit</p>
-        <p class="mat-h4">Couleur choisie : bleue</p>
-        <p class="mat-h4">123,45$</p>
+        <p class="mat-h4" style="font-weight: bold;">{{ orderItem.product.name }}</p>
+        <p class="mat-h4" *ngIf="orderItem.product.type === 'BIKE'">{{ orderItem.product.bikeColor}}</p>
+        <p class="mat-h4">{{ orderItem.product.price }}</p>
     </div>
     <div class="item-list-cart-middle-quantity">
         <mat-form-field id="select-quantity">
             <mat-label>Quantité</mat-label>
-            <mat-select [(value)]="selectedQuantity">
-                <mat-option value="1">1</mat-option>
-                <mat-option value="2">2</mat-option>
-                <mat-option value="3">3</mat-option>
-                <mat-option value="4">4</mat-option>
-                <mat-option value="5">5</mat-option>
+            <mat-select [(value)]="selectedQuantity" placeholder="Mode">
+                <mat-option value=1>1</mat-option>
+                <mat-option value=2>2</mat-option>
+                <mat-option value=3>3</mat-option>
+                <mat-option value=4>4</mat-option>
+                <mat-option value=5>5</mat-option>
             </mat-select>
         </mat-form-field>
-        <p class="mat-h4">123,45$</p>
+        <p class="mat-h4"> {{ orderItem.paidPrice }}</p>
     </div>
     <div class="item-list-cart-right">
         <button mat-icon-button aria-label="Delete from cart icon">

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
 
 @Component({
   selector: 'jhi-item-list-cart',
@@ -6,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./item-list-cart.component.scss']
 })
 export class ItemListCartComponent implements OnInit {
-  selectedQuantity: '1'; // default
+  selectedQuantity = 4; // default
+  @Input() orderItem: OrderItems;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectedQuantity = this.orderItem.quantity;
+  }
 }

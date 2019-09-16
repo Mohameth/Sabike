@@ -23,13 +23,13 @@ export class CartService {
 
   // >>>>> Sabike
   readonly INITIAL_TIME_LEFT_CART: number = 60;
-  private timeLeft: number = -1;
+  private timeLeft = -1;
   private interval;
-  private cart: ICart = null;
+  private _cart: ICart = null;
   private command: ICommand = null;
 
   // total count for toolbar
-  private totalCount: number = 0;
+  private totalCount = 0;
   private totalNewCount = new Subject<number>();
 
   // Sabike <<<<<
@@ -90,8 +90,13 @@ export class CartService {
   }
 
   // SABIKE
+
+  get cart(): ICart {
+    return this._cart;
+  }
+
   manageTimer() {
-    if (this.timeLeft == -1) {
+    if (this.timeLeft === -1) {
       this.startTimer();
     }
   }
@@ -112,25 +117,44 @@ export class CartService {
   }
 
   addToCart(product: IProduct, quantity: number) {
-    if (this.cart === null) {
+    if (this._cart === null) {
       this.initCart();
     }
-    this.cart.orderItem.push(
-      new OrderItems(
-        null,
-        quantity,
-        quantity * product.price,
-        this.cart, // TODO
-        this.command, // TODO
-        product
-      )
-    );
+
+    let i = 0;
+    let found = false;
+
+    console.log('AVANT IF length : ', this._cart.orderItem.filter(name => name === product.name).length);
+
+    let itemIndex = 0;
+    let itemAlreadyInCart = this._cart.orderItem.find((element, index, obj) => {
+      if (element.product.name === product.name) {
+        itemIndex = index;
+        return true;
+      }
+    });
+
+    if (itemAlreadyInCart) {
+      this._cart.orderItem[itemIndex].quantity++;
+    } else {
+      this._cart.orderItem.push(
+        new OrderItems(
+          null,
+          quantity,
+          quantity * product.price,
+          this._cart, // TODO
+          this.command, // TODO
+          product
+        )
+      );
+    }
+
     console.log('BITE', this.totalCount);
 
     this.totalCount += quantity;
     this.totalNewCount.next(this.totalCount);
 
-    console.log(this.cart);
+    console.log(this._cart);
 
     if (this.accountService.isAuthenticated()) {
       // save cart to REST
@@ -138,17 +162,17 @@ export class CartService {
   }
 
   private initCart() {
-    this.cart = new Cart();
+    this._cart = new Cart();
     // Cart ID = user id
     if (this.accountService.isAuthenticated()) {
-      this.cart.id = this.accountService.userIdentityId;
+      this._cart.id = this.accountService.userIdentityId;
     } else {
-      this.cart.id = null;
+      this._cart.id = null;
     }
     // Cart Time TODO
-    this.cart.expireOn = null;
+    this._cart.expireOn = null;
     // Cart Order Items - niiiice
-    this.cart.orderItem = [];
+    this._cart.orderItem = [];
   }
 
   listenTotalCount(): Observable<any> {
