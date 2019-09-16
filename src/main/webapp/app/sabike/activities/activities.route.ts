@@ -4,6 +4,7 @@ import { ListArticlesComponent } from 'app/sabike/activities/articles-list/list-
 import { DetailsArticleComponent } from 'app/sabike/activities/article-details/details-article.component';
 import { CartComponent } from 'app/sabike/activities/cart/cart.component';
 import { HomeComponent } from 'app/home';
+import { NavbarComponent } from 'app/layouts';
 
 export const activitiesRoute: Routes = [
   {
@@ -21,5 +22,13 @@ export const activitiesRoute: Routes = [
   {
     path: 'mycart',
     component: CartComponent
+  },
+  {
+    path: 'search/:name',
+    component: ListArticlesComponent
+  },
+  {
+    path: 'search/:name/:articleId',
+    component: DetailsArticleComponent
   }
 ];
