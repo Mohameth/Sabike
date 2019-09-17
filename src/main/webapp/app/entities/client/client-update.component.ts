@@ -18,21 +18,21 @@ import { IUser, UserService } from 'app/core';
 export class ClientUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  carts: ICart[];
+  // carts: ICart[];
 
   users: IUser[];
 
   editForm = this.fb.group({
     id: [],
     phoneNumber: [],
-    cart: [],
+    // cart: [],
     user: []
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected clientService: ClientService,
-    protected cartService: CartService,
+    // protected cartService: CartService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -43,31 +43,31 @@ export class ClientUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ client }) => {
       this.updateForm(client);
     });
-    this.cartService
-      .query({ filter: 'client-is-null' })
-      .pipe(
-        filter((mayBeOk: HttpResponse<ICart[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ICart[]>) => response.body)
-      )
-      .subscribe(
-        (res: ICart[]) => {
-          if (!this.editForm.get('cart').value || !this.editForm.get('cart').value.id) {
-            this.carts = res;
-          } else {
-            this.cartService
-              .find(this.editForm.get('cart').value.id)
-              .pipe(
-                filter((subResMayBeOk: HttpResponse<ICart>) => subResMayBeOk.ok),
-                map((subResponse: HttpResponse<ICart>) => subResponse.body)
-              )
-              .subscribe(
-                (subRes: ICart) => (this.carts = [subRes].concat(res)),
-                (subRes: HttpErrorResponse) => this.onError(subRes.message)
-              );
-          }
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+    // this.cartService
+    //   .query({ filter: 'client-is-null' })
+    //   .pipe(
+    //     filter((mayBeOk: HttpResponse<ICart[]>) => mayBeOk.ok),
+    //     map((response: HttpResponse<ICart[]>) => response.body)
+    //   )
+    //   .subscribe(
+    //     (res: ICart[]) => {
+    //       if (!this.editForm.get('cart').value || !this.editForm.get('cart').value.id) {
+    //         this.carts = res;
+    //       } else {
+    //         this.cartService
+    //           .find(this.editForm.get('cart').value.id)
+    //           .pipe(
+    //             filter((subResMayBeOk: HttpResponse<ICart>) => subResMayBeOk.ok),
+    //             map((subResponse: HttpResponse<ICart>) => subResponse.body)
+    //           )
+    //           .subscribe(
+    //             (subRes: ICart) => (this.carts = [subRes].concat(res)),
+    //             (subRes: HttpErrorResponse) => this.onError(subRes.message)
+    //           );
+    //       }
+    //     },
+    //     (res: HttpErrorResponse) => this.onError(res.message)
+    //   );
     this.userService
       .query()
       .pipe(
@@ -81,7 +81,7 @@ export class ClientUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: client.id,
       phoneNumber: client.phoneNumber,
-      cart: client.cart,
+      // cart: client.cart,
       user: client.user
     });
   }
@@ -105,7 +105,7 @@ export class ClientUpdateComponent implements OnInit {
       ...new Client(),
       id: this.editForm.get(['id']).value,
       phoneNumber: this.editForm.get(['phoneNumber']).value,
-      cart: this.editForm.get(['cart']).value,
+      // cart: this.editForm.get(['cart']).value,
       user: this.editForm.get(['user']).value
     };
   }
@@ -126,9 +126,9 @@ export class ClientUpdateComponent implements OnInit {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  trackCartById(index: number, item: ICart) {
-    return item.id;
-  }
+  // trackCartById(index: number, item: ICart) {
+  //   return item.id;
+  // }
 
   trackUserById(index: number, item: IUser) {
     return item.id;

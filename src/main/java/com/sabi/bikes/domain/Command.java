@@ -45,7 +45,7 @@ public class Command implements Serializable {
     @JsonIgnoreProperties("commands")
     private Client client;
 
-    @OneToMany(mappedBy = "command")
+    @OneToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrderItems> orderItems = new HashSet<>();
 
@@ -134,13 +134,11 @@ public class Command implements Serializable {
 
     public Command addOrderItems(OrderItems orderItems) {
         this.orderItems.add(orderItems);
-        orderItems.setCommand(this);
         return this;
     }
 
     public Command removeOrderItems(OrderItems orderItems) {
         this.orderItems.remove(orderItems);
-        orderItems.setCommand(null);
         return this;
     }
 

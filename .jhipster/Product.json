@@ -1,75 +1,79 @@
 {
-  "name": "Product",
-  "fields": [
-    {
-      "fieldName": "price",
-      "fieldType": "Float"
-    },
-    {
-      "fieldName": "name",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "stock",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "picture",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "brand",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "type",
-      "fieldType": "ProductType",
-      "fieldValues": "BIKE,PART"
-    },
-    {
-      "fieldName": "bikeCategory",
-      "fieldType": "BikeCategory",
-      "fieldValues": "MOUNTAIN,ROAD,EBIKE,BMX,CITY"
-    },
-    {
-      "fieldName": "bikeSize",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "bikeSeeds",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "bikeColor",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "partCategory",
-      "fieldType": "PartCategory",
-      "fieldValues": "STEERING,SADDLE_SEATPOST,DRIVETRAIN,WHEELS_TYRES,BRAKES,FRAMES_FORKS"
-    },
-    {
-      "fieldName": "partCategoryType",
-      "fieldType": "PartCategoryType",
-      "fieldValues": "STEMS,HANDLEBARS,HEADSET,SADDLE,SEAT_POST,SEAT_CLAMP,DERAILLEUR,CHAINS,CRANKSETS,PEDALS,STRAPS,TYRES,ALLOY_CARBON_WHEELS,WIRE_SPOKED_WHEELS,BOYAUX,BRAKE_LEVERS,BRAKE_CABLES,BRAKE_CALIPERS,BRAKE_PADS,FRAME_KITS,FRAMES,FORKS"
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "orderItems",
-      "otherEntityRelationshipName": "product",
-      "relationshipName": "orderItems",
-      "ownerSide": false
-    }
-  ],
-  "changelogDate": "20190913082007",
-  "entityTableName": "product",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "clientRootFolder": "",
-  "applications": "*"
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "orderItems",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "orderItems",
+            "ownerSide": false
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "price",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "stock",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "picture",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "brand",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "ProductType",
+            "fieldValues": "BIKE,PART"
+        },
+        {
+            "fieldName": "bikeCategory",
+            "fieldType": "BikeCategory",
+            "fieldValues": "MOUNTAIN,ROAD,EBIKE,BMX,CITY"
+        },
+        {
+            "fieldName": "bikeSize",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bikeSeeds",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "bikeColor",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "partCategory",
+            "fieldType": "PartCategory",
+            "fieldValues": "STEERING,SADDLE_SEATPOST,DRIVETRAIN,WHEELS_TYRES,BRAKES,FRAMES_FORKS"
+        },
+        {
+            "fieldName": "partCategoryType",
+            "fieldType": "PartCategoryType",
+            "fieldValues": "STEMS,HANDLEBARS,HEADSET,SADDLE,SEAT_POST,SEAT_CLAMP,DERAILLEUR,CHAINS,CRANKSETS,PEDALS,STRAPS,TYRES,ALLOY_CARBON_WHEELS,WIRE_SPOKED_WHEELS,BOYAUX,BRAKE_LEVERS,BRAKE_CABLES,BRAKE_CALIPERS,BRAKE_PADS,FRAME_KITS,FRAMES,FORKS"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20190913082007",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "no",
+    "entityTableName": "product",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

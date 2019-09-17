@@ -14,15 +14,7 @@
         <div id="details-description-container">
             <div id="details-description">
                 <p>
-                    Description - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis sagittis leo,
-                    sit amet
-                    pulvinar ipsum. Donec rhoncus nibh nisl, in varius risus blandit elementum. Lorem ipsum dolor sit
-                    amet,
-                    consectetur adipiscing elit. Nullam sollicitudin urna metus, vel scelerisque ligula pharetra id.
-                    Morbi non
-                    aliquam ligula, nec consectetur turpis. Morbi non eleifend est, et vestibulum arcu. Suspendisse
-                    pellentesque
-                    ex quis quam aliquam, eu hendrerit elit tincidunt.
+                    {{product.description}}
                 </p>
             </div>
         </div>
@@ -38,7 +30,11 @@
                 </mat-select>
             </mat-form-field>
 
-            <button id="details-button-add-to-cart" mat-raised-button color="accent">
+            <button
+                id="details-button-add-to-cart"
+                mat-raised-button
+                color="accent"
+                (click)="addToCart(product.id, selectedQuantity)">
                 <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">shopping_basket</mat-icon>
                 AJOUTER
             </button>

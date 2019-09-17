@@ -28,14 +28,6 @@ public class OrderItems implements Serializable {
     @Column(name = "paid_price")
     private Float paidPrice;
 
-    @ManyToOne
-    @JsonIgnoreProperties("orderItems")
-    private Cart cart;
-
-    @ManyToOne
-    @JsonIgnoreProperties("orderItems")
-    private Command command;
-
     @OneToOne
     @JoinColumn(unique = true)
     private Product product;
@@ -73,32 +65,6 @@ public class OrderItems implements Serializable {
 
     public void setPaidPrice(Float paidPrice) {
         this.paidPrice = paidPrice;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public OrderItems cart(Cart cart) {
-        this.cart = cart;
-        return this;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Command getCommand() {
-        return command;
-    }
-
-    public OrderItems command(Command command) {
-        this.command = command;
-        return this;
-    }
-
-    public void setCommand(Command command) {
-        this.command = command;
     }
 
     public Product getProduct() {

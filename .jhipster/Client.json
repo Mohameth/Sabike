@@ -3,14 +3,6 @@
     "clientRootFolder": "",
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "cart",
-            "otherEntityRelationshipName": "client",
-            "relationshipName": "cart",
-            "otherEntityField": "id",
-            "ownerSide": true
-        },
-        {
             "relationshipType": "one-to-many",
             "otherEntityName": "command",
             "otherEntityRelationshipName": "client",

@@ -1,5 +1,7 @@
 <mat-list>
     <h3 mat-subheader>Articles</h3>
-        <jhi-item-list-cart></jhi-item-list-cart>
+    <div *ngFor="let orderItem of orderItems">
+        <jhi-item-list-cart [orderItem]="orderItem" ngDefaultControl></jhi-item-list-cart>
+    </div>
 </mat-list>
 
