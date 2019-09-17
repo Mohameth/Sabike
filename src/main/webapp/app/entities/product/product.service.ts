@@ -43,6 +43,10 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}`, { observe: 'response' });
   }
 
+  getAllBikes(): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all`, { observe: 'response' });
+  }
+
   // Details handler
   requestDetails(product: IProduct) {
     console.log('CHANGIN PRODUCT ', this.currentProduct);
