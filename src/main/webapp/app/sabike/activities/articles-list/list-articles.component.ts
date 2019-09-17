@@ -31,17 +31,15 @@ export class ListArticlesComponent implements OnInit {
     private productService: ProductService,
     protected jhiAlertService: JhiAlertService,
     private router: Router
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.router.events.subscribe(m => {
+      console.log('!!! Initialisation');
       if (m instanceof NavigationStart) {
         // Show loading indicator
       }
       if (m instanceof ActivationEnd) {
         // LOAD here
         const parameter = this.router.url.split('/').reverse()[0];
-        console.log('*** Router ***', parameter);
         // Navigation switch
         switch (parameter) {
           // Bikes categories
@@ -153,6 +151,8 @@ export class ListArticlesComponent implements OnInit {
       }
     });
   }
+
+  ngOnInit() {}
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
