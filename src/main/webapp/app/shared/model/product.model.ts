@@ -61,6 +61,7 @@ export interface IProduct {
   bikeColor?: string;
   partCategory?: PartCategory;
   partCategoryType?: PartCategoryType;
+  description?: string;
   orderItems?: IOrderItems;
 }
 
@@ -79,6 +80,7 @@ export class Product implements IProduct {
     public bikeColor?: string,
     public partCategory?: PartCategory,
     public partCategoryType?: PartCategoryType,
+    public description?: string,
     public orderItems?: IOrderItems
   ) {}
 }

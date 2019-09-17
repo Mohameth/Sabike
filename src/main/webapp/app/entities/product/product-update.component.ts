@@ -32,7 +32,8 @@ export class ProductUpdateComponent implements OnInit {
     bikeSeeds: [],
     bikeColor: [],
     partCategory: [],
-    partCategoryType: []
+    partCategoryType: [],
+    description: []
   });
 
   constructor(
@@ -71,7 +72,8 @@ export class ProductUpdateComponent implements OnInit {
       bikeSeeds: product.bikeSeeds,
       bikeColor: product.bikeColor,
       partCategory: product.partCategory,
-      partCategoryType: product.partCategoryType
+      partCategoryType: product.partCategoryType,
+      description: product.description
     });
   }
 
@@ -104,7 +106,8 @@ export class ProductUpdateComponent implements OnInit {
       bikeSeeds: this.editForm.get(['bikeSeeds']).value,
       bikeColor: this.editForm.get(['bikeColor']).value,
       partCategory: this.editForm.get(['partCategory']).value,
-      partCategoryType: this.editForm.get(['partCategoryType']).value
+      partCategoryType: this.editForm.get(['partCategoryType']).value,
+      description: this.editForm.get(['description']).value
     };
   }
 

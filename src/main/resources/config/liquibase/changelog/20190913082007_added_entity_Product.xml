@@ -63,6 +63,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
@@ -99,6 +103,7 @@
             <column name="bike_color" type="string"/>
             <column name="part_category" type="string"/>
             <column name="part_category_type" type="string"/>
+            <column name="description" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>
