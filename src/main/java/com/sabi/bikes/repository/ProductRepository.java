@@ -22,10 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("FROM Product WHERE part_category = ?1")
     List<Product> getAllByPartCategory(Pageable pageable, String category);
 
-    @Query("FROM Product WHERE type = BIKE")
+    @Query("FROM Product WHERE type = 'BIKE'")
     List<Product> getAllBikes(Pageable pageable);
 
-    @Query("FROM Product WHERE type = PART")
+    @Query("FROM Product WHERE type = 'PART'")
     List<Product> getAllParts(Pageable pageable);
 }
 

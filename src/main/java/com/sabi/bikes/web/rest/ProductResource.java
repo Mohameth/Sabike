@@ -146,8 +146,14 @@ public class ProductResource {
     }
 
     @GetMapping("/products/bikes/all")
-    public ResponseEntity<List<Product>> findBikes(Pageable pageable, @PathVariable String category) {
-        List<Product> products = productRepository.getAllByBikeCategory(pageable, category);
+    public ResponseEntity<List<Product>> findBikes(Pageable pageable) {
+        List<Product> products = productRepository.getAllBikes(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/parts/all")
+    public ResponseEntity<List<Product>> findParts(Pageable pageable) {
+        List<Product> products = productRepository.getAllParts(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

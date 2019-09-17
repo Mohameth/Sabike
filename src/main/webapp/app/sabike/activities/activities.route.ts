@@ -11,7 +11,15 @@ export const activitiesRoute: Routes = [
     component: ListArticlesComponent
   },
   {
-    path: 'articles/:category/:articleId',
+    path: 'articles/:category/:subcategory',
+    component: ListArticlesComponent
+  },
+  {
+    path: 'articles/:category/:subcategory/:subsubcategory',
+    component: ListArticlesComponent
+  },
+  {
+    path: 'articles/details/:articleId',
     component: DetailsArticleComponent
   },
   {

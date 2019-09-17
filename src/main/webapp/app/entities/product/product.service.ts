@@ -47,6 +47,10 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all`, { observe: 'response' });
   }
 
+  getAllParts(): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/parts/all`, { observe: 'response' });
+  }
+
   // Details handler
   requestDetails(product: IProduct) {
     console.log('CHANGIN PRODUCT ', this.currentProduct);

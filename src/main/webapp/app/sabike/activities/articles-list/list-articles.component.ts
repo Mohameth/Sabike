@@ -40,10 +40,21 @@ export class ListArticlesComponent implements OnInit {
       }
       if (m instanceof ActivationEnd) {
         // LOAD here
-        const parameter = this.router.url.split('/')[2];
+        const parameter = this.router.url.split('/').reverse()[0];
+        console.log('*** Router ***', parameter);
         // Navigation switch
         switch (parameter) {
           // Bikes categories
+          case 'bikes':
+            this.productService.getAllBikes().subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+          case 'parts':
+            this.productService.getAllParts().subscribe(message => {
+              this.products = message.body;
+            });
+            break;
           case 'mountain':
           case 'road':
           case 'city':

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { NavigationPanelComponent } from 'app/sabike/components/navigationpanel/navigation-panel.component';
 
 @Injectable({
   providedIn: 'root'

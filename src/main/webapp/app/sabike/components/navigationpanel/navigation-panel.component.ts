@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export interface FileNode {
   name: string;
   type: string;
+  route: string;
   children?: FileNode[];
 }
 
@@ -20,6 +21,7 @@ export interface FileNode {
 export interface FlatTreeNode {
   name: string;
   type: string;
+  route: string;
   level: number;
   expandable: boolean;
 }
@@ -77,6 +79,7 @@ export class NavigationPanelComponent {
     return {
       name: node.name,
       type: node.type,
+      route: node.route,
       level,
       expandable: !!node.children
     };
@@ -100,6 +103,12 @@ export class NavigationPanelComponent {
   /** Get the children for the node. */
   getChildren(node: FileNode) {
     return observableOf(node.children);
+  }
+
+  expand(nodeName: String) {
+    let node: FlatTreeNode = this.treeControl.dataNodes.find(node => node.name == nodeName);
+    this.treeControl.expand(node);
+    console.log('******* \n ***** \n Trying to expand node :', node);
   }
 
   onListClick(item) {

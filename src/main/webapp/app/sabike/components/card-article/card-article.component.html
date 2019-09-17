@@ -12,12 +12,12 @@
     <mat-card-actions align="end">
         <button *ngIf="product.type === 'BIKE'"
                 mat-button
-                routerLink="/articles/{{product.bikeCategory}}/{{product.id}}">
+                routerLink="/articles/details/{{product.bikeCategory}}/{{product.id}}">
             VOIR
         </button>
         <button *ngIf="product.type === 'PART'"
                 mat-button
-                routerLink="/articles/{{product.partCategoryType}}/{{product.id}}">
+                routerLink="/articles/details/{{product.partCategoryType}}/{{product.id}}">
             VOIR
         </button>
         <button mat-button>AJOUTER</button>
