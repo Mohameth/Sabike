@@ -24,10 +24,6 @@ public class Client implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Cart cart;
-
     @OneToMany(mappedBy = "client")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Command> orders = new HashSet<>();
@@ -61,19 +57,6 @@ public class Client implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public Client cart(Cart cart) {
-        this.cart = cart;
-        return this;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public Set<Command> getOrders() {

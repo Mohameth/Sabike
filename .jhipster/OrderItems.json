@@ -12,18 +12,6 @@
     ],
     "relationships": [
         {
-            "relationshipName": "cart",
-            "otherEntityName": "cart",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "command",
-            "otherEntityName": "command",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
             "relationshipType": "one-to-one",
             "otherEntityName": "product",
             "otherEntityRelationshipName": "orderItems",
