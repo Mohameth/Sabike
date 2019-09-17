@@ -1,4 +1,5 @@
 package com.sabi.bikes.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,6 +32,10 @@ public class OrderItems implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private Product product;
+
+    @ManyToOne
+    @JsonIgnoreProperties("orderItems")
+    private Command command;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -104,5 +109,18 @@ public class OrderItems implements Serializable {
             ", quantity=" + getQuantity() +
             ", paidPrice=" + getPaidPrice() +
             "}";
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public OrderItems command(Command command) {
+        this.command = command;
+        return this;
     }
 }

@@ -29,6 +29,7 @@
         {
             "relationshipType": "one-to-many",
             "otherEntityName": "orderItems",
+            "otherEntityRelationshipName": "command",
             "relationshipName": "orderItems"
         }
     ],
