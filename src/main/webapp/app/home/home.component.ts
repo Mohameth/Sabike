@@ -51,6 +51,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  openBikesMenu() {
+    this.navigationService.selectVelos('bikes');
+  }
+
+  openPartsMenu() {
+    this.navigationService.selectVelos('parts');
+  }
+
   login() {
     this.modalRef = this.loginModalService.open();
   }

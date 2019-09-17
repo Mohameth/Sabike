@@ -72,6 +72,14 @@ export class NavigationPanelComponent {
         document.getElementById('nav-left-root-label-filters').style.display = 'block';
       }
     });
+
+    this.navigationService.listenNavigation().subscribe(message => {
+      if (message === 'bikes' || message === 'parts') {
+        this.expand(message);
+      } else {
+        console.log('We are in the nav component, weird message', message);
+      }
+    });
   }
 
   /** Transform the data to something the tree can read. */
@@ -106,9 +114,9 @@ export class NavigationPanelComponent {
   }
 
   expand(nodeName: String) {
-    let node: FlatTreeNode = this.treeControl.dataNodes.find(node => node.name == nodeName);
+    this.treeControl.collapseAll();
+    let node: FlatTreeNode = this.treeControl.dataNodes.find(node => node.name.toLowerCase() == nodeName.toLowerCase());
     this.treeControl.expand(node);
-    console.log('******* \n ***** \n Trying to expand node :', node);
   }
 
   onListClick(item) {
