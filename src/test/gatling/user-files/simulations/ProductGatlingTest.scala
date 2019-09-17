@@ -82,8 +82,9 @@ class ProductGatlingTest extends Simulation {
                 , "bikeSize":"SAMPLE_TEXT"
                 , "bikeSeeds":"0"
                 , "bikeColor":"SAMPLE_TEXT"
-                , "partCategory":"TRANSMISSION"
-                , "partCategoryType":"HANDLEBAR"
+                , "partCategory":"STEERING"
+                , "partCategoryType":"STEMS"
+                , "description":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_product_url"))).exitHereIfFailed

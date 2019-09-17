@@ -70,11 +70,14 @@ public class ProductResourceIT {
     private static final String DEFAULT_BIKE_COLOR = "AAAAAAAAAA";
     private static final String UPDATED_BIKE_COLOR = "BBBBBBBBBB";
 
-    private static final PartCategory DEFAULT_PART_CATEGORY = PartCategory.FRAMES_FORKS;
-    private static final PartCategory UPDATED_PART_CATEGORY = PartCategory.DRIVETRAIN;
+    private static final PartCategory DEFAULT_PART_CATEGORY = PartCategory.STEERING;
+    private static final PartCategory UPDATED_PART_CATEGORY = PartCategory.SADDLE_SEATPOST;
 
-    private static final PartCategoryType DEFAULT_PART_CATEGORY_TYPE = PartCategoryType.FORKS;
-    private static final PartCategoryType UPDATED_PART_CATEGORY_TYPE = PartCategoryType.SADDLE;
+    private static final PartCategoryType DEFAULT_PART_CATEGORY_TYPE = PartCategoryType.STEMS;
+    private static final PartCategoryType UPDATED_PART_CATEGORY_TYPE = PartCategoryType.HANDLEBARS;
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     @Autowired
     private ProductRepository productRepository;
@@ -129,7 +132,8 @@ public class ProductResourceIT {
             .bikeSeeds(DEFAULT_BIKE_SEEDS)
             .bikeColor(DEFAULT_BIKE_COLOR)
             .partCategory(DEFAULT_PART_CATEGORY)
-            .partCategoryType(DEFAULT_PART_CATEGORY_TYPE);
+            .partCategoryType(DEFAULT_PART_CATEGORY_TYPE)
+            .description(DEFAULT_DESCRIPTION);
         return product;
     }
     /**
@@ -151,7 +155,8 @@ public class ProductResourceIT {
             .bikeSeeds(UPDATED_BIKE_SEEDS)
             .bikeColor(UPDATED_BIKE_COLOR)
             .partCategory(UPDATED_PART_CATEGORY)
-            .partCategoryType(UPDATED_PART_CATEGORY_TYPE);
+            .partCategoryType(UPDATED_PART_CATEGORY_TYPE)
+            .description(UPDATED_DESCRIPTION);
         return product;
     }
 
@@ -187,6 +192,7 @@ public class ProductResourceIT {
         assertThat(testProduct.getBikeColor()).isEqualTo(DEFAULT_BIKE_COLOR);
         assertThat(testProduct.getPartCategory()).isEqualTo(DEFAULT_PART_CATEGORY);
         assertThat(testProduct.getPartCategoryType()).isEqualTo(DEFAULT_PART_CATEGORY_TYPE);
+        assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -231,9 +237,10 @@ public class ProductResourceIT {
             .andExpect(jsonPath("$.[*].bikeSeeds").value(hasItem(DEFAULT_BIKE_SEEDS)))
             .andExpect(jsonPath("$.[*].bikeColor").value(hasItem(DEFAULT_BIKE_COLOR.toString())))
             .andExpect(jsonPath("$.[*].partCategory").value(hasItem(DEFAULT_PART_CATEGORY.toString())))
-            .andExpect(jsonPath("$.[*].partCategoryType").value(hasItem(DEFAULT_PART_CATEGORY_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].partCategoryType").value(hasItem(DEFAULT_PART_CATEGORY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getProduct() throws Exception {
@@ -256,7 +263,8 @@ public class ProductResourceIT {
             .andExpect(jsonPath("$.bikeSeeds").value(DEFAULT_BIKE_SEEDS))
             .andExpect(jsonPath("$.bikeColor").value(DEFAULT_BIKE_COLOR.toString()))
             .andExpect(jsonPath("$.partCategory").value(DEFAULT_PART_CATEGORY.toString()))
-            .andExpect(jsonPath("$.partCategoryType").value(DEFAULT_PART_CATEGORY_TYPE.toString()));
+            .andExpect(jsonPath("$.partCategoryType").value(DEFAULT_PART_CATEGORY_TYPE.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
     @Test
@@ -291,7 +299,8 @@ public class ProductResourceIT {
             .bikeSeeds(UPDATED_BIKE_SEEDS)
             .bikeColor(UPDATED_BIKE_COLOR)
             .partCategory(UPDATED_PART_CATEGORY)
-            .partCategoryType(UPDATED_PART_CATEGORY_TYPE);
+            .partCategoryType(UPDATED_PART_CATEGORY_TYPE)
+            .description(UPDATED_DESCRIPTION);
 
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -314,6 +323,7 @@ public class ProductResourceIT {
         assertThat(testProduct.getBikeColor()).isEqualTo(UPDATED_BIKE_COLOR);
         assertThat(testProduct.getPartCategory()).isEqualTo(UPDATED_PART_CATEGORY);
         assertThat(testProduct.getPartCategoryType()).isEqualTo(UPDATED_PART_CATEGORY_TYPE);
+        assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
