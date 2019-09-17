@@ -7,6 +7,10 @@ import { HomeComponent } from 'app/home';
 
 export const activitiesRoute: Routes = [
   {
+    path: 'articles/details/:category/:articleId',
+    component: DetailsArticleComponent
+  },
+  {
     path: 'articles/:category',
     component: ListArticlesComponent
   },
@@ -17,10 +21,6 @@ export const activitiesRoute: Routes = [
   {
     path: 'articles/:category/:subcategory/:subsubcategory',
     component: ListArticlesComponent
-  },
-  {
-    path: 'articles/details/:articleId',
-    component: DetailsArticleComponent
   },
   {
     path: '',
