@@ -142,7 +142,6 @@ export class CartService {
           null,
           quantity,
           quantity * product.price,
-          this._cart, // TODO
           this.command, // TODO
           product
         )
