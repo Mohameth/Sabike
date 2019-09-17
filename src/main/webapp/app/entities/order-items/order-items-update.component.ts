@@ -21,7 +21,7 @@ import { ProductService } from 'app/entities/product';
 export class OrderItemsUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  carts: ICart[];
+  // carts: ICart[];
 
   commands: ICommand[];
 
@@ -31,7 +31,7 @@ export class OrderItemsUpdateComponent implements OnInit {
     id: [],
     quantity: [],
     paidPrice: [],
-    cart: [],
+    // cart: [],
     command: [],
     product: []
   });
@@ -39,7 +39,7 @@ export class OrderItemsUpdateComponent implements OnInit {
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected orderItemsService: OrderItemsService,
-    protected cartService: CartService,
+    // protected cartService: CartService,
     protected commandService: CommandService,
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
@@ -51,13 +51,13 @@ export class OrderItemsUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ orderItems }) => {
       this.updateForm(orderItems);
     });
-    this.cartService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<ICart[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ICart[]>) => response.body)
-      )
-      .subscribe((res: ICart[]) => (this.carts = res), (res: HttpErrorResponse) => this.onError(res.message));
+    // this.cartService
+    //   .query()
+    //   .pipe(
+    //     filter((mayBeOk: HttpResponse<ICart[]>) => mayBeOk.ok),
+    //     map((response: HttpResponse<ICart[]>) => response.body)
+    //   )
+    //   .subscribe((res: ICart[]) => (this.carts = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.commandService
       .query()
       .pipe(
@@ -97,7 +97,7 @@ export class OrderItemsUpdateComponent implements OnInit {
       id: orderItems.id,
       quantity: orderItems.quantity,
       paidPrice: orderItems.paidPrice,
-      cart: orderItems.cart,
+      // cart: orderItems.cart,
       command: orderItems.command,
       product: orderItems.product
     });
@@ -123,7 +123,7 @@ export class OrderItemsUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       quantity: this.editForm.get(['quantity']).value,
       paidPrice: this.editForm.get(['paidPrice']).value,
-      cart: this.editForm.get(['cart']).value,
+      // cart: this.editForm.get(['cart']).value,
       command: this.editForm.get(['command']).value,
       product: this.editForm.get(['product']).value
     };
@@ -145,9 +145,9 @@ export class OrderItemsUpdateComponent implements OnInit {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  trackCartById(index: number, item: ICart) {
-    return item.id;
-  }
+  // trackCartById(index: number, item: ICart) {
+  //   return item.id;
+  // }
 
   trackCommandById(index: number, item: ICommand) {
     return item.id;

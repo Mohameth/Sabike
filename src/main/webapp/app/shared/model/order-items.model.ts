@@ -6,7 +6,7 @@ export interface IOrderItems {
   id?: number;
   quantity?: number;
   paidPrice?: number;
-  cart?: ICart;
+  // cart?: ICart;
   command?: ICommand;
   product?: IProduct;
 }
@@ -16,7 +16,7 @@ export class OrderItems implements IOrderItems {
     public id?: number,
     public quantity?: number,
     public paidPrice?: number,
-    public cart?: ICart,
+    // public cart?: ICart,
     public command?: ICommand,
     public product?: IProduct
   ) {}
