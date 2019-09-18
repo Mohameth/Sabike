@@ -4,7 +4,8 @@ import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { sabike_paths } from './navigation-nodes';
 import { NavigationService } from 'app/sabike/services/navigation-service';
-import { Router } from '@angular/router';
+import { ActivationEnd, Router } from '@angular/router';
+import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -48,28 +49,20 @@ export class NavigationPanelComponent {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    // this.navigationService.listenNavigation().subscribe(message => {
-    //   // console.log('recu le message ', message);
-    //   // console.log(this.dataSource.data[0]);
-    //   // console.log(this.treeControl.dataNodes);
-    //   // this.treeControl.expandAll();
-    //   this.treeControl.dataNodes.forEach(cb => {
-    //     console.log(cb);
-    //   });
-    //   // TODO use the message diretly to find the good one
-    //   if (message === 'velos') {
-    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
-    //   } else {
-    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
-    //   }
-    // });
+    this.router.events.subscribe(m => {
+      if (m instanceof ActivationEnd) {
+        this.navigationService.handleBreadcrumb(this.buildBreads());
+      }
+    });
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
-      if (message) {
-        document.getElementById('nav-left-root-label-filters').style.display = 'none';
-      } else {
-        document.getElementById('nav-left-root-label-filters').style.display = 'block';
+      if (document.getElementById('nav-left-root-label-filters')) {
+        if (message) {
+          document.getElementById('nav-left-root-label-filters').style.display = 'none';
+        } else {
+          document.getElementById('nav-left-root-label-filters').style.display = 'block';
+        }
       }
     });
 
@@ -113,9 +106,35 @@ export class NavigationPanelComponent {
     return observableOf(node.children);
   }
 
+  /** Creation of a list of breadcrumb from the node information */
+  buildBreads(): Breadcrumb[] {
+    let currentNode: FlatTreeNode;
+    let routeName: string;
+    let breads: Breadcrumb[] = [];
+    let i: number = 0;
+    let max: number = 100;
+
+    while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
+      currentNode = this.findNodeWithName(routeName);
+      let bread: Breadcrumb = {
+        label: currentNode.name,
+        url: currentNode.route
+      };
+
+      breads.push(bread);
+      i++;
+    }
+    return breads.reverse();
+  }
+
+  /** Use the treeControl and compare names ignoring cases (only the first is considered) */
+  findNodeWithName(nodeName: String): FlatTreeNode {
+    return this.treeControl.dataNodes.find(node => node.name.toLowerCase() === nodeName.toLowerCase());
+  }
+
   expand(nodeName: String) {
     this.treeControl.collapseAll();
-    let node: FlatTreeNode = this.treeControl.dataNodes.find(node => node.name.toLowerCase() == nodeName.toLowerCase());
+    let node: FlatTreeNode = this.findNodeWithName(nodeName);
     this.treeControl.expand(node);
   }
 

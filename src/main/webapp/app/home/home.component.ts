@@ -40,23 +40,13 @@ export class HomeComponent implements OnInit {
     return this.accountService.isAuthenticated();
   }
 
-  openMenu(menu: string) {
-    switch (menu) {
-      case 'bikes':
-        this.navigationService.selectVelos('bikes');
-        break;
-      case 'parts':
-        this.navigationService.selectVelos('parts');
-        break;
-    }
-  }
-
   openBikesMenu() {
-    this.navigationService.selectVelos('bikes');
+    this.navigationService.expandCategory('bikes');
   }
 
   openPartsMenu() {
-    this.navigationService.selectVelos('parts');
+    this.navigationService.expandCategory('parts');
+    this.navigationService.getBreadcrumb();
   }
 
   login() {

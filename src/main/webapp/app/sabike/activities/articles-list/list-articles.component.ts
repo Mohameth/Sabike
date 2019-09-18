@@ -33,7 +33,6 @@ export class ListArticlesComponent implements OnInit {
     private router: Router
   ) {
     this.router.events.subscribe(m => {
-      console.log('!!! Initialisation');
       if (m instanceof NavigationStart) {
         // Show loading indicator
       }
@@ -152,7 +151,9 @@ export class ListArticlesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //this.navigationService.getBreadcrumb();
+  }
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);

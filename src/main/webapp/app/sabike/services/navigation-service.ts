@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NavigationPanelComponent } from 'app/sabike/components/navigationpanel/navigation-panel.component';
+import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
   private navigation = new Subject<any>();
+  private subjectBreadcrumb = new Subject<any>();
   private subject = new Subject<boolean>();
 
   constructor() {}
 
-  selectVelos(value: string) {
-    console.log('from service changing');
+  expandCategory(value: string) {
     this.navigation.next(value);
   }
 
@@ -32,5 +33,13 @@ export class NavigationService {
 
   listenSubject(): Observable<any> {
     return this.subject.asObservable();
+  }
+
+  listenBreadcrumb(): Observable<any> {
+    return this.subjectBreadcrumb.asObservable();
+  }
+
+  handleBreadcrumb(breadcrumbs: Breadcrumb[]) {
+    this.subjectBreadcrumb.next(breadcrumbs);
   }
 }
