@@ -14,6 +14,8 @@ export class CheckoutComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    //
+
     // Validators
     // first step validation : first and last name
     this.firstFormGroup = this._formBuilder.group({
