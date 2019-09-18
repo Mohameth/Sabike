@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
 import { JhiTrackerService } from '../tracker/tracker.service';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -12,7 +13,7 @@ export class AccountService {
   private authenticated = false;
   private authenticationState = new Subject<any>();
 
-  constructor(private http: HttpClient, private trackerService: JhiTrackerService) {}
+  constructor(private http: HttpClient, private trackerService: JhiTrackerService, private broadcaster: JhiEventManager) {}
 
   fetch(): Observable<HttpResponse<Account>> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account', { observe: 'response' });
@@ -78,6 +79,10 @@ export class AccountService {
           this.authenticated = true;
           this.trackerService.connect();
           console.log('============>', this._userIdentity);
+          this.broadcaster.broadcast({
+            name: 'loginCallback',
+            content: 'ok'
+          });
         } else {
           this._userIdentity = null;
           this.authenticated = false;

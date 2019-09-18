@@ -9,8 +9,10 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -114,5 +116,11 @@ public class CommandResource {
         log.debug("REST request to delete Command : {}", id);
         commandRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/commands/{id}/hascart")
+    public ResponseEntity<List<Command>> getCommandCart(Pageable pageable, @PathVariable Long id) {
+        List<Command> commands = commandRepository.getUserCart(pageable, id);
+        return new ResponseEntity<>(commands, HttpStatus.OK);
     }
 }

@@ -7,10 +7,11 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { Command, ICommand } from 'app/shared/model/command.model';
+import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
 import { IProduct } from 'app/shared/model/product.model';
 import { OrderItems } from 'app/shared/model/order-items.model';
 import { AccountService } from 'app/core';
+import { Client } from 'app/shared/model/client.model';
 
 type EntityResponseType = HttpResponse<ICommand>;
 type EntityArrayResponseType = HttpResponse<ICommand[]>;
@@ -95,6 +96,10 @@ export class CommandService {
 
   // SABIKE
 
+  hasCart(id: number): Observable<EntityResponseType> {
+    return this.http.get<ICommand>(`${this.resourceUrl}/${id}/hascart`, { observe: 'response' });
+  }
+
   get getCart(): ICommand {
     return this.cart;
   }
@@ -110,9 +115,9 @@ export class CommandService {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
-        console.log('time left .... ', this.timeLeft);
+        // console.log('time left .... ', this.timeLeft);
       } else {
-        console.log('time is done.....');
+        // console.log('time is done.....');
         this.timeLeft = -1;
         // TODO logic quantity ++ and reset CART
         // cartProducts empty it!
@@ -121,15 +126,14 @@ export class CommandService {
   }
 
   addToCart(product: IProduct, quantity: number) {
+    console.log('ADDTOCART in command service');
     if (this.cart === null) {
-      this.initCart();
+      console.log('cart is null yeah');
+      this.initCart(true);
     }
 
-    let i = 0;
-    let found = false;
-
     let itemIndex = 0;
-    let itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
+    const itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
       if (element.product.name === product.name) {
         itemIndex = index;
         return true;
@@ -138,11 +142,14 @@ export class CommandService {
 
     if (itemAlreadyInCart) {
       this.cart.orderItems[itemIndex].quantity++;
+      this.cart.orderItems[itemIndex].paidPrice += this.cart.orderItems[itemIndex].product.price;
     } else {
       this.cart.orderItems.push(new OrderItems(null, quantity, quantity * product.price, this.cart, product));
     }
 
-    this.totalCount += quantity;
+    // this.totalCount += quantity;
+    this.totalCount = 0;
+    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
     this.totalNewCount.next(this.totalCount);
 
     if (this.accountService.isAuthenticated()) {
@@ -150,18 +157,78 @@ export class CommandService {
     }
   }
 
-  private initCart() {
+  updateToCart(product: IProduct, quantity: number) {
+    let itemIndex = 0;
+    const itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
+      if (element.product.name === product.name) {
+        itemIndex = index;
+        return true;
+      }
+    });
+
+    if (itemAlreadyInCart) {
+      this.cart.orderItems[itemIndex].quantity = quantity;
+      this.cart.orderItems[itemIndex].paidPrice = this.cart.orderItems[itemIndex].product.price * quantity;
+    } else {
+      this.cart.orderItems.push(new OrderItems(null, quantity, quantity * product.price, this.cart, product));
+    }
+
+    this.totalCount = 0;
+    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
+    this.totalNewCount.next(this.totalCount);
+  }
+
+  initCart(loggedIn: boolean) {
     this.cart = new Command();
+    this.cart.orderItems = [];
+    this.cart.state = OrderState.CART;
+    this.cart.totalAmount = 0.0;
+    this.cart.orderDate = null;
+    this.cart.paymentDate = null;
+    this.cart.client = new Client();
+    this.cart.client.orders = [];
+    this.cart.client.orders.push(this.cart);
+    this.cart.client.id = 5000;
     // Cart ID = user id
+    console.log('IN INITCART');
     if (this.accountService.isAuthenticated()) {
-      this.cart.id = this.accountService.userIdentityId;
+      console.log('IN INITCART AFTER AUTH');
+      this.hasCart(this.accountService.userIdentityId).subscribe(msg => {
+        console.log('IN INITCAR AFTER AUTH AFTER HASCART and msg => ', msg);
+        if (msg.body) {
+          // this.cart.client.id = this.accountService.userIdentityId;
+          this.create(this.cart).subscribe(message => {
+            console.log('___________---______ CREATED CART', message);
+          });
+        }
+      });
+      // this.accountService.userIdentityId();
+      // this.cart.id = this.accountService.userIdentityId;
     } else {
       this.cart.id = null;
+      console.log('IN INITCART ELSE NOT AUTH');
     }
     // Cart Time TODO
     // this.cart.expireOn = null;
     // Cart Order Items
-    this.cart.orderItems = [];
+  }
+
+  // when client has a cart and reconnects
+  reloadCart(orderItems: OrderItems[]) {
+    this.cart = new Command();
+    this.cart.orderItems = orderItems;
+
+    // update badge
+    this.totalCount = 0;
+    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
+    this.totalNewCount.next(this.totalCount);
+  }
+
+  // when client disconnect
+  emptyCart() {
+    this.cart = null;
+    this.totalCount = 0;
+    this.totalNewCount.next(this.totalCount);
   }
 
   listenTotalCount(): Observable<any> {

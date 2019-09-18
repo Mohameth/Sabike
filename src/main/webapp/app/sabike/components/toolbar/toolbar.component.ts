@@ -9,7 +9,8 @@ import { AccountService, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 // Misc
 import { VERSION } from 'app/app.constants';
-import { CartService } from 'app/entities/cart';
+import { CommandService } from 'app/entities/command';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-toolbar',
@@ -24,6 +25,7 @@ export class ToolbarComponent implements OnInit {
   modalRef: NgbModalRef;
   version: string;
   numberOfItems = 0;
+  currentAccount: any;
 
   constructor(
     private loginService: LoginService,
@@ -32,7 +34,8 @@ export class ToolbarComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router,
     private dialogConnect: MatDialog,
-    private cartService: CartService
+    private commandService: CommandService,
+    private broadcast: JhiEventManager
   ) {
     this.version = VERSION ? 'v' + VERSION : '';
     this.isNavbarCollapsed = true;
@@ -44,9 +47,31 @@ export class ToolbarComponent implements OnInit {
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
 
-    this.cartService.listenTotalCount().subscribe(quantity => {
+    this.commandService.listenTotalCount().subscribe(quantity => {
       console.log(quantity);
       this.numberOfItems = quantity;
+    });
+
+    this.broadcast.subscribe('loginCallback', msg => {
+      if (msg.content === 'ok') {
+        console.log('DANS CALLBACK TOOLBAR :', msg);
+        console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
+        this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
+          console.log('HAS CART ?', msg2);
+          if (msg2.body !== []) {
+            this.commandService.reloadCart(msg2.body[0].orderItems);
+          }
+        });
+      }
+    });
+
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+      console.log('MSG :', account.login);
+      this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg => {
+        console.log('HAS CART ?', msg);
+        this.commandService.getCart;
+      });
     });
   }
 
@@ -65,6 +90,7 @@ export class ToolbarComponent implements OnInit {
   logout() {
     this.collapseNavbar();
     this.loginService.logout();
+    this.commandService.emptyCart();
     this.router.navigate(['']);
   }
 
