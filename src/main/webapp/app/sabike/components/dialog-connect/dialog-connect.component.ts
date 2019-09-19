@@ -78,7 +78,7 @@ export class DialogConnectComponent implements AfterViewInit {
         // console.log(2);
         this.eventManager.broadcast({
           name: 'authenticationSuccess',
-          content: 'Sending Authentication Success'
+          content: 'connected'
         });
 
         // console.log(3);

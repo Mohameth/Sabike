@@ -5,15 +5,24 @@ import { DetailsArticleComponent } from 'app/sabike/activities/article-details/d
 import { CartComponent } from 'app/sabike/activities/cart/cart.component';
 import { HomeComponent } from 'app/home';
 import { NavbarComponent } from 'app/layouts';
+import { CheckoutComponent } from 'app/sabike/activities/checkout/checkout.component';
 
 export const activitiesRoute: Routes = [
+  {
+    path: 'articles/details/:category/:articleId',
+    component: DetailsArticleComponent
+  },
   {
     path: 'articles/:category',
     component: ListArticlesComponent
   },
   {
-    path: 'articles/:category/:articleId',
-    component: DetailsArticleComponent
+    path: 'articles/:category/:subcategory',
+    component: ListArticlesComponent
+  },
+  {
+    path: 'articles/:category/:subcategory/:subsubcategory',
+    component: ListArticlesComponent
   },
   {
     path: '',
@@ -22,6 +31,10 @@ export const activitiesRoute: Routes = [
   {
     path: 'mycart',
     component: CartComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   },
   {
     path: 'search/:name',

@@ -31,6 +31,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("FROM Product WHERE part_category = ?1")
     List<Product> getAllByPartCategory(Pageable pageable, String category);
 
+    @Query("FROM Product WHERE type = 'BIKE'")
+    List<Product> getAllBikes(Pageable pageable);
+
+    @Query("FROM Product WHERE type = 'PART'")
+    List<Product> getAllParts(Pageable pageable);
+  
     @Query("UPDATE Product SET stock = ?2 WHERE id = ?1")
     List<Product> decreaseProductQuantity(Pageable pageable, int productID, int quantity);
 }
+

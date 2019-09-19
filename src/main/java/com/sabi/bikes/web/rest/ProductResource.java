@@ -3,23 +3,18 @@ package com.sabi.bikes.web.rest;
 import com.sabi.bikes.domain.Product;
 import com.sabi.bikes.repository.ProductRepository;
 import com.sabi.bikes.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -129,7 +124,7 @@ public class ProductResource {
         productRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
-  
+
     // SABIKE
 
     @GetMapping("/products/bybikecategory/{category}")
@@ -142,12 +137,23 @@ public class ProductResource {
     public ResponseEntity<List<Product>> findProductByPartCategory(
         Pageable pageable,
         @PathVariable String category
-    ){
+    ) {
         List<Product> products = productRepository.getAllByPartCategory(pageable, category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-  
+    @GetMapping("/products/bikes/all")
+    public ResponseEntity<List<Product>> findBikes(Pageable pageable) {
+        List<Product> products = productRepository.getAllBikes(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/parts/all")
+    public ResponseEntity<List<Product>> findParts(Pageable pageable) {
+        List<Product> products = productRepository.getAllParts(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @GetMapping("/products/search/{name}")
     public ResponseEntity<List<Product>> findProductByName(Pageable pageable, @PathVariable String name) {
         List<Product> products = productRepository.getProductsByName(pageable, name);

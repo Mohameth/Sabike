@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { sabike_paths } from './navigation-nodes';
 import { NavigationService } from 'app/sabike/services/navigation-service';
-import { Router } from '@angular/router';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
+import { RouterEventService } from 'app/sabike/services/routerEvent.service';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
   name: string;
   type: string;
+  route: string;
   children?: FileNode[];
 }
 
@@ -20,6 +23,7 @@ export interface FileNode {
 export interface FlatTreeNode {
   name: string;
   type: string;
+  route: string;
   level: number;
   expandable: boolean;
 }
@@ -29,7 +33,7 @@ export interface FlatTreeNode {
   templateUrl: './navigation-panel.component.html',
   styleUrls: ['./navigation-panel.component.scss']
 })
-export class NavigationPanelComponent {
+export class NavigationPanelComponent implements OnInit {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -39,44 +43,51 @@ export class NavigationPanelComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationService, private router: Router) {
+  constructor(private navigationService: NavigationService, private router: Router, private routerEventService: RouterEventService) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    // this.navigationService.listenNavigation().subscribe(message => {
-    //   // console.log('recu le message ', message);
-    //   // console.log(this.dataSource.data[0]);
-    //   // console.log(this.treeControl.dataNodes);
-    //   // this.treeControl.expandAll();
-    //   this.treeControl.dataNodes.forEach(cb => {
-    //     console.log(cb);
-    //   });
-    //   // TODO use the message diretly to find the good one
-    //   if (message === 'velos') {
-    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Vélos'));
-    //   } else {
-    //     this.treeControl.expand(this.treeControl.dataNodes.find(n => n.name === 'Pièces'));
-    //   }
-    // });
+    /* this.router.events.subscribe(p => {
+      console.log("about to cry :("); // Always called if only instruction in block
+      this.navigationService.handleBreadcrumb(this.buildBreads());
+    }); */
+
+    routerEventService.listenNavigationEndEvent().subscribe(m => {
+      console.log(' Trying to handle breadcrumbs ', m);
+      this.navigationService.handleBreadcrumb(this.buildBreads());
+    });
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
-      if (message) {
-        document.getElementById('nav-left-root-label-filters').style.display = 'none';
+      if (document.getElementById('nav-left-root-label-filters')) {
+        if (message) {
+          document.getElementById('nav-left-root-label-filters').style.display = 'none';
+        } else {
+          document.getElementById('nav-left-root-label-filters').style.display = 'block';
+        }
+      }
+    });
+
+    this.navigationService.listenNavigation().subscribe(message => {
+      if (message === 'bikes' || message === 'parts') {
+        this.expand(message);
       } else {
-        document.getElementById('nav-left-root-label-filters').style.display = 'block';
+        console.log('We are in the nav component, weird message', message);
       }
     });
   }
+
+  ngOnInit() {}
 
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number) {
     return {
       name: node.name,
       type: node.type,
+      route: node.route,
       level,
       expandable: !!node.children
     };
@@ -100,6 +111,38 @@ export class NavigationPanelComponent {
   /** Get the children for the node. */
   getChildren(node: FileNode) {
     return observableOf(node.children);
+  }
+
+  /** Creation of a list of breadcrumb from the node information */
+  buildBreads(): Breadcrumb[] {
+    let currentNode: FlatTreeNode;
+    let routeName: string;
+    const breads: Breadcrumb[] = [];
+    let i = 0;
+    const max = 100;
+
+    while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
+      currentNode = this.findNodeWithName(routeName);
+      const bread: Breadcrumb = {
+        label: currentNode.name,
+        url: currentNode.route
+      };
+
+      breads.push(bread);
+      i++;
+    }
+    return breads.reverse();
+  }
+
+  /** Use the treeControl and compare names ignoring cases (only the first is considered) */
+  findNodeWithName(nodeName: String): FlatTreeNode {
+    return this.treeControl.dataNodes.find(node => node.name.toLowerCase() === nodeName.toLowerCase());
+  }
+
+  expand(nodeName: String) {
+    this.treeControl.collapseAll();
+    const node: FlatTreeNode = this.findNodeWithName(nodeName);
+    this.treeControl.expand(node);
   }
 
   onListClick(item) {

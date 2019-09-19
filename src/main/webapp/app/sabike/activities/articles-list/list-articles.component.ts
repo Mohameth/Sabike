@@ -22,32 +22,27 @@ export class ListArticlesComponent implements OnInit {
     private communication: CommunicationService,
     private navigationService: NavigationService,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.communication.getSearchedValue().subscribe(msg => {
-      const parameter = this.router.url.split('/')[2];
-      if (this.router.url.split('/')[1] === 'search') {
-        this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
-          this.products = message.body;
-          console.log('msg value of : ', msg.valueOf());
-          console.log('IN LIST message : ', message);
-        });
-      }
-    });
-
-    //     this.service.addFilters(); TODO Show filters if not shown!!
-
+  ) {
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
         // Show loading indicator
       }
       if (m instanceof ActivationEnd) {
         // LOAD here
-        const parameter = this.router.url.split('/')[2];
+        const parameter = this.router.url.split('/').reverse()[0];
         // Navigation switch
         switch (parameter) {
           // Bikes categories
+          case 'bikes':
+            this.productService.getAllBikes().subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+          case 'parts':
+            this.productService.getAllParts().subscribe(message => {
+              this.products = message.body;
+            });
+            break;
           case 'mountain':
           case 'road':
           case 'city':
@@ -143,6 +138,19 @@ export class ListArticlesComponent implements OnInit {
 
         // Present error to user
         console.log(m.error);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.communication.getSearchedValue().subscribe(msg => {
+      const parameter = this.router.url.split('/')[2];
+      if (this.router.url.split('/')[1] === 'search') {
+        this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
+          this.products = message.body;
+          console.log('msg value of : ', msg.valueOf());
+          console.log('IN LIST message : ', message);
+        });
       }
     });
   }

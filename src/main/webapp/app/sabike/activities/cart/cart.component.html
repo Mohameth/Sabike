@@ -3,9 +3,9 @@
         <p class="mat-h1 mat-headline">Mon panier</p>
         <jhi-list-cart [orderItems]="orderItems"></jhi-list-cart>
     </div>
-    <mat-card id="cart-right">
+    <mat-card>
         <div id="cart-right-content">
-            <p class="mat-h2 mat-headline">Récapitulatif</p>
+            <p class="mat-h2 mat-headline">My Cart</p>
             <div class="horizontal-flexbox">
                 <p class="mat-h4">Nombre d'articles :&nbsp;</p>
                 <p class="mat-h4" style="font-weight: bold;"> {{ numberOfItems }} </p>
@@ -15,7 +15,20 @@
                 <p class="mat-h4" style="font-weight: bold;"> {{ totalPrice }} $</p>
             </div>
             <div>
-                <button class="cart-button-checkout" mat-raised-button color="accent">COMMANDER</button>
+                <button
+                    *ngIf="!isAuthenticated()"
+                    class="cart-button-checkout"
+                    mat-raised-button color="accent"
+                    (click)="openConnectDialog()">
+                    COMMANDER
+                </button>
+                <button
+                    *ngIf="isAuthenticated()"
+                    class="cart-button-checkout"
+                    mat-raised-button color="accent"
+                    routerLink="/checkout">
+                    COMMANDER
+                </button>
             </div>
         </div>
     </mat-card>

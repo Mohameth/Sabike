@@ -3,6 +3,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, AccountService, Account } from 'app/core';
+import { NavigationService } from 'app/sabike/services/navigation-service';
 
 @Component({
   selector: 'jhi-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
+    private navigationService: NavigationService,
     private eventManager: JhiEventManager
   ) {}
 
@@ -36,6 +38,14 @@ export class HomeComponent implements OnInit {
 
   isAuthenticated() {
     return this.accountService.isAuthenticated();
+  }
+
+  openBikesMenu() {
+    this.navigationService.expandCategory('bikes');
+  }
+
+  openPartsMenu() {
+    this.navigationService.expandCategory('parts');
   }
 
   login() {
