@@ -3,6 +3,7 @@ import { IClient } from 'app/shared/model/client.model';
 import { IOrderItems } from 'app/shared/model/order-items.model';
 
 export const enum OrderState {
+  CART = 'CART',
   PENDING = 'PENDING',
   VALIDATED = 'VALIDATED',
   SHIPPED = 'SHIPPED',

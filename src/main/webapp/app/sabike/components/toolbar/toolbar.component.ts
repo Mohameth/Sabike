@@ -9,6 +9,7 @@ import { AccountService, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 // Misc
 import { VERSION } from 'app/app.constants';
+import { CartService } from 'app/entities/cart';
 
 @Component({
   selector: 'jhi-toolbar',
@@ -22,6 +23,7 @@ export class ToolbarComponent implements OnInit {
   swaggerEnabled: boolean;
   modalRef: NgbModalRef;
   version: string;
+  numberOfItems = 0;
 
   constructor(
     private loginService: LoginService,
@@ -29,7 +31,8 @@ export class ToolbarComponent implements OnInit {
     private loginModalService: LoginModalService,
     private profileService: ProfileService,
     private router: Router,
-    private dialogConnect: MatDialog // SABIKE
+    private dialogConnect: MatDialog,
+    private cartService: CartService
   ) {
     this.version = VERSION ? 'v' + VERSION : '';
     this.isNavbarCollapsed = true;
@@ -39,6 +42,11 @@ export class ToolbarComponent implements OnInit {
     this.profileService.getProfileInfo().then(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
+    });
+
+    this.cartService.listenTotalCount().subscribe(quantity => {
+      console.log(quantity);
+      this.numberOfItems = quantity;
     });
   }
 
@@ -50,18 +58,10 @@ export class ToolbarComponent implements OnInit {
     return this.accountService.isAuthenticated();
   }
 
-  // login() {
-  //   this.modalRef = this.loginModalService.open();
-  // }
-
   logout() {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  toggleNavbar() {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
 
   getImageUrl() {

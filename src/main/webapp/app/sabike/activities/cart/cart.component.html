@@ -1,21 +1,34 @@
 <div id="cart-root">
     <div id="cart-left">
         <p class="mat-h1 mat-headline">Mon panier</p>
-        <jhi-list-cart></jhi-list-cart>
+        <jhi-list-cart [orderItems]="orderItems"></jhi-list-cart>
     </div>
-    <mat-card id="cart-right">
+    <mat-card>
         <div id="cart-right-content">
-            <p class="mat-h2 mat-headline">Récapitulatif</p>
+            <p class="mat-h2 mat-headline">My Cart</p>
             <div class="horizontal-flexbox">
-                <p class="mat-h4">Nombre d'articles :&nbsp;</p>
-                <p class="mat-h4" style="font-weight: bold;">3</p>
+                <p class="mat-h4">Number of products:&nbsp;</p>
+                <p class="mat-h4" style="font-weight: bold;">TODO</p>
             </div>
             <div class="horizontal-flexbox">
-                <p class="mat-h4">Prix total:&nbsp;</p>
-                <p class="mat-h4" style="font-weight: bold;">1234,56$</p>
+                <p class="mat-h4">Total price:&nbsp;</p>
+                <p class="mat-h4" style="font-weight: bold;">TODO</p>
             </div>
             <div>
-                <button class="cart-button-checkout" mat-raised-button color="accent">COMMANDER</button>
+                <button
+                    *ngIf="!isAuthenticated()"
+                    class="cart-button-checkout"
+                    mat-raised-button color="accent"
+                    (click)="openConnectDialog()">
+                    COMMANDER
+                </button>
+                <button
+                    *ngIf="isAuthenticated()"
+                    class="cart-button-checkout"
+                    mat-raised-button color="accent"
+                    routerLink="/checkout">
+                    COMMANDER
+                </button>
             </div>
         </div>
     </mat-card>

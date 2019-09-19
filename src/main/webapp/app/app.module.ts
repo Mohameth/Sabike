@@ -54,6 +54,9 @@ import { CartComponent } from './sabike/activities/cart/cart.component';
 import { ListCartComponent } from './sabike/components/list-cart/list-cart.component';
 import { ItemListCartComponent } from './sabike/components/list-cart/item-list-cart/item-list-cart.component';
 import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -93,7 +96,9 @@ import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.c
     MatCheckboxModule,
     MatMenuModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatBadgeModule,
+    MatStepperModule
   ],
   declarations: [
     JhiMainComponent,
@@ -112,7 +117,8 @@ import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.c
     CartComponent,
     ListCartComponent,
     ItemListCartComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    CheckoutComponent
   ],
   providers: [
     NgbActiveModal,

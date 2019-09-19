@@ -1,23 +1,10 @@
 <mat-toolbar color="primary" [class.mat-elevation-z8]="true">
-    <!--    <button-->
-    <!--        type="button"-->
-    <!--        aria-label="Toggle sidenav"-->
-    <!--        mat-icon-button>-->
-    <!--        &lt;!&ndash;-->
-    <!--    (click)="drawer.toggle()"-->
-    <!--    *ngIf="isHandset$ | async"-->
-    <!--    &ndash;&gt;-->
-    <!--        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>-->
-    <!--    </button>-->
-    <!--    <p>-->
-    <!--        SABIKE-->
-    <!--    </p>-->
     <span id="toolbar-main-title" routerLink="/" routerLinkActive="active">SABIKE</span>
-    <!--  <button mat-button (click)="onButtonNavigationClick('velos')">VÉLOS</button>-->
-    <!--  <button mat-button (click)="onButtonNavigationClick('pieces')">PIÈCES</button>-->
+
     <div id="toolbar-search-area">
         <jhi-search></jhi-search>
     </div>
+
     <span class="example-spacer"></span>
 
     <!-- Entities -->
@@ -46,11 +33,6 @@
                 routerLink="product"
                 routerLinkActive="active">
             Product
-        </button>
-        <button mat-menu-item
-                routerLink="cart"
-                routerLinkActive="active">
-            Cart
         </button>
         <button mat-menu-item
                 routerLink="command"
@@ -116,18 +98,6 @@
                 routerLinkActive="active">
             API
         </button>
-        <!--            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">-->
-        <!--                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>-->
-        <!--                <span>Database</span>-->
-        <!--            </a>-->
-        <!--        <button mat-menu-item href='./h2-console'>-->
-        <!--            Database-->
-        <!--&lt;!&ndash;            TODO debug h2 for dev&ndash;&gt;-->
-        <!--&lt;!&ndash;            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">&ndash;&gt;-->
-        <!--&lt;!&ndash;                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>&ndash;&gt;-->
-        <!--&lt;!&ndash;                <span>Database</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;            </a>&ndash;&gt;-->
-        <!--        </button>-->
     </mat-menu>
 
     <!-- Account management -->
@@ -168,19 +138,17 @@
             Se déconnecter
         </button>
     </mat-menu>
-
-    <!--  HOW TO DETECT IF ADMIN -->
-    <!--    <button mat-menu-item-->
-    <!--            *jhiHasAnyAuthority="'ROLE_ADMIN'">-->
-    <!--        Se déconnecter-->
-    <!--    </button>-->
-
+  
     <!-- Cart management -->
     <button type="button"
             aria-label="ToolbarButton cart"
             mat-icon-button
             routerLink="mycart"
             routerLinkActive="active">
-        <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon">shopping_cart</mat-icon>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Cart icon"
+                  matBadge="{{numberOfItems}}"
+                  matBadgeColor="warn">
+            shopping_cart
+        </mat-icon>
     </button>
 </mat-toolbar>

@@ -20,6 +20,9 @@
                 routerLink="/articles/details/{{product.partCategoryType}}/{{product.id}}">
             VOIR
         </button>
-        <button mat-button>AJOUTER</button>
+        <button mat-button
+                (click)="addToCart(product.id, 1)">
+            AJOUTER
+        </button>
     </mat-card-actions>
 </mat-card>

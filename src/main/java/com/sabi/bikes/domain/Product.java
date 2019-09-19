@@ -70,6 +70,9 @@ public class Product implements Serializable {
     @Column(name = "part_category_type")
     private PartCategoryType partCategoryType;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToOne(mappedBy = "product")
     @JsonIgnore
     private OrderItems orderItems;
@@ -239,6 +242,19 @@ public class Product implements Serializable {
         this.partCategoryType = partCategoryType;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Product description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public OrderItems getOrderItems() {
         return orderItems;
     }
@@ -285,6 +301,7 @@ public class Product implements Serializable {
             ", bikeColor='" + getBikeColor() + "'" +
             ", partCategory='" + getPartCategory() + "'" +
             ", partCategoryType='" + getPartCategoryType() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

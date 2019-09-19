@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { ICart } from 'app/shared/model/cart.model';
+import { Cart, ICart } from 'app/shared/model/cart.model';
+import { ProductService } from 'app/entities/product';
+import { IProduct } from 'app/shared/model/product.model';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { ICommand } from 'app/shared/model/command.model';
+import { AccountService } from 'app/core';
 
 type EntityResponseType = HttpResponse<ICart>;
 type EntityArrayResponseType = HttpResponse<ICart[]>;
@@ -16,7 +21,19 @@ type EntityArrayResponseType = HttpResponse<ICart[]>;
 export class CartService {
   public resourceUrl = SERVER_API_URL + 'api/carts';
 
-  constructor(protected http: HttpClient) {}
+  // >>>>> Sabike
+  readonly INITIAL_TIME_LEFT_CART: number = 60;
+  private timeLeft = -1;
+  private interval;
+  private _cart: ICart = null;
+  private command: ICommand = null;
+
+  // total count for toolbar
+  private totalCount = 0;
+  private totalNewCount = new Subject<number>();
+
+  // Sabike <<<<<
+  constructor(protected http: HttpClient, private productService: ProductService, private accountService: AccountService) {}
 
   create(cart: ICart): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(cart);
@@ -70,5 +87,94 @@ export class CartService {
       });
     }
     return res;
+  }
+
+  // SABIKE
+
+  get cart(): ICart {
+    return this._cart;
+  }
+
+  manageTimer() {
+    if (this.timeLeft === -1) {
+      this.startTimer();
+    }
+  }
+
+  private startTimer() {
+    this.timeLeft = this.INITIAL_TIME_LEFT_CART;
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+        console.log('time left .... ', this.timeLeft);
+      } else {
+        console.log('time is done.....');
+        this.timeLeft = -1;
+        // TODO logic quantity ++ and reset CART
+        // cartProducts empty it!
+      }
+    }, 1000);
+  }
+
+  addToCart(product: IProduct, quantity: number) {
+    if (this._cart === null) {
+      this.initCart();
+    }
+
+    let i = 0;
+    let found = false;
+
+    console.log('AVANT IF length : ', this._cart.orderItem.filter(name => name === product.name).length);
+
+    let itemIndex = 0;
+    let itemAlreadyInCart = this._cart.orderItem.find((element, index, obj) => {
+      if (element.product.name === product.name) {
+        itemIndex = index;
+        return true;
+      }
+    });
+
+    if (itemAlreadyInCart) {
+      this._cart.orderItem[itemIndex].quantity++;
+    } else {
+      this._cart.orderItem.push(
+        new OrderItems(
+          null,
+          quantity,
+          quantity * product.price,
+          this.command, // TODO
+          product
+        )
+      );
+    }
+
+    console.log('BITE', this.totalCount);
+
+    this.totalCount += quantity;
+    this.totalNewCount.next(this.totalCount);
+
+    console.log(this._cart);
+
+    if (this.accountService.isAuthenticated()) {
+      // save cart to REST
+    }
+  }
+
+  private initCart() {
+    this._cart = new Cart();
+    // Cart ID = user id
+    if (this.accountService.isAuthenticated()) {
+      this._cart.id = this.accountService.userIdentityId;
+    } else {
+      this._cart.id = null;
+    }
+    // Cart Time TODO
+    this._cart.expireOn = null;
+    // Cart Order Items - niiiice
+    this._cart.orderItem = [];
+  }
+
+  listenTotalCount(): Observable<any> {
+    return this.totalNewCount.asObservable();
   }
 }

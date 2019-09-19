@@ -20,7 +20,7 @@
             <th><span>ID</span></th>
             <th><span>Quantity</span></th>
             <th><span>Paid Price</span></th>
-            <th><span>Cart</span></th>
+<!--            <th><span>Cart</span></th>-->
             <th><span>Command</span></th>
             <th><span>Product</span></th>
             <th></th>
@@ -31,11 +31,11 @@
                 <td><a [routerLink]="['/order-items', orderItems.id, 'view' ]">{{orderItems.id}}</a></td>
                 <td>{{orderItems.quantity}}</td>
                 <td>{{orderItems.paidPrice}}</td>
-                <td>
-                    <div *ngIf="orderItems.cart">
-                        <a [routerLink]="['/cart', orderItems.cart?.id, 'view' ]" >{{orderItems.cart?.id}}</a>
-                    </div>
-                </td>
+<!--                <td>-->
+<!--                    <div *ngIf="orderItems.cart">-->
+<!--                        <a [routerLink]="['/cart', orderItems.cart?.id, 'view' ]" >{{orderItems.cart?.id}}</a>-->
+<!--                    </div>-->
+<!--                </td>-->
                 <td>
                     <div *ngIf="orderItems.command">
                         <a [routerLink]="['/command', orderItems.command?.id, 'view' ]" >{{orderItems.command?.id}}</a>

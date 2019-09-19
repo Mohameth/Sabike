@@ -1,0 +1,101 @@
+<div id="checkout-root">
+    <div id="checkout-root-left">
+        <mat-horizontal-stepper #stepper linear>
+            <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Personal information</ng-template>
+                    <div class="vbox-form">
+                        <mat-form-field>
+                            <input matInput placeholder="Last name" formControlName="lastCtrl" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="First name" formControlName="firstCtrl" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="stepper-button-wrapper">
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Address</ng-template>
+                    <div class="vbox-form">
+                        <mat-form-field>
+                            <input matInput placeholder="Street number" formControlName="addressNumberCtrl" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Street name" formControlName="addressStreetCtrl" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Postal code" formControlName="addressPostalCodeCtrl" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="City" formControlName="addressCityCtrl" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="stepper-button-wrapper">
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="thirdFormGroup">
+                <form [formGroup]="thirdFormGroup">
+                    <ng-template matStepLabel>Payment</ng-template>
+                    <div class="vbox-form">
+                        <mat-form-field>
+                            <input matInput placeholder="Card number"
+                                   formControlName="paymentCardNumberCtrl"
+                                   required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Name on card"
+                                   formControlName="paymentCardNameCtrl"
+                                   required>
+                        </mat-form-field>
+                        <div class="hbox-form">
+                            <mat-form-field id="paymentCardExpirationCtrl">
+                                <input matInput placeholder="Expiration date (MM / YY)"
+                                       formControlName="paymentCardExpirationCtrl"
+                                       required>
+                            </mat-form-field>
+                            <mat-form-field id="paymentCardSecurityCtrl">
+                                <input matInput placeholder="Security code"
+                                       formControlName="paymentCardSecurityCtrl"
+                                       required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
+                    </div>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
+
+    </div>
+    <div id="checkout-root-right">
+        <mat-card id="cart-right">
+            <div id="cart-right-content">
+                <p class="mat-h2 mat-headline">My Cart</p>
+                <div class="horizontal-flexbox">
+                    <p class="mat-h4">Number of products:&nbsp;</p>
+                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                </div>
+                <div class="horizontal-flexbox">
+                    <p class="mat-h4">Total price:&nbsp;</p>
+                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                </div>
+                <div>
+                    <button
+                        mat-raised-button
+                        color="accent">
+                        TODO
+                    </button>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

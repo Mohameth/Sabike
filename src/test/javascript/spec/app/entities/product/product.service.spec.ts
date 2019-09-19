@@ -35,8 +35,9 @@ describe('Service Tests', () => {
         'AAAAAAA',
         0,
         'AAAAAAA',
-        PartCategory.TRANSMISSION,
-        PartCategoryType.HANDLEBAR
+        PartCategory.STEERING,
+        PartCategoryType.STEMS,
+        'AAAAAAA'
       );
     });
 
@@ -84,7 +85,8 @@ describe('Service Tests', () => {
             bikeSeeds: 1,
             bikeColor: 'BBBBBB',
             partCategory: 'BBBBBB',
-            partCategoryType: 'BBBBBB'
+            partCategoryType: 'BBBBBB',
+            description: 'BBBBBB'
           },
           elemDefault
         );
@@ -113,7 +115,8 @@ describe('Service Tests', () => {
             bikeSeeds: 1,
             bikeColor: 'BBBBBB',
             partCategory: 'BBBBBB',
-            partCategoryType: 'BBBBBB'
+            partCategoryType: 'BBBBBB',
+            description: 'BBBBBB'
           },
           elemDefault
         );

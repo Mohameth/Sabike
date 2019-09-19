@@ -1,0 +1,68 @@
+#checkout-root {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+#checkout-root-left {
+  width: 65%;
+  margin-right: 16px;
+  //background: #80222222;
+}
+
+// >>>>>>>> cart recap
+#checkout-root-right {
+  width: 35%;
+  //background: #803f51b5;
+}
+
+#cart-right-content {
+  display: flex;
+  flex-direction: column;
+}
+
+#cart-left-text-at-top-details-price {
+  font-weight: bold;
+}
+
+#cart-left-text-at-top-details-spacer {
+  width: 8px;
+}
+
+.horizontal-flexbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-button-checkout {
+  //display: flex;
+  //align-items: flex-end;
+  position: absolute;
+  right: 24px;
+}
+
+// cart recap <<<<<<<<<<
+.vbox-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.hbox-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.stepper-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#paymentCardExpirationCtrl {
+  width: 60%;
+  margin-right: 16px;
+}
+
+#paymentCardSecurityCtrl {
+  margin-left: 16px;
+  width: 40%;
+}

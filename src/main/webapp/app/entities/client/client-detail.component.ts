@@ -14,6 +14,7 @@ export class ClientDetailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.data.subscribe(({ client }) => {
+      console.log('++++++++++++++++', client);
       this.client = client;
     });
   }

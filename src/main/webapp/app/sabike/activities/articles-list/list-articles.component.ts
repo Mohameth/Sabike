@@ -1,21 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
-import { filter, map } from 'rxjs/operators';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IClient } from 'app/shared/model/client.model';
 import { IProduct } from 'app/shared/model/product.model';
 import { JhiAlertService } from 'ng-jhipster';
-import {
-  ActivationEnd,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  ResolveEnd,
-  ResolveStart,
-  Router,
-  RoutesRecognized
-} from '@angular/router';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { CommunicationService } from 'app/sabike/services/communication.service';
+import { NavigationError, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'jhi-articles',
@@ -27,9 +17,10 @@ export class ListArticlesComponent implements OnInit {
   products: IProduct[];
 
   constructor(
-    private navigationService: NavigationService,
     private productService: ProductService,
     protected jhiAlertService: JhiAlertService,
+    private communication: CommunicationService,
+    private navigationService: NavigationService,
     private router: Router
   ) {
     this.router.events.subscribe(m => {
@@ -149,7 +140,21 @@ export class ListArticlesComponent implements OnInit {
         console.log(m.error);
       }
     });
-  }
+  }}
+
+  ngOnInit() {
+    this.communication.getSearchedValue().subscribe(msg => {
+      const parameter = this.router.url.split('/')[2];
+      if (this.router.url.split('/')[1] === 'search') {
+        this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
+          this.products = message.body;
+          console.log('msg value of : ', msg.valueOf());
+          console.log('IN LIST message : ', message);
+        });
+      }
+    });
+
+    //     this.service.addFilters(); TODO Show filters if not shown!!
 
   ngOnInit() {
     // this.navigationService.getBreadcrumb();
