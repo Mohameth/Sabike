@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -11,7 +11,8 @@ import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
 import { IProduct } from 'app/shared/model/product.model';
 import { OrderItems } from 'app/shared/model/order-items.model';
 import { AccountService } from 'app/core';
-import { Client } from 'app/shared/model/client.model';
+import { Client, IClient } from 'app/shared/model/client.model';
+import { ClientService } from 'app/entities/client';
 
 type EntityResponseType = HttpResponse<ICommand>;
 type EntityArrayResponseType = HttpResponse<ICommand[]>;
@@ -35,7 +36,7 @@ export class CommandService {
 
   // Sabike <<<<<
 
-  constructor(protected http: HttpClient, private accountService: AccountService) {}
+  constructor(protected http: HttpClient, private accountService: AccountService, private clientService: ClientService) {}
 
   create(command: ICommand): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(command);
@@ -127,24 +128,34 @@ export class CommandService {
 
   addToCart(product: IProduct, quantity: number) {
     console.log('ADDTOCART in command service');
+    let itemAlreadyInCart;
+    let itemIndex = 0;
+
     if (this.cart === null) {
       console.log('cart is null yeah');
       this.initCart(true);
     }
 
-    let itemIndex = 0;
-    const itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
-      if (element.product.name === product.name) {
-        itemIndex = index;
-        return true;
-      }
-    });
+    console.log('AFTER INITCART');
 
+    if (this.cart !== null) {
+      itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
+        if (element.product.name === product.name) {
+          itemIndex = index;
+          return true;
+        }
+      });
+    }
+
+    console.log('THIS CART BEFORE IF', this.cart);
     if (itemAlreadyInCart) {
+      console.log('IN itemAlreadyInCart');
       this.cart.orderItems[itemIndex].quantity++;
       this.cart.orderItems[itemIndex].paidPrice += this.cart.orderItems[itemIndex].product.price;
     } else {
+      console.log('ELSE itemAlreadyInCart');
       this.cart.orderItems.push(new OrderItems(null, quantity, quantity * product.price, this.cart, product));
+      console.log('PUSH', this.cart.orderItems);
     }
 
     // this.totalCount += quantity;
@@ -178,17 +189,33 @@ export class CommandService {
     this.totalNewCount.next(this.totalCount);
   }
 
+  createCommandCart(client1: IClient): ICommand {
+    return {
+      ...new Command(),
+      id: undefined,
+      state: OrderState.CART,
+      orderDate: null,
+      totalAmount: 0,
+      paymentDate: undefined,
+      client: client1,
+      orderItems: []
+    };
+  }
+
   initCart(loggedIn: boolean) {
-    this.cart = new Command();
-    this.cart.orderItems = [];
-    this.cart.state = OrderState.CART;
-    this.cart.totalAmount = 0.0;
-    this.cart.orderDate = null;
-    this.cart.paymentDate = null;
-    this.cart.client = new Client();
-    this.cart.client.orders = [];
-    this.cart.client.orders.push(this.cart);
-    this.cart.client.id = 5000;
+    // this.cart = new Command();
+    // this.cart.orderItems = [];
+    // this.cart.id = undefined;
+    // this.cart.state = OrderState.CART;
+    // this.cart.totalAmount = 0.0;
+    // this.cart.orderDate = null;
+    // this.cart.paymentDate = null;
+    // this.cart.client = new Client();
+    // this.cart.client.phoneNumber = null;
+    // this.cart.client.phoneNumber = null;
+    // this.cart.client.orders = [];
+    // this.cart.client.orders.push(this.cart);
+    // this.cart.client.id = 5000;
     // Cart ID = user id
     console.log('IN INITCART');
     if (this.accountService.isAuthenticated()) {
@@ -197,9 +224,18 @@ export class CommandService {
         console.log('IN INITCAR AFTER AUTH AFTER HASCART and msg => ', msg);
         if (msg.body) {
           // this.cart.client.id = this.accountService.userIdentityId;
-          this.create(this.cart).subscribe(message => {
-            console.log('___________---______ CREATED CART', message);
+          this.clientService.find(this.accountService.userIdentityId).subscribe(client => {
+            // this.cart = new Command();
+            console.log('on A LE CLIENT! :', client, this.cart);
+            this.cart = this.createCommandCart(client.body);
+            console.log('TYPE CART :', typeof this.cart, this.cart);
+            this.create(this.cart).subscribe(message => {
+              console.log('___________---______ CREATED CART', message);
+            });
           });
+          // console.log('this cart client id : ',  this.cart.client.id );
+          // this.http.post<ICommand>(this.resourceUrl, this.cart, { observe: 'response' }).subscribe(msg2 =>
+          //   console.log('___________---______ CREATED CART', msg2));
         }
       });
       // this.accountService.userIdentityId();
@@ -215,6 +251,7 @@ export class CommandService {
 
   // when client has a cart and reconnects
   reloadCart(orderItems: OrderItems[]) {
+    console.log('on est dans RELOADCART');
     this.cart = new Command();
     this.cart.orderItems = orderItems;
 

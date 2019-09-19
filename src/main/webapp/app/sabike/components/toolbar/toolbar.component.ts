@@ -50,7 +50,7 @@ export class ToolbarComponent implements OnInit {
         console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
         this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
           console.log('HAS CART ?', msg2);
-          if (msg2.body) {
+          if (msg2.body[0] !== null) {
             this.commandService.reloadCart(msg2.body[0].orderItems);
           }
         });
