@@ -4,10 +4,10 @@
     <mat-card-content>
         <mat-card-title>{{product.name}}</mat-card-title>
         <mat-card-subtitle>{{product.price}} €</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="product.stock > 0; else unavailable" class="available">En stock</mat-card-subtitle>
-        <ng-template #unavailable>
-            <mat-card-subtitle class="unavailable">Non disponible</mat-card-subtitle>
-        </ng-template>
+        <mat-card-subtitle id="in-stock">{{ isInStock }}</mat-card-subtitle>
+        <!--<ng-template #unavailable>-->
+            <!--<mat-card-subtitle class="unavailable">Non disponible</mat-card-subtitle>-->
+        <!--</ng-template>-->
     </mat-card-content>
     <mat-card-actions align="end">
         <button *ngIf="product.type === 'BIKE'"
@@ -20,7 +20,7 @@
                 routerLink="/articles/details/{{product.partCategoryType}}/{{product.id}}">
             VOIR
         </button>
-        <button mat-button
+        <button mat-button [disabled]="isDisabled"
                 (click)="addToCart(product.id, 1)">
             AJOUTER
         </button>

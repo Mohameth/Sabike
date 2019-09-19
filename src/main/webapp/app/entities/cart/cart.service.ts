@@ -106,9 +106,9 @@ export class CartService {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
-        console.log('time left .... ', this.timeLeft);
+        // console.log('time left .... ', this.timeLeft);
       } else {
-        console.log('time is done.....');
+        // console.log('time is done.....');
         this.timeLeft = -1;
         // TODO logic quantity ++ and reset CART
         // cartProducts empty it!
@@ -121,13 +121,13 @@ export class CartService {
       this.initCart();
     }
 
-    let i = 0;
+    const i = 0;
     let found = false;
 
     console.log('AVANT IF length : ', this._cart.orderItem.filter(name => name === product.name).length);
 
     let itemIndex = 0;
-    let itemAlreadyInCart = this._cart.orderItem.find((element, index, obj) => {
+    const itemAlreadyInCart = this._cart.orderItem.find((element, index, obj) => {
       if (element.product.name === product.name) {
         itemIndex = index;
         return true;
@@ -164,7 +164,7 @@ export class CartService {
     this._cart = new Cart();
     // Cart ID = user id
     if (this.accountService.isAuthenticated()) {
-      this._cart.id = this.accountService.userIdentityId;
+      // this._cart.id = this.accountService.userIdentityId;
     } else {
       this._cart.id = null;
     }

@@ -45,7 +45,7 @@ public class Command implements Serializable {
     @JsonIgnoreProperties("commands")
     private Client client;
 
-    @OneToMany
+    @OneToMany(mappedBy = "command", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrderItems> orderItems = new HashSet<>();
 

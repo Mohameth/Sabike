@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 import { SERVER_API_URL } from 'app/app.constants';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {

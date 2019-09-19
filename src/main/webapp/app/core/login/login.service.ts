@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AccountService } from 'app/core/auth/account.service';
 import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { JhiTrackerService } from 'app/core/tracker/tracker.service';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {

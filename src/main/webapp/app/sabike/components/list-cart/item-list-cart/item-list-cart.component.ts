@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { CommandService } from 'app/entities/command';
 
 @Component({
   selector: 'jhi-item-list-cart',
@@ -7,12 +8,21 @@ import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
   styleUrls: ['./item-list-cart.component.scss']
 })
 export class ItemListCartComponent implements OnInit {
-  selectedQuantity = 4; // default
+  selectedQuantity = '1'; // default
   @Input() orderItem: OrderItems;
 
-  constructor() {}
+  constructor(private commandService: CommandService) {}
 
   ngOnInit() {
-    this.selectedQuantity = this.orderItem.quantity;
+    this.selectedQuantity = this.orderItem.quantity.toString();
+    console.log('SELECTED QTE :', this.selectedQuantity);
+    console.log('orderitems string :', this.orderItem.quantity.toString());
+  }
+
+  changeQuantity($newQuantity: any) {
+    this.commandService.updateToCart(this.orderItem.product, parseInt($newQuantity));
+    // this.orderItem.quantity = $newQuantity;
+    console.log('new QTE :', this.orderItem.quantity);
+    console.log('type qte', typeof $newQuantity);
   }
 }

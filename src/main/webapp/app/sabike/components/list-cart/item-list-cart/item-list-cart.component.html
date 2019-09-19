@@ -11,12 +11,12 @@
     <div class="item-list-cart-middle-quantity">
         <mat-form-field id="select-quantity">
             <mat-label>Quantité</mat-label>
-            <mat-select [(value)]="selectedQuantity" placeholder="Mode">
-                <mat-option value=1>1</mat-option>
-                <mat-option value=2>2</mat-option>
-                <mat-option value=3>3</mat-option>
-                <mat-option value=4>4</mat-option>
-                <mat-option value=5>5</mat-option>
+            <mat-select (selectionChange)="changeQuantity(selectedQuantity)" [(value)]="selectedQuantity" placeholder="Mode">
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
             </mat-select>
         </mat-form-field>
         <p class="mat-h4"> {{ orderItem.paidPrice }}</p>
