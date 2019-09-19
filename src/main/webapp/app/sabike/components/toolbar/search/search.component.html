@@ -1,7 +1,8 @@
 <div id="search-root">
     <form class="example-form">
         <mat-form-field class="example-full-width">
-            <input type="text" aria-label="Number" matInput [(ngModel)]="searched" [formControl]="myControl" [matAutocomplete]="auto">
+            <input type="text" aria-label="Number" matInput [(ngModel)]="searched" [formControl]="myControl"
+                   [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                     {{option}}
@@ -9,11 +10,10 @@
             </mat-autocomplete>
         </mat-form-field>
         <button mat-button *ngIf="searched" matSuffix mat-icon-button aria-label="Clear" (click)="searched=''">
-        <mat-icon>close</mat-icon>
+            <mat-icon>close</mat-icon>
         </button>
         <button type="button" *ngIf="searched" aria-label="ToolbarButton search" mat-icon-button (click)="getValue()">
-        <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">search</mat-icon>
+            <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">search</mat-icon>
         </button>
     </form>
-
 </div>
