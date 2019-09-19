@@ -7,7 +7,8 @@
             matTreeNodePadding
             matRipple
             routerLink="{{node.route}}">
-            <button mat-icon-button></button>
+            <button mat-icon-button
+                    [attr.aria-label]="'toggle ' + node.name"></button>
             {{node.name}}
         </mat-tree-node>
 
