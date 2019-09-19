@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { IOrderItems } from 'app/shared/model/order-items.model';
 import { CommandService } from 'app/entities/command';
 import { AccountService } from 'app/core';
 import { DialogConnectComponent } from 'app/sabike/components/dialog-connect/dialog-connect.component';
@@ -18,7 +18,6 @@ export class CartComponent implements OnInit {
   numberOfItems = 0;
 
   constructor(
-    private cartService: CartService,
     private accountService: AccountService,
     private dialogConnect: MatDialog,
     private eventManager: JhiEventManager,
@@ -49,14 +48,9 @@ export class CartComponent implements OnInit {
     console.log('totalPRica in CART : ', this.totalPrice);
     this.eventManager.subscribe('authenticationSuccess', message => {
       if (message.content === 'connected') {
-        this.router.navigate(['/checkout'], { relativeTo: this.route });
+        this.router.navigate(['/checkout'], { relativeTo: this.route }).then(r => console.log(r));
       }
     });
-  }
-
-  onCartOrderClick() {
-    // If connected
-    // If not connected
   }
 
   isAuthenticated() {
@@ -64,10 +58,6 @@ export class CartComponent implements OnInit {
   }
 
   openConnectDialog(): void {
-    const dialogRef = this.dialogConnect.open(DialogConnectComponent);
-    //
-    // dialogRef.afterClosed().subscribe(result => {
-    //
-    // });
+    this.dialogConnect.open(DialogConnectComponent);
   }
 }

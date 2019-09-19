@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -120,10 +119,6 @@ export class CartService {
     if (this._cart === null) {
       this.initCart();
     }
-
-    const i = 0;
-    let found = false;
-
     console.log('AVANT IF length : ', this._cart.orderItem.filter(name => name === product.name).length);
 
     let itemIndex = 0;

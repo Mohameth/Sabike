@@ -24,8 +24,7 @@ import { DialogConnectComponent } from './sabike/components/dialog-connect/dialo
 import { ToolbarComponent } from './sabike/components/toolbar/toolbar.component';
 import { SearchComponent } from './sabike/components/toolbar/search/search.component';
 import { MatToolbarModule } from '@angular/material';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavigationPanelComponent } from './sabike/components/navigationpanel/navigation-panel.component';
 import { ListArticlesComponent } from 'app/sabike/activities/articles-list/list-articles.component';
