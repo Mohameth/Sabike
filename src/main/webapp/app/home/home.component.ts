@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
 
   openPartsMenu() {
     this.navigationService.expandCategory('parts');
-    this.navigationService.getBreadcrumb();
   }
 
   login() {

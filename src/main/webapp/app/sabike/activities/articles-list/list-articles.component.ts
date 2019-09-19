@@ -152,7 +152,7 @@ export class ListArticlesComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.navigationService.getBreadcrumb();
+    // this.navigationService.getBreadcrumb();
   }
 
   protected onError(errorMessage: string) {

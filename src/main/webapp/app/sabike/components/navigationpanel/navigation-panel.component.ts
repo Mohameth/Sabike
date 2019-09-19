@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { sabike_paths } from './navigation-nodes';
 import { NavigationService } from 'app/sabike/services/navigation-service';
-import { ActivationEnd, Router } from '@angular/router';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
+import { RouterEventService } from 'app/sabike/services/routerEvent.service';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -32,7 +33,7 @@ export interface FlatTreeNode {
   templateUrl: './navigation-panel.component.html',
   styleUrls: ['./navigation-panel.component.scss']
 })
-export class NavigationPanelComponent {
+export class NavigationPanelComponent implements OnInit {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -42,17 +43,21 @@ export class NavigationPanelComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationService, private router: Router) {
+  constructor(private navigationService: NavigationService, private router: Router, private routerEventService: RouterEventService) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    this.router.events.subscribe(m => {
-      if (m instanceof ActivationEnd) {
-        this.navigationService.handleBreadcrumb(this.buildBreads());
-      }
+    /* this.router.events.subscribe(p => {
+      console.log("about to cry :("); // Always called if only instruction in block
+      this.navigationService.handleBreadcrumb(this.buildBreads());
+    }); */
+
+    routerEventService.listenNavigationEndEvent().subscribe(m => {
+      console.log(' Trying to handle breadcrumbs ', m);
+      this.navigationService.handleBreadcrumb(this.buildBreads());
     });
 
     this.navigationService.listenSubject().subscribe(message => {
@@ -74,6 +79,8 @@ export class NavigationPanelComponent {
       }
     });
   }
+
+  ngOnInit() {}
 
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number) {
@@ -110,13 +117,13 @@ export class NavigationPanelComponent {
   buildBreads(): Breadcrumb[] {
     let currentNode: FlatTreeNode;
     let routeName: string;
-    let breads: Breadcrumb[] = [];
-    let i: number = 0;
-    let max: number = 100;
+    const breads: Breadcrumb[] = [];
+    let i = 0;
+    const max = 100;
 
     while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
       currentNode = this.findNodeWithName(routeName);
-      let bread: Breadcrumb = {
+      const bread: Breadcrumb = {
         label: currentNode.name,
         url: currentNode.route
       };
@@ -134,7 +141,7 @@ export class NavigationPanelComponent {
 
   expand(nodeName: String) {
     this.treeControl.collapseAll();
-    let node: FlatTreeNode = this.findNodeWithName(nodeName);
+    const node: FlatTreeNode = this.findNodeWithName(nodeName);
     this.treeControl.expand(node);
   }
 
