@@ -140,9 +140,9 @@ export class ListArticlesComponent implements OnInit {
         console.log(m.error);
       }
     });
-  }}
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.communication.getSearchedValue().subscribe(msg => {
       const parameter = this.router.url.split('/')[2];
       if (this.router.url.split('/')[1] === 'search') {
@@ -153,11 +153,6 @@ export class ListArticlesComponent implements OnInit {
         });
       }
     });
-
-    //     this.service.addFilters(); TODO Show filters if not shown!!
-
-  ngOnInit() {
-    // this.navigationService.getBreadcrumb();
   }
 
   protected onError(errorMessage: string) {
