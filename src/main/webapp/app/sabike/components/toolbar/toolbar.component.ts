@@ -58,18 +58,10 @@ export class ToolbarComponent implements OnInit {
     return this.accountService.isAuthenticated();
   }
 
-  // login() {
-  //   this.modalRef = this.loginModalService.open();
-  // }
-
   logout() {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  toggleNavbar() {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
 
   getImageUrl() {
