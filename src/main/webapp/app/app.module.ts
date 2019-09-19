@@ -53,6 +53,7 @@ import { DetailsArticleComponent } from 'app/sabike/activities/article-details/d
 import { CartComponent } from './sabike/activities/cart/cart.component';
 import { ListCartComponent } from './sabike/components/list-cart/list-cart.component';
 import { ItemListCartComponent } from './sabike/components/list-cart/item-list-cart/item-list-cart.component';
+import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -116,6 +117,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     CartComponent,
     ListCartComponent,
     ItemListCartComponent,
+    BreadcrumbComponent,
     CheckoutComponent
   ],
   providers: [

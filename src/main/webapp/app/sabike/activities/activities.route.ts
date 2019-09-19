@@ -9,12 +9,20 @@ import { CheckoutComponent } from 'app/sabike/activities/checkout/checkout.compo
 
 export const activitiesRoute: Routes = [
   {
+    path: 'articles/details/:category/:articleId',
+    component: DetailsArticleComponent
+  },
+  {
     path: 'articles/:category',
     component: ListArticlesComponent
   },
   {
-    path: 'articles/:category/:articleId',
-    component: DetailsArticleComponent
+    path: 'articles/:category/:subcategory',
+    component: ListArticlesComponent
+  },
+  {
+    path: 'articles/:category/:subcategory/:subsubcategory',
+    component: ListArticlesComponent
   },
   {
     path: '',

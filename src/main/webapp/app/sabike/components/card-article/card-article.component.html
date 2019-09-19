@@ -1,5 +1,6 @@
 <mat-card class="example-card">
-    <img id="card-article-image" mat-card-image src="../../../../content/images/velo.jpg">
+<!--    <img id="card-article-image" mat-card-image src="../../../../content/images/velo.jpg">-->
+    <img class="card-article-image" mat-card-image src="{{product.picture}}">
     <mat-card-content>
         <mat-card-title>{{product.name}}</mat-card-title>
         <mat-card-subtitle>{{product.price}} €</mat-card-subtitle>
@@ -11,12 +12,12 @@
     <mat-card-actions align="end">
         <button *ngIf="product.type === 'BIKE'"
                 mat-button
-                routerLink="/articles/{{product.bikeCategory}}/{{product.id}}">
+                routerLink="/articles/details/{{product.bikeCategory}}/{{product.id}}">
             VOIR
         </button>
         <button *ngIf="product.type === 'PART'"
                 mat-button
-                routerLink="/articles/{{product.partCategoryType}}/{{product.id}}">
+                routerLink="/articles/details/{{product.partCategoryType}}/{{product.id}}">
             VOIR
         </button>
         <button mat-button

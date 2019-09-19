@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" [class.mat-elevation-z8]="true">
-    <span id="toolbar-main-title" routerLink="/">SABIKE</span>
+    <span id="toolbar-main-title" routerLink="/" routerLinkActive="active">SABIKE</span>
 
     <div id="toolbar-search-area">
         <jhi-search></jhi-search>
@@ -34,11 +34,6 @@
                 routerLinkActive="active">
             Product
         </button>
-<!--        <button mat-menu-item-->
-<!--                routerLink="cart"-->
-<!--                routerLinkActive="active">-->
-<!--            Cart-->
-<!--        </button>-->
         <button mat-menu-item
                 routerLink="command"
                 routerLinkActive="active">
@@ -103,18 +98,6 @@
                 routerLinkActive="active">
             API
         </button>
-        <!--            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">-->
-        <!--                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>-->
-        <!--                <span>Database</span>-->
-        <!--            </a>-->
-        <!--        <button mat-menu-item href='./h2-console'>-->
-        <!--            Database-->
-        <!--&lt;!&ndash;            TODO debug h2 for dev&ndash;&gt;-->
-        <!--&lt;!&ndash;            <a class="dropdown-item"  target="_tab" (click)="collapseNavbar()">&ndash;&gt;-->
-        <!--&lt;!&ndash;                <fa-icon icon="hdd" fixedWidth="true"></fa-icon>&ndash;&gt;-->
-        <!--&lt;!&ndash;                <span>Database</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;            </a>&ndash;&gt;-->
-        <!--        </button>-->
     </mat-menu>
 
     <!-- Account management -->
@@ -155,13 +138,7 @@
             Se déconnecter
         </button>
     </mat-menu>
-
-    <!--  HOW TO DETECT IF ADMIN -->
-    <!--    <button mat-menu-item-->
-    <!--            *jhiHasAnyAuthority="'ROLE_ADMIN'">-->
-    <!--        Se déconnecter-->
-    <!--    </button>-->
-
+  
     <!-- Cart management -->
     <button type="button"
             aria-label="ToolbarButton cart"
