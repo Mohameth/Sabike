@@ -1,6 +1,7 @@
 package com.sabi.bikes.web.rest;
 
 import com.sabi.bikes.domain.OrderItems;
+import com.sabi.bikes.domain.Product;
 import com.sabi.bikes.repository.OrderItemsRepository;
 import com.sabi.bikes.web.rest.errors.BadRequestAlertException;
 
@@ -9,6 +10,8 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,7 +85,6 @@ public class OrderItemsResource {
     /**
      * {@code GET  /order-items} : get all the orderItems.
      *
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of orderItems in body.
      */
     @GetMapping("/order-items")
@@ -116,4 +118,7 @@ public class OrderItemsResource {
         orderItemsRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    // SABIKE
+
 }

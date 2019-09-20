@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sabi.bikes.domain.enumeration.OrderState;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * A Command.
@@ -46,6 +48,7 @@ public class Command implements Serializable {
     private Client client;
 
     @OneToMany(mappedBy = "command", fetch = FetchType.EAGER)
+//    @Fetch(value = FetchMode.SELECT)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrderItems> orderItems = new HashSet<>();
 

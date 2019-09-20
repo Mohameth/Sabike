@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
 import { IProduct } from 'app/shared/model/product.model';
-import { OrderItems } from 'app/shared/model/order-items.model';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
 import { AccountService } from 'app/core';
-import { Client, IClient } from 'app/shared/model/client.model';
+import { IClient } from 'app/shared/model/client.model';
 import { ClientService } from 'app/entities/client';
+import { OrderItemsService } from 'app/entities/order-items';
 
 type EntityResponseType = HttpResponse<ICommand>;
 type EntityArrayResponseType = HttpResponse<ICommand[]>;
@@ -36,7 +37,12 @@ export class CommandService {
 
   // Sabike <<<<<
 
-  constructor(protected http: HttpClient, private accountService: AccountService, private clientService: ClientService) {}
+  constructor(
+    protected http: HttpClient,
+    private accountService: AccountService,
+    private clientService: ClientService,
+    private orderitemsService: OrderItemsService
+  ) {}
 
   create(command: ICommand): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(command);
@@ -101,6 +107,18 @@ export class CommandService {
     return this.http.get<ICommand>(`${this.resourceUrl}/${id}/hascart`, { observe: 'response' });
   }
 
+  hasCartAsPromise(id: number): Promise<EntityResponseType> {
+    return this.http
+      .get<ICommand>(`${this.resourceUrl}/${id}/hascart`, { observe: 'response' })
+      .toPromise()
+      .then(msg => {
+        return Promise.resolve(msg);
+      })
+      .catch(error => {
+        return Promise.reject(error.json().error);
+      });
+  }
+
   get getCart(): ICommand {
     return this.cart;
   }
@@ -133,7 +151,7 @@ export class CommandService {
 
     if (this.cart === null) {
       console.log('cart is null yeah');
-      this.initCart(true);
+      this.initCart(true, product, quantity);
     }
 
     console.log('AFTER INITCART');
@@ -164,7 +182,6 @@ export class CommandService {
     this.totalNewCount.next(this.totalCount);
 
     if (this.accountService.isAuthenticated()) {
-      // save cart to REST
     }
   }
 
@@ -202,44 +219,83 @@ export class CommandService {
     };
   }
 
-  initCart(loggedIn: boolean) {
-    // this.cart = new Command();
-    // this.cart.orderItems = [];
-    // this.cart.id = undefined;
-    // this.cart.state = OrderState.CART;
-    // this.cart.totalAmount = 0.0;
-    // this.cart.orderDate = null;
-    // this.cart.paymentDate = null;
-    // this.cart.client = new Client();
-    // this.cart.client.phoneNumber = null;
-    // this.cart.client.phoneNumber = null;
-    // this.cart.client.orders = [];
-    // this.cart.client.orders.push(this.cart);
-    // this.cart.client.id = 5000;
-    // Cart ID = user id
+  createOrderItem(product1: IProduct, quantity1: number, paidPrice1: number, command1: ICommand): IOrderItems {
+    return {
+      ...new OrderItems(),
+      id: undefined,
+      quantity: quantity1,
+      paidPrice: paidPrice1,
+      command: command1,
+      product: product1
+    };
+  }
+
+  initCart(loggedIn: boolean, product: IProduct, quantity: number) {
+    this.cart = new Command();
+    this.cart.state = OrderState.CART;
+    this.cart.orderItems = [];
+    this.cart.paymentDate = null;
+    this.cart.totalAmount = 0;
+    this.cart.client = null;
+
     console.log('IN INITCART');
     if (this.accountService.isAuthenticated()) {
       console.log('IN INITCART AFTER AUTH');
-      this.hasCart(this.accountService.userIdentityId).subscribe(msg => {
-        console.log('IN INITCAR AFTER AUTH AFTER HASCART and msg => ', msg);
-        if (msg.body) {
-          // this.cart.client.id = this.accountService.userIdentityId;
-          this.clientService.find(this.accountService.userIdentityId).subscribe(client => {
-            // this.cart = new Command();
-            console.log('on A LE CLIENT! :', client, this.cart);
-            this.cart = this.createCommandCart(client.body);
-            console.log('TYPE CART :', typeof this.cart, this.cart);
-            this.create(this.cart).subscribe(message => {
-              console.log('___________---______ CREATED CART', message);
+      // this.hasCart(this.accountService.userIdentityId).subscribe(msg => {
+      //   console.log('IN INITCAR AFTER AUTH AFTER HASCART and msg => ', msg);
+      //   if (msg.body) {
+      //     this.clientService.find(this.accountService.userIdentityId).subscribe(client => {
+      //       console.log('on A LE CLIENT! :', client, this.cart);
+      //       const createCart = this.createCommandCart(client.body);
+      //       console.log('TYPE CART :', typeof this.cart, this.cart);
+      //       this.create(createCart).subscribe(message => {
+      //         console.log('___________---______ CREATED CART', message);
+      //       });
+      //     });
+      //   }
+      // });
+      this.clientService
+        .find(this.accountService.userIdentityId)
+        .toPromise()
+        .then(client => {
+          console.log('client PROMISE:', client);
+          const createCart = this.createCommandCart(client.body);
+
+          this.create(createCart)
+            .toPromise()
+            .then(responseServer => {
+              console.log('Response Server :', responseServer);
+              let orderItem = this.createOrderItem(product, quantity, product.price * quantity, responseServer.body);
+              // });
+              this.orderitemsService
+                .create(orderItem)
+                .toPromise()
+                .then(orderResponse => {
+                  console.log('order Server :', orderResponse);
+                });
+              // createCart.orderItems.push(orderItem);
+              // let serverCart = responseServer.body;
+              // let orderItem = this.createOrderItem(product, quantity, product.price * quantity, serverCart);
+              // serverCart.orderItems.push(orderItem);
+              // this.update(orderItem).toPromise().then( responseItemUpdate => {
+              //   console.log('responseItemUpdate :', responseItemUpdate);
+              // });
             });
-          });
-          // console.log('this cart client id : ',  this.cart.client.id );
-          // this.http.post<ICommand>(this.resourceUrl, this.cart, { observe: 'response' }).subscribe(msg2 =>
-          //   console.log('___________---______ CREATED CART', msg2));
-        }
-      });
-      // this.accountService.userIdentityId();
-      // this.cart.id = this.accountService.userIdentityId;
+        });
+      // this.hasCartAsPromise(this.accountService.userIdentityId)
+      //   .then(
+      //     hasCartAsPromiseResponse => {
+      //       console.log('+++++++++++++++++ PROMISE', hasCartAsPromiseResponse);
+      //       if (hasCartAsPromiseResponse === null) {
+      //         console.log('+++++++++++++++++ PROMISE 2', hasCartAsPromiseResponse);
+      //         // const cartToPush = this.createCommandCart(hasCartAsPromiseResponse);
+      //         // this.create(cartToPush).toPromise().then(msg => console.log('AFTER 1st promise :', msg));
+      //       }
+      //       },
+      //     failure => {
+      //       console.log('-----------------', failure);
+      //     }
+      //   );
     } else {
       this.cart.id = null;
       console.log('IN INITCART ELSE NOT AUTH');
