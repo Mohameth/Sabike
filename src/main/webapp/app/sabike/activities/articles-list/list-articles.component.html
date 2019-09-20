@@ -15,7 +15,7 @@
     </div>
 
     <div id="article-grid-wrapper">
-        <jhi-paginator-custom class="article-grid-paginator-top paginator" #p1 [bindedPaginator]="p2"></jhi-paginator-custom>
+        <jhi-paginator-custom class="article-grid-paginator-top paginator" #p1 [bindedPaginator]="p2" [mainPaginator]="true"></jhi-paginator-custom>
         <jhi-grid-article class="block-end justify-start" [products]="products"></jhi-grid-article>
         <jhi-paginator-custom class="article-grid-paginator-bottom paginator" #p2 [bindedPaginator]="p1"></jhi-paginator-custom>
     </div>

@@ -10,12 +10,10 @@ export class PaginatorCustomComponent implements OnInit {
   // MatPaginator Inputs
   @Input() length = 100;
   @Input() pageSize = 10;
+  @Input() mainPaginator: boolean = false;
   @Input() pageSizeOptions: number[] = [1, 2, 5, 50];
-  @Input() bindedPaginator;
+  @Input() bindedPaginator: PaginatorCustomComponent;
   event: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-
-  // MatPaginator Output
-  pageEvent: PageEvent;
 
   setBindedPaginator() {}
 
@@ -24,6 +22,19 @@ export class PaginatorCustomComponent implements OnInit {
   }
 
   getPaginatorData($event: PageEvent) {
-    this.event.emit($event);
+    this.bindedPaginator.handleEventFromOtherPaginator($event);
+    // The list item only listen to the main paginator
+    if (this.mainPaginator) this.event.emit($event);
+    else this.bindedPaginator.event.emit($event);
+  }
+
+  handleEventFromOtherPaginator($event: PageEvent) {
+    this.length = $event.length;
+    this.pageSize = $event.pageSize;
+  }
+
+  setLength(length: number) {
+    this.length = length;
+    this.bindedPaginator.length = length;
   }
 }

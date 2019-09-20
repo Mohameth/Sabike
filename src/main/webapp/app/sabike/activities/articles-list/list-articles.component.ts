@@ -18,6 +18,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
   products: IProduct[];
   private pageIndex = 0;
   private pageSize = 10;
+  private totalNumberOfItems = -1;
 
   @ViewChild('p1', { static: false }) paginator: PaginatorCustomComponent;
 
@@ -72,8 +73,13 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
       console.log('AFTER INIT', pageEvent);
       this.pageSize = pageEvent.pageSize;
       this.pageIndex = pageEvent.pageIndex;
-      //this.fetchProductsWithQuery();
+      this.fetchProductsWithQuery();
     });
+  }
+
+  setNumberOfItems(number) {
+    this.totalNumberOfItems = number;
+    this.paginator.setLength(this.totalNumberOfItems);
   }
 
   fetchProductsWithQuery() {
@@ -83,11 +89,17 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     switch (parameter) {
       // Bikes categories
       case 'bikes':
+        /*if (this.totalNumberOfItems == -1) this.productService.getTotalBikesNumber().subscribe(message => {
+          this.setNumberOfItems(message.body);
+        });*/
         this.productService.getAllBikesPaginated(this.pageIndex, this.pageSize).subscribe(message => {
-          this.products = message.body;
+          this.setNumberOfItems(message.body);
         });
         break;
       case 'parts':
+        /*if (this.totalNumberOfItems == -1) this.productService.getTotalPartsNumber().subscribe(message => {
+          this.setNumberOfItems(message.body);
+        });*/
         this.productService.getAllParts().subscribe(message => {
           this.products = message.body;
         });
@@ -97,6 +109,9 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
       case 'city':
       case 'ebike':
       case 'bmx':
+        /*if (this.totalNumberOfItems == -1) this.productService.getTotalBikesNumber(parameter.toLocaleUpperCase()).subscribe(message => {
+          this.setNumberOfItems(message.body);
+        });*/
         this.productService.getBikes(parameter.toLocaleUpperCase()).subscribe(message => {
           this.products = message.body;
         });

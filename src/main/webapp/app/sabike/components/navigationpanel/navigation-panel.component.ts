@@ -50,15 +50,14 @@ export class NavigationPanelComponent implements OnInit {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    /* this.router.events.subscribe(p => {
-      console.log("about to cry :("); // Always called if only instruction in block
-      this.navigationService.handleBreadcrumb(this.buildBreads());
-    }); */
-
-    routerEventService.listenNavigationEndEvent().subscribe(m => {
-      console.log(' Trying to handle breadcrumbs ', m);
+    this.router.events.subscribe(p => {
       this.navigationService.handleBreadcrumb(this.buildBreads());
     });
+
+    /*routerEventService.listenNavigationEndEvent().subscribe(m => {
+      console.log(' Trying to handle breadcrumbs ', m);
+      //this.navigationService.handleBreadcrumb(this.buildBreads());
+    });*/
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
@@ -122,7 +121,11 @@ export class NavigationPanelComponent implements OnInit {
     const max = 100;
 
     while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
-      currentNode = this.findNodeWithName(routeName);
+      currentNode = this.findNodeWithRoute(routeName);
+      if (currentNode === undefined) {
+        i = max;
+        continue;
+      }
       const bread: Breadcrumb = {
         label: currentNode.name,
         url: currentNode.route
@@ -137,6 +140,16 @@ export class NavigationPanelComponent implements OnInit {
   /** Use the treeControl and compare names ignoring cases (only the first is considered) */
   findNodeWithName(nodeName: String): FlatTreeNode {
     return this.treeControl.dataNodes.find(node => node.name.toLowerCase() === nodeName.toLowerCase());
+  }
+
+  findNodeWithRoute(nodeRoute: String): FlatTreeNode {
+    return this.treeControl.dataNodes.find(
+      node =>
+        node.route
+          .split('/')
+          .reverse()[0]
+          .toLowerCase() === nodeRoute.toLowerCase()
+    );
   }
 
   expand(nodeName: String) {
