@@ -8,6 +8,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -145,6 +146,17 @@ public class ProductResource {
     @GetMapping("/products/bikes/all")
     public ResponseEntity<List<Product>> findBikes(Pageable pageable) {
         List<Product> products = productRepository.getAllBikes(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/bikes/all?page={page}&size={size}")
+    public ResponseEntity<List<Product>> findBikes(
+        Pageable pageable,
+        int page,
+        int size
+    ) {
+        Pageable p = new PageRequest(page, size);
+        List<Product> products = productRepository.getAllBikes(p);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

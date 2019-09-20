@@ -52,6 +52,10 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/parts/all`, { observe: 'response' });
   }
 
+  getAllBikesPaginated(page: number, size: number) {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all?page=${page}&size=${size}`, { observe: 'response' });
+  }
+
   // Details handler
   requestDetails(product: IProduct) {
     console.log('CHANGIN PRODUCT ', this.currentProduct);

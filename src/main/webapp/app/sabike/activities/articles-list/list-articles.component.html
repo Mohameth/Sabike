@@ -15,20 +15,8 @@
     </div>
 
     <div id="article-grid-wrapper">
-        <mat-paginator class="article-grid-paginator-top"
-   a                    #paginator
-                       [length]=17
-                       [pageIndex]="0"
-                       [pageSize]="20"
-                       [pageSizeOptions]="[20, 40, 60]">
-        </mat-paginator>
+        <jhi-paginator-custom class="article-grid-paginator-top paginator" #p1 [bindedPaginator]="p2"></jhi-paginator-custom>
         <jhi-grid-article class="block-end justify-start" [products]="products"></jhi-grid-article>
-        <mat-paginator class="article-grid-paginator-bottom"
-                       #paginator
-                       [length]=17
-                       [pageIndex]="0"
-                       [pageSize]="20"
-                       [pageSizeOptions]="[20, 40, 60]">
-        </mat-paginator>
+        <jhi-paginator-custom class="article-grid-paginator-bottom paginator" #p2 [bindedPaginator]="p1"></jhi-paginator-custom>
     </div>
 </div>

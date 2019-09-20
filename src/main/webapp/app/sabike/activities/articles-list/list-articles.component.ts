@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
 import { IProduct } from 'app/shared/model/product.model';
@@ -6,15 +6,20 @@ import { JhiAlertService } from 'ng-jhipster';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
 import { NavigationError, NavigationStart } from '@angular/router';
+import { PaginatorCustomComponent } from 'app/sabike/components/paginator-custom/paginator-custom.component';
 
 @Component({
   selector: 'jhi-articles',
   templateUrl: './list-articles.component.html',
   styleUrls: ['./list-articles.component.scss']
 })
-export class ListArticlesComponent implements OnInit {
+export class ListArticlesComponent implements OnInit, AfterViewInit {
   selected: 'option1';
   products: IProduct[];
+  private pageIndex = 0;
+  private pageSize = 10;
+
+  @ViewChild('p1', { static: false }) paginator: PaginatorCustomComponent;
 
   constructor(
     private productService: ProductService,
@@ -28,104 +33,7 @@ export class ListArticlesComponent implements OnInit {
         // Show loading indicator
       }
       if (m instanceof ActivationEnd) {
-        // LOAD here
-        const parameter = this.router.url.split('/').reverse()[0];
-        // Navigation switch
-        switch (parameter) {
-          // Bikes categories
-          case 'bikes':
-            this.productService.getAllBikes().subscribe(message => {
-              this.products = message.body;
-            });
-            break;
-          case 'parts':
-            this.productService.getAllParts().subscribe(message => {
-              this.products = message.body;
-            });
-            break;
-          case 'mountain':
-          case 'road':
-          case 'city':
-          case 'ebike':
-          case 'bmx':
-            this.productService.getBikes(parameter.toLocaleUpperCase()).subscribe(message => {
-              this.products = message.body;
-            });
-            break;
-
-          // Parts - Steering (direction en fr)
-          case 'stems': {
-            break;
-          }
-          case 'handlebars': {
-            break;
-          }
-          case 'headset': {
-            break;
-          }
-          // Parts - Saddle / seatpost (assise en fr)
-          case 'saddle': {
-            break;
-          }
-          case 'seat-posts': {
-            break;
-          }
-          case 'seat-clamps': {
-            break;
-          }
-          // Parts - Drivetrain
-          case 'derailleur': {
-            break;
-          }
-          case 'chains': {
-            break;
-          }
-          case 'cranksets': {
-            break;
-          }
-          case 'pedals': {
-            break;
-          }
-          case 'straps': {
-            break;
-          }
-          // Parts - Wheels / tyres
-          case 'tyres': {
-            break;
-          }
-          case 'alloy-carbon-wheels': {
-            break;
-          }
-          case 'wire-spoked-wheels': {
-            break;
-          }
-          case 'boyaux': {
-            break;
-          }
-          // Parts - Brakes
-          case 'brake-levers': {
-            break;
-          }
-          case 'brake-cables': {
-            break;
-          }
-          case 'brake-calipers': {
-            break;
-          }
-          case 'brake-pads': {
-            break;
-          }
-          // Parts - Frames / Forks
-          case 'frame-kits': {
-            break;
-          }
-          case 'frames': {
-            break;
-          }
-          case 'forks': {
-            break;
-          }
-        }
+        this.fetchProductsWithQuery();
       }
 
       if (m instanceof NavigationEnd) {
@@ -157,5 +65,115 @@ export class ListArticlesComponent implements OnInit {
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  ngAfterViewInit(): void {
+    this.paginator.event.subscribe(pageEvent => {
+      console.log('AFTER INIT', pageEvent);
+      this.pageSize = pageEvent.pageSize;
+      this.pageIndex = pageEvent.pageIndex;
+      //this.fetchProductsWithQuery();
+    });
+  }
+
+  fetchProductsWithQuery() {
+    // LOAD here
+    const parameter = this.router.url.split('/').reverse()[0];
+    // Navigation switch
+    switch (parameter) {
+      // Bikes categories
+      case 'bikes':
+        this.productService.getAllBikesPaginated(this.pageIndex, this.pageSize).subscribe(message => {
+          this.products = message.body;
+        });
+        break;
+      case 'parts':
+        this.productService.getAllParts().subscribe(message => {
+          this.products = message.body;
+        });
+        break;
+      case 'mountain':
+      case 'road':
+      case 'city':
+      case 'ebike':
+      case 'bmx':
+        this.productService.getBikes(parameter.toLocaleUpperCase()).subscribe(message => {
+          this.products = message.body;
+        });
+        break;
+
+      // Parts - Steering (direction en fr)
+      case 'stems': {
+        break;
+      }
+      case 'handlebars': {
+        break;
+      }
+      case 'headset': {
+        break;
+      }
+      // Parts - Saddle / seatpost (assise en fr)
+      case 'saddle': {
+        break;
+      }
+      case 'seat-posts': {
+        break;
+      }
+      case 'seat-clamps': {
+        break;
+      }
+      // Parts - Drivetrain
+      case 'derailleur': {
+        break;
+      }
+      case 'chains': {
+        break;
+      }
+      case 'cranksets': {
+        break;
+      }
+      case 'pedals': {
+        break;
+      }
+      case 'straps': {
+        break;
+      }
+      // Parts - Wheels / tyres
+      case 'tyres': {
+        break;
+      }
+      case 'alloy-carbon-wheels': {
+        break;
+      }
+      case 'wire-spoked-wheels': {
+        break;
+      }
+      case 'boyaux': {
+        break;
+      }
+      // Parts - Brakes
+      case 'brake-levers': {
+        break;
+      }
+      case 'brake-cables': {
+        break;
+      }
+      case 'brake-calipers': {
+        break;
+      }
+      case 'brake-pads': {
+        break;
+      }
+      // Parts - Frames / Forks
+      case 'frame-kits': {
+        break;
+      }
+      case 'frames': {
+        break;
+      }
+      case 'forks': {
+        break;
+      }
+    }
   }
 }
