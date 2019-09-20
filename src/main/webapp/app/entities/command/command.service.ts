@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -37,12 +37,10 @@ export class CommandService {
 
   // Sabike <<<<<
 
-  constructor(
-    protected http: HttpClient,
-    private accountService: AccountService,
-    private clientService: ClientService,
-    private orderitemsService: OrderItemsService
-  ) {}
+  constructor(protected http: HttpClient, private accountService: AccountService, private clientService: ClientService) {
+    this.cart = new Command();
+    this.cart.orderItems = [];
+  }
 
   create(command: ICommand): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(command);
@@ -267,12 +265,12 @@ export class CommandService {
               console.log('Response Server :', responseServer);
               let orderItem = this.createOrderItem(product, quantity, product.price * quantity, responseServer.body);
               // });
-              this.orderitemsService
-                .create(orderItem)
-                .toPromise()
-                .then(orderResponse => {
-                  console.log('order Server :', orderResponse);
-                });
+              // this.orderitemsService
+              //   .create(orderItem)
+              //   .toPromise()
+              //   .then(orderResponse => {
+              //     console.log('order Server :', orderResponse);
+              //   });
               // createCart.orderItems.push(orderItem);
               // let serverCart = responseServer.body;
               // let orderItem = this.createOrderItem(product, quantity, product.price * quantity, serverCart);
@@ -326,5 +324,9 @@ export class CommandService {
 
   listenTotalCount(): Observable<any> {
     return this.totalNewCount.asObservable();
+  }
+
+  addToLocalCart(item: IOrderItems) {
+    this.cart.orderItems.push(item);
   }
 }

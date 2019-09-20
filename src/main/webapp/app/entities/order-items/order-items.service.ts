@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IOrderItems } from 'app/shared/model/order-items.model';
-import { ICommand } from 'app/shared/model/command.model';
-import { IProduct } from 'app/shared/model/product.model';
 
 type EntityResponseType = HttpResponse<IOrderItems>;
 type EntityArrayResponseType = HttpResponse<IOrderItems[]>;
@@ -37,6 +35,4 @@ export class OrderItemsService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
-
-  // SABIKE
 }

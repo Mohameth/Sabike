@@ -30,7 +30,11 @@ public class OrderItems implements Serializable {
     private Float paidPrice;
 
     @OneToOne
-    @JoinColumn(unique = true)
+//    @JoinColumns({
+//        @JoinColumn(name = "command_id", referencedColumnName = "Id"),
+//        @JoinColumn(name = "product_id", referencedColumnName = "Id")
+//    })
+    @JoinColumn(unique = false)
     private Product product;
 
     @ManyToOne

@@ -118,7 +118,7 @@ public class OrderItemsResource {
         orderItemsRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
-
     // SABIKE
+
 
 }
