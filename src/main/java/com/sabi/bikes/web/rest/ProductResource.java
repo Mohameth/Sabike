@@ -172,9 +172,10 @@ public class ProductResource {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/products/request-stock/{id}")
-    public ResponseEntity<Integer> findProductQuantity(Pageable pageable, @PathVariable Long id) {
-        int quantity = productRepository.requestProductQuantity(pageable, id);
-        return new ResponseEntity<>(quantity, HttpStatus.OK);
-    }
+//    @GetMapping("/products/request-stock/{id}")
+//    public ResponseEntity<Integer> findProductQuantity(@PathVariable Long id) {
+//        Optional<Integer> quantity = productRepository.requestProductQuantity(id);
+//        return ResponseUtil.wrapOrNotFound(quantity);
+//    }
+
 }

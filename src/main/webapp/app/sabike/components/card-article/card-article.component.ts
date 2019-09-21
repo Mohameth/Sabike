@@ -10,6 +10,8 @@ import { ClientService } from 'app/entities/client';
 import { IClient } from 'app/shared/model/client.model';
 import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
 import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { error } from 'util';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-card-article',
@@ -19,11 +21,11 @@ import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
 export class CardArticleComponent implements OnInit {
   @Input() product: Product;
 
-  private i_product: IProduct;
+  private i_product: IProduct; // TODO virer le doublon
   isDisabled = false;
   isInStock = 'In stock';
 
-  constructor(private productService: ProductService, private commandService: CommandService) {
+  constructor(private productService: ProductService, private commandService: CommandService, private eventManager: JhiEventManager) {
     //
   }
 
@@ -39,26 +41,43 @@ export class CardArticleComponent implements OnInit {
     });
   }
 
-  addToCart(productId: number, quantity: number) {
-    this.productService.find(productId).subscribe(message => {
-      this.i_product = message.body;
-      // now we can decrease
-      if (this.i_product.stock < quantity) {
-        // NOpe
-        console.log('++++++ NOPE ++++++');
-        this.isDisabled = true;
-        this.isInStock = 'Out of stock';
-      } else {
-        console.log('++++++ WILL DECREASE ++++++');
-        this.i_product.stock = this.i_product.stock - quantity;
-        this.productService.reserveQuantityProduct(this.i_product).subscribe(response => {
-          console.log('++++++ DECREASED ++++++');
-
-          this.commandService.manageTimer();
-
-          this.commandService.updateCartProduct(this.i_product, 1);
-        });
-      }
-    });
+  addToCart(productId: number) {
+    // Here in this component the quantity is always one
+    this.productService
+      .find(productId)
+      .toPromise()
+      .then(product => {
+        // TODO debug ProductRepositoty.requestProductQuantity or just reload all product..
+        console.log(product.body.stock);
+        this.i_product = product.body;
+        // now we can decrease
+        if (this.i_product.stock === 0) {
+          // NOpe
+          this.isDisabled = true;
+          this.isInStock = 'Out of stock';
+        } else {
+          // TODO use new function by @Denis
+          // TODO also... before reserving quantity we should check if there is already 5 times the same product
+          // TODO move this before checking product availability
+          // TODO => when we enter the method addToCart(productId: number, quantity: number)
+          if (this.commandService.hasLessThanFive(productId)) {
+            this.i_product.stock = this.i_product.stock - 1;
+            this.productService.reserveQuantityProduct(this.i_product).subscribe(response => {
+              this.commandService.manageTimer();
+              this.commandService.updateCartProduct(this.i_product, 1);
+            });
+          } else {
+            // already 5
+            this.eventManager.broadcast({
+              name: 'popSnack',
+              content: {
+                message: 'Already 5 ' + this.i_product.name + ' in the cart.',
+                action: 'DISMISS'
+              }
+            });
+          }
+        }
+      })
+      .catch(error => console.log(error));
   }
 }

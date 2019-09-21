@@ -96,7 +96,7 @@ export class ProductService {
     return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
   }
 
-  requestProductQuantity(productId: number): Promise<HttpResponse<number>> {
-    return this.http.get<number>(`${this.resourceUrl}/request-stock/${productId}`, { observe: 'response' }).toPromise();
-  }
+  // requestProductQuantity(productId: number): Promise<HttpResponse<number>> {
+  //   return this.http.get<number>(`${this.resourceUrl}/request-stock/${productId}`, { observe: 'response' }).b.toPromise();
+  // }
 }
