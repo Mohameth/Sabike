@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IClient } from 'app/shared/model/client.model';
+import { AccountService } from 'app/core';
 
 type EntityResponseType = HttpResponse<IClient>;
 type EntityArrayResponseType = HttpResponse<IClient[]>;
@@ -13,7 +14,7 @@ type EntityArrayResponseType = HttpResponse<IClient[]>;
 export class ClientService {
   public resourceUrl = SERVER_API_URL + 'api/clients';
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient, private accountService: AccountService) {}
 
   create(client: IClient): Observable<EntityResponseType> {
     return this.http.post<IClient>(this.resourceUrl, client, { observe: 'response' });
@@ -34,5 +35,18 @@ export class ClientService {
 
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  // Sabike
+
+  public get(id: number): Promise<IClient> {
+    return this.find(id)
+      .toPromise()
+      .then(serverClient => {
+        return Promise.resolve(serverClient.body);
+      })
+      .catch(error => {
+        return Promise.reject(error.json().error);
+      });
   }
 }

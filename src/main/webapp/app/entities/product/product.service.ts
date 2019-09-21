@@ -4,8 +4,10 @@ import { Observable, Subject } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { IProduct } from 'app/shared/model/product.model';
-import { ICart } from 'app/shared/model/cart.model';
+import { BikeCategory, IProduct, PartCategory, PartCategoryType, Product, ProductType } from 'app/shared/model/product.model';
+import { IClient } from 'app/shared/model/client.model';
+import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
+import { IOrderItems } from 'app/shared/model/order-items.model';
 
 type EntityResponseType = HttpResponse<IProduct>;
 type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -40,6 +42,27 @@ export class ProductService {
 
   // SABIKE
 
+  createProduct(product: IProduct): IProduct {
+    return {
+      ...new Product(),
+      id: product.id,
+      price: product.price,
+      name: product.name,
+      stock: product.stock,
+      picture: product.picture,
+      brand: product.brand,
+      type: product.type,
+      bikeCategory: product.bikeCategory,
+      bikeSize: product.bikeSize,
+      bikeSeeds: product.bikeSeeds,
+      bikeColor: product.bikeColor,
+      partCategory: product.partCategory,
+      partCategoryType: product.partCategoryType,
+      description: product.description,
+      orderItems: product.orderItems
+    };
+  }
+
   getBikes(category: string): Observable<HttpResponse<any>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}`, { observe: 'response' });
   }
@@ -53,17 +76,6 @@ export class ProductService {
   }
 
   // Details handler
-  requestDetails(product: IProduct) {
-    console.log('CHANGIN PRODUCT ', this.currentProduct);
-    console.log('with  ', product);
-    this.currentProduct.next(product);
-    console.log('to ', this.currentProduct);
-  }
-
-  requestDetailsListener(): Observable<IProduct> {
-    return this.currentProduct.asObservable();
-  }
-
   getProductsName(name: string): Observable<HttpResponse<IProduct[]>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/search/${name}`, { observe: 'response' });
   }
@@ -76,8 +88,11 @@ export class ProductService {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/searchLike/${name}`, { observe: 'response' });
   }
 
-  // SABIKE
   reserveQuantityProduct(productToUpdate: IProduct): Observable<EntityResponseType> {
+    return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
+  }
+
+  unReserveQuantityProduct(productToUpdate: IProduct): Observable<EntityResponseType> {
     return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
   }
 }

@@ -20,7 +20,6 @@ export class CardArticleComponent implements OnInit {
   @Input() product: Product;
 
   private i_product: IProduct;
-  private cart: ICommand;
   isDisabled = false;
   isInStock = 'In stock';
 
@@ -45,30 +44,6 @@ export class CardArticleComponent implements OnInit {
     });
   }
 
-  createCommandCart(client1: IClient): ICommand {
-    return {
-      ...new Command(),
-      id: undefined,
-      state: OrderState.CART,
-      orderDate: null,
-      totalAmount: 0,
-      paymentDate: undefined,
-      client: client1,
-      orderItems: []
-    };
-  }
-
-  createOrderItem(product1: IProduct, quantity1: number, paidPrice1: number, command1: ICommand): IOrderItems {
-    return {
-      ...new OrderItems(),
-      id: undefined,
-      quantity: quantity1,
-      paidPrice: paidPrice1,
-      command: command1,
-      product: product1
-    };
-  }
-
   addToCart(productId: number, quantity: number) {
     this.productService.find(productId).subscribe(message => {
       this.i_product = message.body;
@@ -86,36 +61,7 @@ export class CardArticleComponent implements OnInit {
 
           this.commandService.manageTimer();
 
-          // Client
-          this.clientService
-            .find(this.accountService.userIdentityId)
-            .toPromise()
-            .then(serverClient => {
-              // Cart
-              console.log('Found client', serverClient);
-              console.log('Now creating a command');
-              const localCart = this.createCommandCart(serverClient.body);
-              this.commandService
-                .create(localCart)
-                .toPromise()
-                .then(serverCart => {
-                  // OrderItem
-                  console.log('Command added', serverCart);
-                  const localOrderItem = this.createOrderItem(this.i_product, quantity, quantity * this.i_product.price, serverCart.body);
-                  this.orderItemService
-                    .create(localOrderItem)
-                    .toPromise()
-                    .then(serverOrderItem => {
-                      // Should be done
-                      console.log('OrderItem added to Command', serverOrderItem);
-                      this.commandService.addToLocalCart(serverOrderItem.body);
-                    });
-                });
-            });
-
-          // this.commandService.addToCart(this.i_product, quantity);
-
-          console.log(response);
+          this.commandService.updateCartProduct(this.i_product, 1);
         });
       }
     });

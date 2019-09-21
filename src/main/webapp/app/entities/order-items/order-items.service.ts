@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { IOrderItems } from 'app/shared/model/order-items.model';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { IProduct } from 'app/shared/model/product.model';
+import { ICommand } from 'app/shared/model/command.model';
 
 type EntityResponseType = HttpResponse<IOrderItems>;
 type EntityArrayResponseType = HttpResponse<IOrderItems[]>;
@@ -34,5 +36,31 @@ export class OrderItemsService {
 
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  // Sabike
+  createOrderItem(product: IProduct, quantity: number, paidPrice: number, command: ICommand): IOrderItems {
+    return {
+      ...new OrderItems(),
+      id: undefined,
+      quantity: quantity,
+      paidPrice: paidPrice,
+      command: command,
+      product: product
+    };
+  }
+
+  createAndPushToServer(product: IProduct, quantity: number, localCart: ICommand): Promise<IOrderItems> {
+    let localOrderItem = this.createOrderItem(product, quantity, product.price * quantity, localCart);
+    return this.create(localOrderItem)
+      .toPromise()
+      .then(serverOrderItem => {
+        return Promise.resolve(serverOrderItem.body);
+        // then we push orderitems later after the promise
+      })
+      .catch(error => {
+        console.log('++++++++++++++++++++++++ order error');
+        return Promise.reject(error);
+      });
   }
 }
