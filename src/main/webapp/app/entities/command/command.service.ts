@@ -263,7 +263,7 @@ export class CommandService {
             .toPromise()
             .then(responseServer => {
               console.log('Response Server :', responseServer);
-              let orderItem = this.createOrderItem(product, quantity, product.price * quantity, responseServer.body);
+              const orderItem = this.createOrderItem(product, quantity, product.price * quantity, responseServer.body);
               // });
               // this.orderitemsService
               //   .create(orderItem)

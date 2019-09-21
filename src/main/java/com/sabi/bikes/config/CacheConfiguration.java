@@ -52,6 +52,8 @@ public class CacheConfiguration {
             createCache(cm, com.sabi.bikes.domain.Command.class.getName());
             createCache(cm, com.sabi.bikes.domain.Command.class.getName() + ".orderItems");
             createCache(cm, com.sabi.bikes.domain.OrderItems.class.getName());
+            createCache(cm, com.sabi.bikes.domain.OrderItems.class.getName() + ".products");
+            createCache(cm, com.sabi.bikes.domain.Product.class.getName() + ".orderItems");
             // jhipster-needle-ehcache-add-entry
         };
     }

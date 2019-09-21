@@ -94,14 +94,14 @@ export class CardArticleComponent implements OnInit {
               // Cart
               console.log('Found client', serverClient);
               console.log('Now creating a command');
-              let localCart = this.createCommandCart(serverClient.body);
+              const localCart = this.createCommandCart(serverClient.body);
               this.commandService
                 .create(localCart)
                 .toPromise()
                 .then(serverCart => {
                   // OrderItem
                   console.log('Command added', serverCart);
-                  let localOrderItem = this.createOrderItem(this.i_product, quantity, quantity * this.i_product.price, serverCart.body);
+                  const localOrderItem = this.createOrderItem(this.i_product, quantity, quantity * this.i_product.price, serverCart.body);
                   this.orderItemService
                     .create(localOrderItem)
                     .toPromise()

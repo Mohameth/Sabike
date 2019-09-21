@@ -1,38 +1,38 @@
 {
-  "name": "OrderItems",
-  "fields": [
-    {
-      "fieldName": "quantity",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "paidPrice",
-      "fieldType": "Float"
-    }
-  ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "product",
-      "otherEntityRelationshipName": "orderItems",
-      "relationshipName": "product",
-      "otherEntityField": "id",
-      "ownerSide": true
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "command",
-      "relationshipName": "command",
-      "otherEntityField": "id"
-    }
-  ],
-  "changelogDate": "20190913082010",
-  "entityTableName": "order_items",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
-  "fluentMethods": true,
-  "clientRootFolder": "",
-  "applications": "*"
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "command",
+            "relationshipName": "command",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "orderItems"
+        },
+        {
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "orderItems"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "paidPrice",
+            "fieldType": "Float"
+        }
+    ],
+    "changelogDate": "20190913082010",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "no",
+    "entityTableName": "order_items",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

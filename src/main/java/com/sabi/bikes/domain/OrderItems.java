@@ -1,5 +1,4 @@
 package com.sabi.bikes.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -29,17 +28,14 @@ public class OrderItems implements Serializable {
     @Column(name = "paid_price")
     private Float paidPrice;
 
-    @OneToOne
-//    @JoinColumns({
-//        @JoinColumn(name = "command_id", referencedColumnName = "Id"),
-//        @JoinColumn(name = "product_id", referencedColumnName = "Id")
-//    })
-    @JoinColumn(unique = false)
-    private Product product;
-
     @ManyToOne
     @JsonIgnoreProperties("orderItems")
     private Command command;
+
+    @ManyToOne
+//    @JoinTable(name = "order_items_id")
+    @JsonIgnoreProperties("orderItems")
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -74,6 +70,19 @@ public class OrderItems implements Serializable {
 
     public void setPaidPrice(Float paidPrice) {
         this.paidPrice = paidPrice;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public OrderItems command(Command command) {
+        this.command = command;
+        return this;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     public Product getProduct() {
@@ -113,18 +122,5 @@ public class OrderItems implements Serializable {
             ", quantity=" + getQuantity() +
             ", paidPrice=" + getPaidPrice() +
             "}";
-    }
-
-    public Command getCommand() {
-        return command;
-    }
-
-    public void setCommand(Command command) {
-        this.command = command;
-    }
-
-    public OrderItems command(Command command) {
-        this.command = command;
-        return this;
     }
 }

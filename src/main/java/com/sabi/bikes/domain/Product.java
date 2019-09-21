@@ -1,11 +1,12 @@
 package com.sabi.bikes.domain;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.sabi.bikes.domain.enumeration.ProductType;
 
@@ -73,9 +74,9 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(mappedBy = "product")
-    @JsonIgnore
-    private OrderItems orderItems;
+    @OneToMany(mappedBy = "product")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<OrderItems> orderItems = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -255,16 +256,28 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public OrderItems getOrderItems() {
+    public Set<OrderItems> getOrderItems() {
         return orderItems;
     }
 
-    public Product orderItems(OrderItems orderItems) {
+    public Product orderItems(Set<OrderItems> orderItems) {
         this.orderItems = orderItems;
         return this;
     }
 
-    public void setOrderItems(OrderItems orderItems) {
+    public Product addOrderItems(OrderItems orderItems) {
+        this.orderItems.add(orderItems);
+        orderItems.setProduct(this);
+        return this;
+    }
+
+    public Product removeOrderItems(OrderItems orderItems) {
+        this.orderItems.remove(orderItems);
+        orderItems.setProduct(null);
+        return this;
+    }
+
+    public void setOrderItems(Set<OrderItems> orderItems) {
         this.orderItems = orderItems;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
