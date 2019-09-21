@@ -171,4 +171,10 @@ public class ProductResource {
         List<Product> products = productRepository.searchByNameLike(pageable, name);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    @GetMapping("/products/request-stock/{id}")
+    public ResponseEntity<Integer> findProductQuantity(Pageable pageable, @PathVariable Long id) {
+        int quantity = productRepository.requestProductQuantity(pageable, id);
+        return new ResponseEntity<>(quantity, HttpStatus.OK);
+    }
 }
