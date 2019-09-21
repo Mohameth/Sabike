@@ -3,12 +3,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
 import { IProduct, Product } from 'app/shared/model/product.model';
 import { ProductService } from './product.service';
-import { IOrderItems } from 'app/shared/model/order-items.model';
-import { OrderItemsService } from 'app/entities/order-items';
 
 @Component({
   selector: 'jhi-product-update',
@@ -16,8 +12,6 @@ import { OrderItemsService } from 'app/entities/order-items';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving: boolean;
-
-  orderitems: IOrderItems[];
 
   editForm = this.fb.group({
     id: [],
@@ -36,26 +30,13 @@ export class ProductUpdateComponent implements OnInit {
     description: []
   });
 
-  constructor(
-    protected jhiAlertService: JhiAlertService,
-    protected productService: ProductService,
-    protected orderItemsService: OrderItemsService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+  constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ product }) => {
       this.updateForm(product);
     });
-    this.orderItemsService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IOrderItems[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IOrderItems[]>) => response.body)
-      )
-      .subscribe((res: IOrderItems[]) => (this.orderitems = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   updateForm(product: IProduct) {
@@ -122,12 +103,5 @@ export class ProductUpdateComponent implements OnInit {
 
   protected onSaveError() {
     this.isSaving = false;
-  }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackOrderItemsById(index: number, item: IOrderItems) {
-    return item.id;
   }
 }

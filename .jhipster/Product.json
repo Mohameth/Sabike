@@ -3,11 +3,10 @@
     "clientRootFolder": "",
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "orderItems",
-            "otherEntityRelationshipName": "product",
             "relationshipName": "orderItems",
-            "ownerSide": false
+            "otherEntityName": "orderItems",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "product"
         }
     ],
     "fields": [

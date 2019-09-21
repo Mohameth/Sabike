@@ -8,12 +8,6 @@
     -->
     <changeSet id="20190913082010-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="cart_id"
-                                 baseTableName="order_items"
-                                 constraintName="fk_order_items_cart_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cart"/>
-
         <addForeignKeyConstraint baseColumnNames="command_id"
                                  baseTableName="order_items"
                                  constraintName="fk_order_items_command_id"
