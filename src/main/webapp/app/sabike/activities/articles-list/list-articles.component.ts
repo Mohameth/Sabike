@@ -6,6 +6,8 @@ import { JhiAlertService } from 'ng-jhipster';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
 import { NavigationError, NavigationStart } from '@angular/router';
+import { CommandService } from 'app/entities/command';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'jhi-articles',
@@ -21,7 +23,9 @@ export class ListArticlesComponent implements OnInit {
     protected jhiAlertService: JhiAlertService,
     private communication: CommunicationService,
     private navigationService: NavigationService,
-    private router: Router
+    private router: Router,
+    private commandService: CommandService,
+    private _snackBar: MatSnackBar
   ) {
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
@@ -152,6 +156,17 @@ export class ListArticlesComponent implements OnInit {
           console.log('IN LIST message : ', message);
         });
       }
+    });
+
+    this.commandService.popSnackListener().subscribe(next => {
+      this.openSnackBar('Added product ' + next.name + ' to cart', 'DISMISS');
+    });
+  }
+
+  private openSnackBar(message: string, action: string) {
+    console.log('++++++++++++++++++++++++ openSnackBar');
+    this._snackBar.open(message, action, {
+      duration: 2000
     });
   }
 

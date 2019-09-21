@@ -57,6 +57,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sabike-register.component';
+import { SnackbarComponent } from './sabike/components/snackbar/snackbar.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -119,10 +121,12 @@ import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sab
     ItemListCartComponent,
     BreadcrumbComponent,
     CheckoutComponent,
-    SabikeRegisterComponent
+    SabikeRegisterComponent,
+    SnackbarComponent
   ],
   providers: [
     NgbActiveModal,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
