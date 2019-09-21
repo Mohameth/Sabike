@@ -34,6 +34,7 @@ export class CommandService {
   // total items count for toolbar
   private totalCount = 0;
   private totalNewCount = new Subject<number>();
+  private snackPopper = new Subject<IProduct>();
 
   // Sabike <<<<<
 
@@ -163,37 +164,24 @@ export class CommandService {
     if (this.accountService.isAuthenticated()) {
       // Check if localCart is not empty, it means we already fetched
       // from remote or already added a product to cart
-      console.log('+++++ this.localCart.orderItems.length', this.localCart.orderItems.length);
       if (this.localCart.orderItems.length === 0) {
         // create remote cart
-        this.clientService.get(this.accountService.userIdentityId).then(client => {
-          console.log('----------------------', client);
-          this.createRemoteCart(client).then(() => {
-            // we can push an item inside the new cart, but we need to push it to remote
-            // so each orderitem has its OWN id
-            this.orderItemsService.createAndPushToServer(product, quantity, this.localCart).then(orderItem => {
-              // push to cart
-              this.localCart.orderItems.push(orderItem);
-              // update cart
-              this.update(this.localCart)
-                .toPromise()
-                .then(cartWasUpdated => {
-                  console.log('++++++++++++++++++++++++', cartWasUpdated);
-                });
-            });
-          });
-        });
+        this.clientService
+          .get(this.accountService.userIdentityId)
+          .then(client => {
+            this.createRemoteCart(client)
+              .then(remoteCart => {
+                // we can push an item inside the new cart, but we need to push it to remote
+                // so each orderitem has its OWN id
+                this.updateToCart(product, quantity);
+              })
+              .catch(error => console.log(error));
+          })
+          .catch(error => console.log(error));
       } else {
-        console.log('ELSE', this.localCart.orderItems.length);
         // check if there is already this Product inside
         // if yes just add to quantity of the OrderItem
         this.updateToCart(product, quantity);
-        this.update(this.localCart)
-          .toPromise()
-          .then(updatedCart => {
-            console.log('++++++++++++++++++++++++', updatedCart);
-          })
-          .catch(error => console.log(error));
       }
     } else {
       // Local cart only
@@ -202,6 +190,9 @@ export class CommandService {
       if (this.localCart.orderItems.length === 0) {
         // then push the OrderItem inside
         // and that's it
+      } else {
+        // cart has already items
+        // check if already existing Product etc..
       }
     }
     // Update badge  [...].next(...);
@@ -228,7 +219,6 @@ export class CommandService {
     });
 
     if (itemAlreadyInCart) {
-      console.log('++++++++++++++++++++++++ itemAlreadyInCart');
       // Item is already in cart - do LOCALLY
       if (quantity != 1) {
         this.localCart.orderItems[itemIndex].quantity = quantity;
@@ -238,35 +228,44 @@ export class CommandService {
         this.localCart.orderItems[itemIndex].paidPrice += this.localCart.orderItems[itemIndex].product.price;
       }
       if (this.accountService.isAuthenticated()) {
-        // Item is already in cart - do REMOTELY
+        // Item is already in cart - and then do REMOTELY
         this.update(this.localCart)
           .toPromise()
           .then(updatedCart => {
-            console.log('++++++++++++++++++++++++ itemAlreadyInCart updateToCart', updatedCart);
+            this.updateBadge();
+            this.popSnack(product);
+          })
+          .catch(error => {
+            console.log(error);
           });
       }
     } else {
+      // Item is not in cart
       if (this.accountService.isAuthenticated()) {
         // Item is not in cart - do REMOTELY
-        this.orderItemsService.createAndPushToServer(product, quantity, this.localCart).then(serverOrderItem => {
-          this.localCart.orderItems.push(serverOrderItem);
-          this.update(this.localCart)
-            .toPromise()
-            .then(updatedCart => {
-              console.log('++++++++++++++++++++++++ NOT itemAlreadyInCart updateToCart', updatedCart);
-            });
-        });
+        this.orderItemsService
+          .createAndPushToServer(product, quantity, this.localCart)
+          .then(serverOrderItem => {
+            this.localCart.orderItems.push(serverOrderItem);
+            this.update(this.localCart)
+              .toPromise()
+              .then(updatedCart => {
+                this.updateBadge();
+                this.popSnack(product);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         // Item is not in cart - do LOCALLY
         // TODO mergeCart when you reconnect (id undefined + create orderItems remotely)
         this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, quantity * product.price, this.localCart));
       }
     }
-
-    // Badge
-    this.totalCount = 0;
-    this.localCart.orderItems.map(item => (this.totalCount += item.quantity));
-    this.totalNewCount.next(this.totalCount);
   }
 
   initCart(loggedIn: boolean, product: IProduct, quantity: number) {
@@ -343,5 +342,19 @@ export class CommandService {
         console.log('++++++++++++++++++++++++ bite du serveur error');
         return Promise.reject(error);
       });
+  }
+
+  private updateBadge() {
+    this.totalCount = 0;
+    this.localCart.orderItems.map(item => (this.totalCount += item.quantity));
+    this.totalNewCount.next(this.totalCount);
+  }
+
+  private popSnack(product: IProduct) {
+    this.snackPopper.next(product);
+  }
+
+  public popSnackListener(): Observable<IProduct> {
+    return this.snackPopper.asObservable();
   }
 }

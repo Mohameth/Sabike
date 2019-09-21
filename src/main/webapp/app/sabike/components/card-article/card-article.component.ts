@@ -23,20 +23,15 @@ export class CardArticleComponent implements OnInit {
   isDisabled = false;
   isInStock = 'In stock';
 
-  constructor(
-    private productService: ProductService,
-    private commandService: CommandService,
-    private orderItemService: OrderItemsService,
-    private accountService: AccountService,
-    private clientService: ClientService
-  ) {}
+  constructor(private productService: ProductService, private commandService: CommandService) {
+    //
+  }
 
   ngOnInit() {
     this.productService.find(this.product.id).subscribe(message => {
       this.i_product = message.body;
       // now we can decrease
       if (this.i_product.stock === 0) {
-        // NOpe
         console.log('++++++ NOPE ++++++');
         this.isInStock = 'Out of stock';
         this.isDisabled = true;
@@ -66,6 +61,4 @@ export class CardArticleComponent implements OnInit {
       }
     });
   }
-
-  PasDeStock() {}
 }
