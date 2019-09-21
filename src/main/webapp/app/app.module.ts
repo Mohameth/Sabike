@@ -56,6 +56,7 @@ import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.c
 import { MatBadgeModule } from '@angular/material/badge';
 import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sabike-register.component';
 
 @NgModule({
   imports: [
@@ -117,7 +118,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     ListCartComponent,
     ItemListCartComponent,
     BreadcrumbComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    SabikeRegisterComponent
   ],
   providers: [
     NgbActiveModal,
@@ -144,7 +146,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: {
-        hasBackdrop: false
+        hasBackdrop: true
       }
     },
     {

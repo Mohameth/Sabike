@@ -123,6 +123,8 @@ export class NavigationPanelComponent implements OnInit {
 
     while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
       currentNode = this.findNodeWithName(routeName);
+      // if (currentNode != null) {
+      console.log(currentNode);
       const bread: Breadcrumb = {
         label: currentNode.name,
         url: currentNode.route
@@ -130,6 +132,7 @@ export class NavigationPanelComponent implements OnInit {
 
       breads.push(bread);
       i++;
+      // }
     }
     return breads.reverse();
   }

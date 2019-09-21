@@ -60,12 +60,14 @@ export class ToolbarComponent implements OnInit {
 
     // For reload
     this.accountService.identity().then(account => {
-      this.currentAccount = account;
-      console.log('MSG :', account.login);
-      this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg => {
-        console.log('HAS CART ?', msg);
-        this.commandService.getCart;
-      });
+      if (account != null) {
+        this.currentAccount = account;
+        console.log('MSG :', account.login);
+        this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg => {
+          console.log('HAS CART ?', msg);
+          this.commandService.getCart;
+        });
+      }
     });
   }
 
