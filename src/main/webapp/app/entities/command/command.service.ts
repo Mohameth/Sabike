@@ -373,4 +373,6 @@ export class CommandService {
       return true;
     }
   }
+
+  totalItemsCount() {}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IOrderItems } from 'app/shared/model/order-items.model';
 import { CommandService } from 'app/entities/command';
 import { AccountService } from 'app/core';
@@ -15,8 +15,10 @@ import { NavigationService } from 'app/sabike/services/navigation-service';
 })
 export class CartComponent implements OnInit {
   orderItems: IOrderItems[];
-  totalPrice = 0.0;
-  numberOfItems = 0;
+  private totalPrice = 0.0;
+  private numberOfItems = 0;
+
+  // private numberOfItemsString: string;
 
   constructor(
     private accountService: AccountService,
@@ -26,28 +28,35 @@ export class CartComponent implements OnInit {
     private route: ActivatedRoute,
     private commandService: CommandService,
     private navigationService: NavigationService
-  ) {}
+  ) {
+    //
+  }
 
   ngOnInit() {
     if (this.commandService.getCart !== null && this.commandService.getCart.orderItems.length !== 0) {
       this.orderItems = this.commandService.getCart.orderItems;
+      this.orderItems.map(item => {
+        this.totalPrice += item.paidPrice;
+        console.log(this.totalPrice, typeof this.totalPrice);
+        this.numberOfItems += item.quantity;
+        console.log(this.numberOfItems, typeof this.numberOfItems);
+      });
 
+      console.log('should show ', this.numberOfItems, this.totalPrice);
+
+      // Observe future changes
       this.commandService.listenTotalCount().subscribe(quantity => {
-        console.log(quantity);
         this.numberOfItems = quantity;
-
+        // this.numberOfItemsString = this.numberOfItems.toString();
         // update total price
         this.totalPrice = 0.0;
         this.commandService.getCart.orderItems.map(item => (this.totalPrice += item.paidPrice));
       });
-
-      this.orderItems.map(item => {
-        this.totalPrice += item.paidPrice;
-        this.numberOfItems += item.quantity;
-      });
+    } else {
+      // cart is empty
     }
-    console.log('++++++++++++++++ORDER CART ', this.orderItems);
-    console.log('totalPRica in CART : ', this.totalPrice);
+    // console.log('++++++++++++++++ORDER CART ', this.orderItems);
+    // console.log('totalPRica in CART : ', this.totalPrice);
 
     this.eventManager.subscribe('authenticationSuccess', message => {
       if (message.content === 'connected') {
