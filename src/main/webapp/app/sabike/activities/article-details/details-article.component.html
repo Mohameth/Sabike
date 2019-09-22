@@ -9,7 +9,7 @@
         <mat-card-title>{{product.name}}</mat-card-title>
         <br>
         <span id="details-descr-title">
-            <h4 style="display: inline-block"> {{product.price}}$ - En stock</h4>
+            <h4 style="display: inline-block"> {{product.price}}$ - {{ isInStock }}</h4>
         </span>
         <div id="details-description-container">
             <div id="details-description">
@@ -19,24 +19,14 @@
             </div>
         </div>
         <div id="details-buttons">
-            <mat-form-field id="details-select-quantity">
-                <mat-label>Quantité</mat-label>
-                <mat-select [(value)]="selectedQuantity">
-                    <mat-option value="1">1</mat-option>
-                    <mat-option value="2">2</mat-option>
-                    <mat-option value="3">3</mat-option>
-                    <mat-option value="4">4</mat-option>
-                    <mat-option value="5">5</mat-option>
-                </mat-select>
-            </mat-form-field>
-
             <button
                 id="details-button-add-to-cart"
                 mat-raised-button
                 color="accent"
-                (click)="addToCart(product.id, selectedQuantity)">
+                (click)="addToCart(product.id, false)"
+                [disabled]="isDisabled">
                 <mat-icon class="example-icon" aria-hidden="false" aria-label="Search icon">shopping_basket</mat-icon>
-                AJOUTER
+                Add to cart
             </button>
         </div>
     </div>

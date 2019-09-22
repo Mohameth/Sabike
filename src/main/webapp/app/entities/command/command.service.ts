@@ -162,7 +162,7 @@ export class CommandService {
     }, 1000);
   }
 
-  updateCartProduct(product: IProduct, quantity: number) {
+  updateCartProduct(product: IProduct, quantity: number, isInSelect: boolean) {
     if (this.accountService.isAuthenticated()) {
       // Check if localCart is not empty, it means we already fetched
       // from remote or already added a product to cart
@@ -175,7 +175,7 @@ export class CommandService {
               .then(remoteCart => {
                 // we can push an item inside the new cart, but we need to push it to remote
                 // so each orderitem has its OWN id
-                this.updateToCart(product, quantity);
+                this.updateToCart(product, quantity, isInSelect);
               })
               .catch(error => console.log(error));
           })
@@ -183,35 +183,50 @@ export class CommandService {
       } else {
         // check if there is already this Product inside
         // if yes just add to quantity of the OrderItem
-        this.updateToCart(product, quantity);
+        this.updateToCart(product, quantity, isInSelect);
       }
     } else {
       // Local cart only
 
       // Check if local cart is empty => init localCart
+
       if (this.localCart.orderItems.length === 0) {
         // then push the OrderItem inside
         // and that's it
+        console.log('length = 0... push');
+        this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, product.price * quantity, this.localCart));
       } else {
         // cart has already items
         // check if already existing Product etc..
+        if (this.alreadyInCart(product)) {
+          console.log('Already in cart.. do not push');
+          this.updateToCart(product, quantity, isInSelect);
+        } else {
+          console.log('Not in cart.. push');
+          this.localCart.orderItems.push(
+            this.orderItemsService.createOrderItem(product, quantity, product.price * quantity, this.localCart)
+          );
+        }
       }
     }
     // Update badge  [...].next(...);
+    this.updateBadge();
+    this.popSnack(product);
   }
 
   private alreadyInCart(product: IProduct): boolean {
-    let itemIndex = 0;
-    const itemAlreadyInCart = this.localCart.orderItems.find((element, index, obj) => {
+    let itemAlreadyInCart = false;
+    this.localCart.orderItems.find(element => {
       if (element.product.name === product.name) {
-        itemIndex = index;
+        itemAlreadyInCart = true;
         return true;
       }
     });
-    return false;
+
+    return itemAlreadyInCart;
   }
 
-  updateToCart(product: IProduct, quantity: number) {
+  updateToCart(product: IProduct, quantity: number, isInSelect: boolean) {
     let itemIndex = 0;
     const itemAlreadyInCart = this.localCart.orderItems.find((element, index, obj) => {
       if (element.product.name === product.name) {
@@ -219,9 +234,13 @@ export class CommandService {
         return true;
       }
     });
-    if (itemAlreadyInCart) {
+    console.log('itemAlreadyInCart in updateToCart', itemAlreadyInCart);
+
+    if (this.alreadyInCart(product)) {
       // Item is already in cart - do LOCALLY
-      if (quantity !== 1) {
+      console.log('itemAlreadyInCart YES');
+
+      if (isInSelect) {
         this.localCart.orderItems[itemIndex].quantity = quantity;
         this.localCart.orderItems[itemIndex].paidPrice = this.localCart.orderItems[itemIndex].product.price * quantity;
       } else {
@@ -240,6 +259,8 @@ export class CommandService {
             console.log(error);
           });
       }
+      this.updateBadge();
+      this.popSnack(product);
     } else {
       // Item is not in cart
       if (this.accountService.isAuthenticated()) {
@@ -264,7 +285,7 @@ export class CommandService {
       } else {
         // Item is not in cart - do LOCALLY
         // TODO mergeCart when you reconnect (id undefined + create orderItems remotely)
-        this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, quantity * product.price, this.localCart));
+        // this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, quantity * product.price, this.localCart));
       }
     }
   }
@@ -313,7 +334,8 @@ export class CommandService {
 
   // when client disconnect
   emptyCart() {
-    this.localCart = null;
+    this.localCart = new Command();
+    this.localCart.orderItems = [];
     this.totalCount = 0;
     this.totalNewCount.next(this.totalCount);
   }
