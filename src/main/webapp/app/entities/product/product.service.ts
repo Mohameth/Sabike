@@ -92,6 +92,27 @@ export class ProductService {
     return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
   }
 
+  updateQuantityProduct(productToUpdate: IProduct, quantity: number, newQuantity: number): Promise<EntityResponseType> {
+    console.log('producToUpdate stock before : ', productToUpdate.stock);
+    console.log('quantity : ', quantity);
+    console.log('newQuantity: ', newQuantity);
+    if (quantity > newQuantity) {
+      productToUpdate.stock += quantity - newQuantity;
+    } else {
+      // TODO check if there is enough in stock
+      // TODO check if qty > 5
+      if (productToUpdate.stock < newQuantity - quantity) {
+        return new Promise((resolve, reject) => {
+          reject('Not enough quantity in the stock :/');
+        });
+      } else {
+        productToUpdate.stock -= newQuantity - quantity;
+      }
+    }
+    console.log('producToUpdate stock after : ', productToUpdate.stock);
+    return this.reserveQuantityProduct(productToUpdate).toPromise();
+  }
+
   unReserveQuantityProduct(productToUpdate: IProduct): Observable<EntityResponseType> {
     return this.http.put<IProduct>(this.resourceUrl, productToUpdate, { observe: 'response' });
   }

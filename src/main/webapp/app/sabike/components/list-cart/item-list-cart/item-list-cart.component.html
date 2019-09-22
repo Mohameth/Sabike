@@ -18,6 +18,9 @@
                 <mat-option value="4">4</mat-option>
                 <mat-option value="5">5</mat-option>
             </mat-select>
+            <mat-error *ngIf="isOutOfStock">
+                There is not enough items in stock, change it pls.
+            </mat-error>
         </mat-form-field>
         <p class="mat-h4"> {{ orderItem.paidPrice }}</p>
     </div>

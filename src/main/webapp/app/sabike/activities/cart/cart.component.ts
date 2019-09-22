@@ -31,7 +31,7 @@ export class CartComponent implements OnInit {
       this.orderItems = this.commandService.getCart.orderItems;
 
       this.commandService.listenTotalCount().subscribe(quantity => {
-        console.log(quantity);
+        console.log('IN subscribe', quantity);
         this.numberOfItems = quantity;
 
         // update total price

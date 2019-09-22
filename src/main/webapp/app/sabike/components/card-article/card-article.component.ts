@@ -51,13 +51,12 @@ export class CardArticleComponent implements OnInit {
       } else {
         console.log('++++++ WILL DECREASE ++++++');
         this.i_product.stock = this.i_product.stock - quantity;
-        this.productService.reserveQuantityProduct(this.i_product).subscribe(response => {
-          console.log('++++++ DECREASED ++++++');
-
-          this.commandService.manageTimer();
-
-          this.commandService.updateCartProduct(this.i_product, 1);
-        });
+        this.productService
+          .reserveQuantityProduct(this.i_product)
+          .toPromise()
+          .then(() => {
+            this.commandService.updateCartProduct(this.i_product, 1);
+          });
       }
     });
   }
