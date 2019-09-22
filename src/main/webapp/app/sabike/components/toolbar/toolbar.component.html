@@ -100,6 +100,10 @@
         </button>
     </mat-menu>
 
+    <span id="user-account-name" *ngIf="isAuthenticated()">
+        {{userName}}
+    </span>
+
     <!-- Account management -->
     <button type="button"
             aria-label="ToolbarButton account"
@@ -138,7 +142,7 @@
             Se déconnecter
         </button>
     </mat-menu>
-  
+
     <!-- Cart management -->
     <button type="button"
             aria-label="ToolbarButton cart"

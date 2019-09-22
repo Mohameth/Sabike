@@ -358,4 +358,22 @@ export class CommandService {
   public popSnackListener(): Observable<IProduct> {
     return this.snackPopper.asObservable();
   }
+
+  hasLessThanFive(productId: number): boolean {
+    let itemIndex = 0;
+    let foundItem = this.localCart.orderItems.find((element, index, obj) => {
+      if (element.product.id === productId) {
+        itemIndex = index;
+        return true;
+      }
+    });
+    if (foundItem) {
+      return this.localCart.orderItems[itemIndex].quantity < 5;
+    } else {
+      // None yet
+      return true;
+    }
+  }
+
+  totalItemsCount() {}
 }
