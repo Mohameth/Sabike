@@ -38,6 +38,10 @@ export class OrderItemsService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  deleteCustom(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/delete-custom/${id}`, { observe: 'response' });
+  }
+
   // Sabike
   createOrderItem(product: IProduct, quantity: number, paidPrice: number, command: ICommand): IOrderItems {
     return {

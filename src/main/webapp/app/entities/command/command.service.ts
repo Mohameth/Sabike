@@ -211,6 +211,14 @@ export class CommandService {
     return false;
   }
 
+  calculateTotalAmount(): number {
+    let totalAmount = 0;
+    this.localCart.orderItems.map(orderItem => {
+      totalAmount += orderItem.paidPrice;
+    });
+    return totalAmount;
+  }
+
   updateToCart(product: IProduct, quantity: number) {
     let itemIndex = 0;
     const itemAlreadyInCart = this.localCart.orderItems.find((element, index, obj) => {
@@ -219,6 +227,7 @@ export class CommandService {
         return true;
       }
     });
+    console.log('updateToCart begin ', this.localCart);
     if (itemAlreadyInCart) {
       // Item is already in cart - do LOCALLY
       if (quantity !== 1) {
@@ -230,24 +239,37 @@ export class CommandService {
       }
       if (this.accountService.isAuthenticated()) {
         // Item is already in cart - and then do REMOTELY
-        this.update(this.localCart)
+        // update total count
+        let totalOrderItemsCount = 0;
+        this.localCart.orderItems.forEach(orderItem => {
+          totalOrderItemsCount += orderItem.quantity;
+        });
+        this.localCart.totalAmount = this.calculateTotalAmount();
+        this.orderItemsService
+          .update(this.localCart.orderItems[itemIndex])
           .toPromise()
-          .then(updatedCart => {
-            this.updateBadge();
-            this.popSnack(product);
+          .then(updatedOrderItem => {
+            this.update(this.localCart)
+              .toPromise()
+              .then(updatedCart => {
+                this.updateBadge();
+                this.popSnack(product);
+              })
+              .catch(error => {
+                console.log(error);
+              });
           })
-          .catch(error => {
-            console.log(error);
-          });
+          .catch(error => console.log(error));
       }
     } else {
-      // Item is not in cart
+      // Item is not in cart - we need to create associated OrderItem
       if (this.accountService.isAuthenticated()) {
         // Item is not in cart - do REMOTELY
         this.orderItemsService
           .createAndPushToServer(product, quantity, this.localCart)
           .then(serverOrderItem => {
             this.localCart.orderItems.push(serverOrderItem);
+            this.localCart.totalAmount = this.calculateTotalAmount();
             this.update(this.localCart)
               .toPromise()
               .then(updatedCart => {
@@ -337,7 +359,7 @@ export class CommandService {
         // Update local ID
         this.localCart = serverCart.body;
         return Promise.resolve(serverCart.body);
-        // then we push orderitems later after the promise
+        // then we push OrderItems later after the promise
       })
       .catch(error => {
         console.log('++++++++++++++++++++++++ bite du serveur error');
@@ -376,23 +398,59 @@ export class CommandService {
   }
 
   removeFromCart(orderItem: OrderItems) {
-    orderItem.product.stock += orderItem.quantity;
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+
+    console.log('removeFromCart removing ', orderItem);
+    const index = this.localCart.orderItems.indexOf(orderItem);
+    console.log('at index ', index);
+    console.log('directly ', this.localCart.orderItems[index]);
+
     if (this.accountService.isAuthenticated()) {
-      // first reset stock in server
+      // first reload product entirely
       this.productService
-        .update(orderItem.product)
+        .find(orderItem.product.id)
         .toPromise()
-        .then(updatedProduct => {
-          // then remove OrderItem remotely
-          this.orderItemsService
-            .delete(orderItem.id)
+        .then(finalProduct => {
+          let product = finalProduct.body;
+          // add stock
+          product.stock += orderItem.quantity;
+          // then reset the stock in server (update product)
+          this.productService
+            .update(product)
             .toPromise()
-            .then(response => {
-              // then remove locally
-              const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
-              if (itemIndex > -1) {
-                this.localCart.orderItems.splice(itemIndex, 1);
-              }
+            .then(() => {
+              // then remove OrderItem remotely
+              this.orderItemsService
+                .delete(orderItem.id)
+                .toPromise()
+                .then(() => {
+                  // // refresh cart
+                  // this.find(this.localCart.id)
+                  //   .toPromise()
+                  //   .then(cart => {
+                  //     this.localCart = cart.body;
+                  // then remove locally
+                  const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+                  if (itemIndex > -1) {
+                    console.log('removeFromCart removing 4', itemIndex);
+                    this.localCart.orderItems.splice(itemIndex, 1);
+                    // update cart
+                    // this.update(this.localCart)
+                    //   .toPromise()
+                    //   .then(updatedCart => {
+                    //     console.log('++++++++++++++++++++++++ updatedCart', updatedCart);
+                    //   })
+                    //   .catch(error => console.log(error));
+                  }
+                  // })
+                  // .catch(error => console.log(error));
+                })
+                .catch(error => console.log(error));
             })
             .catch(error => console.log(error));
         })
