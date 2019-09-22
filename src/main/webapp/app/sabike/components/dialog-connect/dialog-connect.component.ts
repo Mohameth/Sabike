@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Inject, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { JhiEventManager } from 'ng-jhipster';
@@ -25,6 +25,7 @@ export class DialogConnectComponent implements AfterViewInit {
   _username: string;
   _password: string;
   hide = true;
+  private toCheckout: boolean;
 
   @ViewChild('username', { static: false }) usernameField: ElementRef;
 
@@ -37,7 +38,9 @@ export class DialogConnectComponent implements AfterViewInit {
     private router: Router,
     public activeModal: NgbActiveModal,
     private fb: FormBuilder
-  ) {}
+  ) {
+    //
+  }
 
   ngAfterViewInit(): void {
     this.usernameField.nativeElement.focus();
@@ -62,6 +65,7 @@ export class DialogConnectComponent implements AfterViewInit {
       .then(() => {
         this.authenticationError = false;
         this.activeModal.dismiss('login success');
+
         if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
           this.router.navigate(['']);
         }

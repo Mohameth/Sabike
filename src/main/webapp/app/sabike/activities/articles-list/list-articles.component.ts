@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
 import { IProduct } from 'app/shared/model/product.model';
-import { JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
 import { NavigationError, NavigationStart } from '@angular/router';
@@ -25,7 +25,8 @@ export class ListArticlesComponent implements OnInit {
     private navigationService: NavigationService,
     private router: Router,
     private commandService: CommandService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private eventManager: JhiEventManager
   ) {
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
@@ -161,16 +162,23 @@ export class ListArticlesComponent implements OnInit {
     this.commandService.popSnackListener().subscribe(next => {
       this.openSnackBar('Added product ' + next.name + ' to cart', 'DISMISS');
     });
+
+    this.eventManager.subscribe('popSnack', callback => {
+      this.openSnackBar(callback.content.message, callback.content.action);
+    });
   }
 
   private openSnackBar(message: string, action: string) {
-    console.log('++++++++++++++++++++++++ openSnackBar');
     this._snackBar.open(message, action, {
-      duration: 2000
+      duration: 5000
     });
   }
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  test() {
+    return true;
   }
 }

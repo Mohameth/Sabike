@@ -1,17 +1,17 @@
 <div id="cart-root">
     <div id="cart-left">
-        <p class="mat-h1 mat-headline">Mon panier</p>
+        <p class="mat-h1 mat-headline">My cart</p>
         <jhi-list-cart [orderItems]="orderItems"></jhi-list-cart>
     </div>
     <mat-card id="cart-right">
         <div id="cart-right-content">
             <p class="mat-h2 mat-headline">My Cart</p>
             <div class="horizontal-flexbox">
-                <p class="mat-h4">Nombre d'articles :&nbsp;</p>
+                <p class="mat-h4">Number of articles :&nbsp;</p>
                 <p class="mat-h4" style="font-weight: bold;"> {{ numberOfItems }} </p>
             </div>
             <div class="horizontal-flexbox">
-                <p class="mat-h4">Prix total:&nbsp;</p>
+                <p class="mat-h4">Total price:&nbsp;</p>
                 <p class="mat-h4" style="font-weight: bold;"> {{ totalPrice }} $</p>
             </div>
             <div>
@@ -27,7 +27,7 @@
                     class="cart-button-checkout"
                     mat-raised-button color="accent"
                     routerLink="/checkout">
-                    COMMANDER
+                    CHECKOUT
                 </button>
             </div>
         </div>
