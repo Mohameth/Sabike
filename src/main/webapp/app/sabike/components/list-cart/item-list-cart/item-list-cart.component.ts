@@ -72,4 +72,8 @@ export class ItemListCartComponent implements OnInit {
   public popSnackListener(): Observable<String> {
     return this.snackPopper.asObservable();
   }
+
+  deleteFromCart() {
+    this.commandService.removeFromCart(this.orderItem);
+  }
 }

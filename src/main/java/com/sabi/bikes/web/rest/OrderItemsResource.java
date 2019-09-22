@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,5 +115,23 @@ public class OrderItemsResource {
         log.debug("REST request to delete OrderItems : {}", id);
         orderItemsRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+
+
+    /**
+     * {@code DELETE  /order-items/:id} : delete the "id" orderItems.
+     *
+     * @param id the id of the orderItems to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/order-items/delete-custom/{id}")
+    public ResponseEntity<Void> deleteOrderItemsCustom(Pageable pageable, @PathVariable Long id) {
+        log.debug("REST custom request to delete OrderItems : {}", id);
+        List<OrderItems> deletedItems = orderItemsRepository.deleteCustomById(pageable,id);
+//        orderItemsRepository.deleteCustomById(pageable,id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }
