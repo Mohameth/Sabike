@@ -8,7 +8,6 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
 import { OrderItemsService } from './order-items.service';
 import { ICommand } from 'app/shared/model/command.model';
-import { CommandService } from 'app/entities/command';
 import { IProduct } from 'app/shared/model/product.model';
 import { ProductService } from 'app/entities/product';
 
@@ -34,7 +33,7 @@ export class OrderItemsUpdateComponent implements OnInit {
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected orderItemsService: OrderItemsService,
-    protected commandService: CommandService,
+    // protected commandService: CommandService,
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -45,13 +44,13 @@ export class OrderItemsUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ orderItems }) => {
       this.updateForm(orderItems);
     });
-    this.commandService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<ICommand[]>) => mayBeOk.ok),
-        map((response: HttpResponse<ICommand[]>) => response.body)
-      )
-      .subscribe((res: ICommand[]) => (this.commands = res), (res: HttpErrorResponse) => this.onError(res.message));
+    // this.commandService
+    //   .query()
+    //   .pipe(
+    //     filter((mayBeOk: HttpResponse<ICommand[]>) => mayBeOk.ok),
+    //     map((response: HttpResponse<ICommand[]>) => response.body)
+    //   )
+    //   .subscribe((res: ICommand[]) => (this.commands = res), (res: HttpErrorResponse) => this.onError(res.message));
     this.productService
       .query()
       .pipe(
