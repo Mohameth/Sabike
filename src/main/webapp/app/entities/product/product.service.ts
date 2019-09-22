@@ -40,20 +40,46 @@ export class ProductService {
 
   // SABIKE
 
-  getBikes(category: string): Observable<HttpResponse<any>> {
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}`, { observe: 'response' });
+  getBikesByCategory(page: number, size: number, category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}?page=${page}&size=${size}`, { observe: 'response' });
   }
 
-  getAllBikes(): Observable<HttpResponse<any>> {
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all`, { observe: 'response' });
+  getBikesByCategoryCount(category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bybikecategory/${category}/count`, { observe: 'response' });
   }
 
-  getAllParts(): Observable<HttpResponse<any>> {
-    return this.http.get<IProduct[]>(`${this.resourceUrl}/parts/all`, { observe: 'response' });
-  }
-
-  getAllBikesPaginated(page: number, size: number) {
+  getAllBikes(page: number, size: number): Observable<HttpResponse<any>> {
     return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all?page=${page}&size=${size}`, { observe: 'response' });
+  }
+
+  getAllBikesCount(): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bikes/all/count`, { observe: 'response' });
+  }
+
+  getPartsByCategory(page: number, size: number, category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bypartcategory/${category}?page=${page}&size=${size}`, { observe: 'response' });
+  }
+
+  getPartsByCategoryCount(category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bypartcategory/${category}/count`, { observe: 'response' });
+  }
+
+  getPartsByCategoryType(page: number, size: number, categoryType: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bypartcategorytype/${categoryType}?page=${page}&size=${size}`, {
+      observe: 'response'
+    });
+  }
+
+  getPartsByCategoryTypeCount(category: string): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/bypartcategorytype/${category}/count`, { observe: 'response' });
+  }
+
+  getAllParts(page: number, size: number): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/parts/all?page=${page}&size=${size}`, { observe: 'response' });
+  }
+
+  getAllPartsCount(): Observable<HttpResponse<any>> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/parts/all/count`, { observe: 'response' });
   }
 
   // Details handler

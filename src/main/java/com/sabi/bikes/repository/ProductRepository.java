@@ -26,19 +26,34 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> searchByNameLike(Pageable pageable, String name);
 
     @Query("FROM Product WHERE bike_category = ?1")
-    List<Product> getAllByBikeCategory(Pageable pageable, String chosenCategory);
+    List<Product> getBikeByCategory(Pageable pageable, String chosenCategory);
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE bike_category = ?1")
+    List<Long> getBikeByCategoryCount(Pageable pageable, String chosenCategory);
 
     @Query("FROM Product WHERE part_category = ?1")
-    List<Product> getAllByPartCategory(Pageable pageable, String category);
+    List<Product> getPartByCategory(Pageable pageable, String category);
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE part_category = ?1")
+    List<Long> getPartByCategoryCount(Pageable pageable, String category);
+
+    @Query("FROM Product WHERE part_category_type = ?1")
+    List<Product> getPartByCategoryType(Pageable pageable, String category);
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE part_category_type = ?1")
+    List<Long> getPartByCategoryTypeCount(Pageable pageable, String category);
 
     @Query("FROM Product WHERE type = 'BIKE'")
     List<Product> getAllBikes(Pageable pageable);
 
-    @Query("FROM Product WHERE type = 'BIKE'")
-    List<Product> getAllBikesPaginated(Pageable pageable);
+    @Query("SELECT COUNT(p) FROM Product p WHERE type = 'BIKE'")
+    List<Long> getAllBikesCount(Pageable pageable);
 
     @Query("FROM Product WHERE type = 'PART'")
     List<Product> getAllParts(Pageable pageable);
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE type = 'PART'")
+    List<Long> getAllPartsCount(Pageable pageable);
 
     @Query("UPDATE Product SET stock = ?2 WHERE id = ?1")
     List<Product> decreaseProductQuantity(Pageable pageable, int productID, int quantity);

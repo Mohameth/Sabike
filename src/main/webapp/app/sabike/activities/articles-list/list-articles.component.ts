@@ -78,117 +78,112 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
   }
 
   setNumberOfItems(number) {
+    console.log('Length: ', number);
     this.totalNumberOfItems = number;
     this.paginator.setLength(this.totalNumberOfItems);
   }
 
   fetchProductsWithQuery() {
     // LOAD here
+    // sabike.com/articles/Bikes --> level 3, .../Parts/Steering --> level 4, etc.
+    const levelOfRedirection = this.router.url.split('/').length;
     const parameter = this.router.url.split('/').reverse()[0];
     // Navigation switch
-    switch (parameter) {
-      // Bikes categories
-      case 'bikes':
-        /*if (this.totalNumberOfItems == -1) this.productService.getTotalBikesNumber().subscribe(message => {
-          this.setNumberOfItems(message.body);
-        });*/
-        this.productService.getAllBikesPaginated(this.pageIndex, this.pageSize).subscribe(message => {
-          this.setNumberOfItems(message.body);
-        });
+    switch (levelOfRedirection) {
+      case 3:
+        switch (parameter) {
+          // All bikes
+          case 'bikes':
+            this.productService.getAllBikesCount().subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
+            this.productService.getAllBikes(this.pageIndex, this.pageSize).subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+          // All parts
+          case 'parts':
+            this.productService.getAllPartsCount().subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
+            this.productService.getAllParts(this.pageIndex, this.pageSize).subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+        }
         break;
-      case 'parts':
-        /*if (this.totalNumberOfItems == -1) this.productService.getTotalPartsNumber().subscribe(message => {
-          this.setNumberOfItems(message.body);
-        });*/
-        this.productService.getAllParts().subscribe(message => {
-          this.products = message.body;
-        });
+      case 4:
+        switch (parameter) {
+          // Bikes category
+          case 'mountain':
+          case 'road':
+          case 'city':
+          case 'ebike':
+          case 'bmx':
+            this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
+            this.productService.getBikesByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+          // Parts category
+          case 'steering':
+          case 'saddle':
+          case 'drivetrain':
+          case 'wheels':
+          case 'brakes':
+          case 'frames':
+            this.productService.getPartsByCategoryCount(parameter.toUpperCase()).subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
+            this.productService.getPartsByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
+              this.products = message.body;
+            });
+            break;
+        }
         break;
-      case 'mountain':
-      case 'road':
-      case 'city':
-      case 'ebike':
-      case 'bmx':
-        /*if (this.totalNumberOfItems == -1) this.productService.getTotalBikesNumber(parameter.toLocaleUpperCase()).subscribe(message => {
-          this.setNumberOfItems(message.body);
-        });*/
-        this.productService.getBikes(parameter.toLocaleUpperCase()).subscribe(message => {
-          this.products = message.body;
-        });
+      case 5:
+        switch (parameter) {
+          // Parts - Steering (direction en fr)
+          case 'stems':
+          case 'handlebars':
+          case 'headset':
+          // Parts - Saddle / seatpost (assise en fr)
+          case 'saddle':
+          case 'seat-post':
+          case 'seat-clamp':
+          // Parts - Drivetrain
+          case 'derailleur':
+          case 'chains':
+          case 'cranksets':
+          case 'pedals':
+          case 'straps':
+          // Parts - Wheels / tyres
+          case 'tyres':
+          case 'alloy-carbon-wheels':
+          case 'wire-spoked-wheels':
+          case 'boyaux':
+          // Parts - Brakes
+          case 'brake-levers':
+          case 'brake-cables':
+          case 'brake-calipers':
+          case 'brake-pads':
+          // Parts - Frames / Forks
+          case 'frame-kits':
+          case 'frames':
+          case 'forks':
+            this.productService.getPartsByCategoryTypeCount(parameter.toUpperCase()).subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
+            this.productService
+              .getPartsByCategoryType(this.pageIndex, this.pageSize, parameter.toUpperCase().replace('-', '_'))
+              .subscribe(message => {
+                this.products = message.body;
+              });
+            break;
+        }
         break;
-
-      // Parts - Steering (direction en fr)
-      case 'stems': {
-        break;
-      }
-      case 'handlebars': {
-        break;
-      }
-      case 'headset': {
-        break;
-      }
-      // Parts - Saddle / seatpost (assise en fr)
-      case 'saddle': {
-        break;
-      }
-      case 'seat-posts': {
-        break;
-      }
-      case 'seat-clamps': {
-        break;
-      }
-      // Parts - Drivetrain
-      case 'derailleur': {
-        break;
-      }
-      case 'chains': {
-        break;
-      }
-      case 'cranksets': {
-        break;
-      }
-      case 'pedals': {
-        break;
-      }
-      case 'straps': {
-        break;
-      }
-      // Parts - Wheels / tyres
-      case 'tyres': {
-        break;
-      }
-      case 'alloy-carbon-wheels': {
-        break;
-      }
-      case 'wire-spoked-wheels': {
-        break;
-      }
-      case 'boyaux': {
-        break;
-      }
-      // Parts - Brakes
-      case 'brake-levers': {
-        break;
-      }
-      case 'brake-cables': {
-        break;
-      }
-      case 'brake-calipers': {
-        break;
-      }
-      case 'brake-pads': {
-        break;
-      }
-      // Parts - Frames / Forks
-      case 'frame-kits': {
-        break;
-      }
-      case 'frames': {
-        break;
-      }
-      case 'forks': {
-        break;
-      }
     }
   }
 }
