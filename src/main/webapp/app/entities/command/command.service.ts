@@ -375,5 +375,26 @@ export class CommandService {
     }
   }
 
-  totalItemsCount() {}
+  removeFromCart(orderItem: OrderItems) {
+    // first reset stock in server
+    orderItem.product.stock += orderItem.quantity;
+    this.productService
+      .update(orderItem.product)
+      .toPromise()
+      .then(updatedProduct => {
+        // then remove OrderItem remotely
+        this.orderItemsService
+          .delete(orderItem.id)
+          .toPromise()
+          .then(response => {
+            // then remove locally
+            const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+            if (itemIndex > -1) {
+              this.localCart.orderItems.splice(itemIndex, 1);
+            }
+          })
+          .catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
+  }
 }
