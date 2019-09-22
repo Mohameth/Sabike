@@ -42,42 +42,44 @@ export class CardArticleComponent implements OnInit {
   }
 
   addToCart(productId: number) {
-    // Here in this component the quantity is always one
-    this.productService
-      .find(productId)
-      .toPromise()
-      .then(product => {
-        // TODO debug ProductRepositoty.requestProductQuantity or just reload all product..
-        console.log(product.body.stock);
-        this.i_product = product.body;
-        // now we can decrease
-        if (this.i_product.stock === 0) {
-          // NOpe
-          this.isDisabled = true;
-          this.isInStock = 'Out of stock';
-        } else {
-          // TODO use new function by @Denis
-          // TODO also... before reserving quantity we should check if there is already 5 times the same product
-          // TODO move this before checking product availability
-          // TODO => when we enter the method addToCart(productId: number, quantity: number)
-          if (this.commandService.hasLessThanFive(productId)) {
-            this.i_product.stock = this.i_product.stock - 1;
-            this.productService.reserveQuantityProduct(this.i_product).subscribe(response => {
-              this.commandService.manageTimer();
-              this.commandService.updateCartProduct(this.i_product, 1);
-            });
+    // first check if less than 5
+    if (this.commandService.hasLessThanFive(productId)) {
+      // now check stock
+      // ** in this component the quantity is always one **
+      this.productService
+        .find(productId)
+        .toPromise()
+        .then(product => {
+          this.i_product = product.body;
+          if (this.i_product.stock === 0) {
+            // out of stock
+            this.isDisabled = true;
+            this.isInStock = 'Out of stock';
           } else {
-            // already 5
-            this.eventManager.broadcast({
-              name: 'popSnack',
-              content: {
-                message: 'Already 5 ' + this.i_product.name + ' in the cart.',
-                action: 'DISMISS'
-              }
-            });
+            // now we can decrease stock
+            this.i_product.stock = this.i_product.stock - 1; // locally
+            this.productService // then push to server the new stock
+              .reserveQuantityProduct(this.i_product)
+              .toPromise()
+              .then(response => {
+                // once stock is changed add product to cart
+                // this.commandService.manageTimer(); // TODO ?
+                this.commandService.updateCartProduct(this.i_product, 1);
+              })
+              .catch(error => console.log(error));
           }
+        })
+        .catch(error => console.log(error));
+    } else {
+      // toast it
+      // already 5
+      this.eventManager.broadcast({
+        name: 'popSnack',
+        content: {
+          message: 'Already 5 ' + this.i_product.name + ' in the cart.',
+          action: 'DISMISS'
         }
-      })
-      .catch(error => console.log(error));
+      });
+    }
   }
 }

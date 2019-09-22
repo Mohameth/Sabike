@@ -6,6 +6,7 @@ import { DialogConnectComponent } from 'app/sabike/components/dialog-connect/dia
 import { MatDialog } from '@angular/material/dialog';
 import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationService } from 'app/sabike/services/navigation-service';
 
 @Component({
   selector: 'jhi-cart',
@@ -23,7 +24,8 @@ export class CartComponent implements OnInit {
     private eventManager: JhiEventManager,
     private router: Router,
     private route: ActivatedRoute,
-    private commandService: CommandService
+    private commandService: CommandService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit() {
@@ -46,9 +48,13 @@ export class CartComponent implements OnInit {
     }
     console.log('++++++++++++++++ORDER CART ', this.orderItems);
     console.log('totalPRica in CART : ', this.totalPrice);
+
     this.eventManager.subscribe('authenticationSuccess', message => {
       if (message.content === 'connected') {
-        this.router.navigate(['/checkout'], { relativeTo: this.route }).then(r => console.log(r));
+        if (this.navigationService.checkIfLoginFromCheckoutCall()) {
+          this.router.navigate(['/checkout'], { relativeTo: this.route }).then(r => console.log(r));
+          this.navigationService.requestLoginFromCheckoutCall(false);
+        }
       }
     });
   }
@@ -58,6 +64,7 @@ export class CartComponent implements OnInit {
   }
 
   openConnectDialog(): void {
+    this.navigationService.requestLoginFromCheckoutCall(true);
     this.dialogConnect.open(DialogConnectComponent);
   }
 }

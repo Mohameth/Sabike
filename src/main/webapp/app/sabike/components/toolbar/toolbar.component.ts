@@ -8,6 +8,7 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 // Misc
 import { CommandService } from 'app/entities/command';
 import { JhiEventManager } from 'ng-jhipster';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'jhi-toolbar',
@@ -20,6 +21,7 @@ export class ToolbarComponent implements OnInit {
   version: string;
   numberOfItems = 0;
   currentAccount: any;
+  userName: string = null;
 
   constructor(
     private loginService: LoginService,
@@ -38,7 +40,6 @@ export class ToolbarComponent implements OnInit {
     });
 
     this.commandService.listenTotalCount().subscribe(quantity => {
-      console.log(quantity);
       this.numberOfItems = quantity;
     });
 
@@ -46,6 +47,9 @@ export class ToolbarComponent implements OnInit {
     // For connection
     this.broadcast.subscribe('loginCallback', msg => {
       if (msg.content === 'ok') {
+        this.accountService.identity(true).then(account => {
+          this.userName = account.login;
+        });
         console.log('DANS CALLBACK TOOLBAR :', msg);
         console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
         this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
@@ -59,8 +63,9 @@ export class ToolbarComponent implements OnInit {
     });
 
     // For reload
-    this.accountService.identity().then(account => {
+    this.accountService.identity(true).then(account => {
       if (account != null) {
+        this.userName = account.login;
         this.currentAccount = account;
         console.log('MSG :', account.login);
         this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg => {
@@ -69,6 +74,8 @@ export class ToolbarComponent implements OnInit {
         });
       }
     });
+
+    // TODO manage after disconnect - reconnect
   }
 
   isAuthenticated() {
@@ -76,6 +83,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   logout() {
+    this.userName = null;
     this.loginService.logout();
     this.commandService.emptyCart();
     this.router.navigate(['']).then(r => console.log(r));
