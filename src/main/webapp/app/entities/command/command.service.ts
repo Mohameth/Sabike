@@ -243,13 +243,10 @@ export class CommandService {
       }
     });
 
-    
     console.log('itemAlreadyInCart in updateToCart', itemAlreadyInCart);
 
     if (this.alreadyInCart(product)) {
-
-    console.log('updateToCart begin ', this.localCart);
-    if (itemAlreadyInCart) {
+      console.log('updateToCart begin ', this.localCart);
       // Item is already in cart - do LOCALLY
       console.log('itemAlreadyInCart YES');
 
