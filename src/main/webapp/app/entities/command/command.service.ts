@@ -14,6 +14,7 @@ import { AccountService } from 'app/core';
 import { IClient } from 'app/shared/model/client.model';
 import { ClientService } from 'app/entities/client';
 import { OrderItemsService } from 'app/entities/order-items';
+import { ProductService } from 'app/entities/product';
 
 type EntityResponseType = HttpResponse<ICommand>;
 type EntityArrayResponseType = HttpResponse<ICommand[]>;
@@ -42,7 +43,8 @@ export class CommandService {
     protected http: HttpClient,
     private accountService: AccountService,
     private clientService: ClientService,
-    private orderItemsService: OrderItemsService
+    private orderItemsService: OrderItemsService,
+    private productService: ProductService
   ) {
     this.localCart = new Command();
     this.localCart.orderItems = [];
@@ -217,10 +219,9 @@ export class CommandService {
         return true;
       }
     });
-
     if (itemAlreadyInCart) {
       // Item is already in cart - do LOCALLY
-      if (quantity != 1) {
+      if (quantity !== 1) {
         this.localCart.orderItems[itemIndex].quantity = quantity;
         this.localCart.orderItems[itemIndex].paidPrice = this.localCart.orderItems[itemIndex].product.price * quantity;
       } else {
