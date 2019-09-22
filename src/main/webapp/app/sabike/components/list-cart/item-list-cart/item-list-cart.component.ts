@@ -31,14 +31,22 @@ export class ItemListCartComponent implements OnInit {
       .updateQuantityProduct(this.orderItem.product, this.orderItem.quantity, Number($newQuantity))
       .then(updatedProduct => {
         console.log('updateQuantityProduct updatedProduct :', updatedProduct);
-        this.commandService.updateToCart(this.orderItem.product, Number($newQuantity));
-        this.orderItem.quantity = $newQuantity;
+        this.commandService.updateToCart(this.orderItem.product, Number($newQuantity), true);
+        this.orderItem.quantity = Number($newQuantity);
         console.log('new QTE :', this.orderItem.quantity);
         console.log('type qte', typeof $newQuantity);
       })
       .catch(e => {
         console.log('cached : ', e);
+        console.log(
+          'selectedQuantity TYPEOF , this.orderItem.quantity.toString() : ',
+          typeof this.selectedQuantity,
+          typeof this.orderItem.quantity.toString()
+        );
+
         this.selectedQuantity = this.orderItem.quantity.toString();
+        // this.selectedQuantity = '1';
+        console.log('selectedQuantity , this.orderItem.quantity.toString() : ', this.selectedQuantity, this.orderItem.quantity.toString());
         console.log('this.cart', this.commandService.getCart);
         console.log('quantiy items catch', this.orderItem.quantity);
         this.isOutOfStock = true;

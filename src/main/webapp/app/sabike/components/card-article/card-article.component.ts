@@ -41,7 +41,7 @@ export class CardArticleComponent implements OnInit {
     });
   }
 
-  addToCart(productId: number) {
+  addToCart(productId: number, isInSelect: boolean) {
     // first check if less than 5
     if (this.commandService.hasLessThanFive(productId)) {
       // now check stock
@@ -64,7 +64,7 @@ export class CardArticleComponent implements OnInit {
               .then(response => {
                 // once stock is changed add product to cart
                 // this.commandService.manageTimer(); // TODO ?
-                this.commandService.updateCartProduct(this.i_product, 1);
+                this.commandService.updateCartProduct(this.i_product, 1, isInSelect);
               })
               .catch(error => console.log(error));
           }
