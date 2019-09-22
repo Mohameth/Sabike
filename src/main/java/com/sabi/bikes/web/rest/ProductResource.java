@@ -128,13 +128,14 @@ public class ProductResource {
 
     // SABIKE
 
-    @GetMapping("/products/bybikecategory/{category}?page={page}&size={size}")
+    @GetMapping("/products/bybikecategory/{category}")
     public ResponseEntity<List<Product>> findProductByBikeCategory(
         Pageable pageable, @PathVariable String category,
-        int page, int size
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
         Pageable p = new PageRequest(page, size);
-        List<Product> products = productRepository.getBikeByCategory(p, category);
+        List<Product> products = productRepository.getBikeByCategory(p, "ROAD");
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -144,10 +145,11 @@ public class ProductResource {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/products/bypartcategory/{category}?page={page}&size={size}")
+    @GetMapping("/products/bypartcategory/{category}")
     public ResponseEntity<List<Product>> findProductByPartCategory(
         Pageable pageable, @PathVariable String category,
-        int page, int size
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
         List<Product> products = productRepository.getPartByCategory(new PageRequest(page, size), category);
         return new ResponseEntity<>(products, HttpStatus.OK);
@@ -161,10 +163,11 @@ public class ProductResource {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/products/bypartcategorytype/{categoryType}?page={page}&size={size}")
+    @GetMapping("/products/bypartcategorytype/{categoryType}")
     public ResponseEntity<List<Product>> findProductByPartCategoryType(
         Pageable pageable, @PathVariable String categoryType,
-        int page, int size
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
         List<Product> products = productRepository.getPartByCategoryType(new PageRequest(page, size), categoryType);
         return new ResponseEntity<>(products, HttpStatus.OK);
@@ -179,15 +182,17 @@ public class ProductResource {
     }
 
     // Not used anymore in code but useful for direct access via url
-    @GetMapping("/products/bikes/all")
+    /* @GetMapping("/products/bikes/all")
     public ResponseEntity<List<Product>> findBikes(Pageable pageable) {
         List<Product> products = productRepository.getAllBikes(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
-    }
+    }*/
 
-    @GetMapping("/products/bikes/all?page={page}&size={size}")
+    @GetMapping("/products/bikes/all")
     public ResponseEntity<List<Product>> findBikes(
-        Pageable pageable, int page, int size
+        Pageable pageable,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
         Pageable p = new PageRequest(page, size);
         List<Product> products = productRepository.getAllBikes(p);
@@ -200,9 +205,11 @@ public class ProductResource {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/products/parts/all?page={page}&size={size}")
+    @GetMapping("/products/parts/all")
     public ResponseEntity<List<Product>> findParts(
-        Pageable pageable, int page, int size
+        Pageable pageable,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
         List<Product> products = productRepository.getAllParts(new PageRequest(page, size));
         return new ResponseEntity<>(products, HttpStatus.OK);
