@@ -2,12 +2,12 @@ package com.sabi.bikes.repository;
 
 import com.sabi.bikes.domain.Product;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data  repository for the Product entity.
@@ -54,8 +54,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT COUNT(p) FROM Product p WHERE type = 'PART'")
     List<Long> getAllPartsCount(Pageable pageable);
-
+  
     @Query("UPDATE Product SET stock = ?2 WHERE id = ?1")
     List<Product> decreaseProductQuantity(Pageable pageable, int productID, int quantity);
+
+//    @Query("SELECT stock FROM Product WHERE id = ?1")
+//    Optional<Integer> requestProductQuantity(Long productID);
 }
 

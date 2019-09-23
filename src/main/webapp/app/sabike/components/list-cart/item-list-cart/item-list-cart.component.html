@@ -1,4 +1,3 @@
-<!--<div class="item-list-cart-root">-->
 <mat-card class="item-list-cart-root" [class.mat-elevation-z1]="true">
     <div class="item-list-cart-left">
         <img class="item-list-cart-img" src="../../../../../content/images/velo.jpg">
@@ -10,8 +9,9 @@
     </div>
     <div class="item-list-cart-middle-quantity">
         <mat-form-field id="select-quantity">
-            <mat-label>Quantité</mat-label>
-            <mat-select (selectionChange)="changeQuantity(selectedQuantity)" [(value)]="selectedQuantity" placeholder="Mode">
+            <mat-label>Quantity</mat-label>
+            <mat-select (selectionChange)="changeQuantity(selectedQuantity)" [(value)]="selectedQuantity"
+                        placeholder="Mode">
                 <mat-option value="1">1</mat-option>
                 <mat-option value="2">2</mat-option>
                 <mat-option value="3">3</mat-option>
@@ -22,9 +22,11 @@
         <p class="mat-h4"> {{ orderItem.paidPrice }}</p>
     </div>
     <div class="item-list-cart-right">
-        <button mat-icon-button aria-label="Delete from cart icon">
+        <button
+            mat-icon-button
+            aria-label="Delete from cart icon"
+            (click)="deleteFromCart()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
 </mat-card>
-<!--</div>-->

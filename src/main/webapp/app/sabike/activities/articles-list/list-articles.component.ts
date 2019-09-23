@@ -2,11 +2,13 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
 import { IProduct } from 'app/shared/model/product.model';
-import { JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
 import { NavigationError, NavigationStart } from '@angular/router';
 import { PaginatorCustomComponent } from 'app/sabike/components/paginator-custom/paginator-custom.component';
+import { CommandService } from 'app/entities/command';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'jhi-articles',
@@ -27,7 +29,10 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     protected jhiAlertService: JhiAlertService,
     private communication: CommunicationService,
     private navigationService: NavigationService,
-    private router: Router
+    private router: Router,
+    private commandService: CommandService,
+    private _snackBar: MatSnackBar,
+    private eventManager: JhiEventManager
   ) {
     this.router.events.subscribe(m => {
       if (m instanceof NavigationStart) {
@@ -61,6 +66,20 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           console.log('IN LIST message : ', message);
         });
       }
+    });
+
+    this.commandService.popSnackListener().subscribe(next => {
+      this.openSnackBar('Added product ' + next.name + ' to cart', 'DISMISS');
+    });
+
+    this.eventManager.subscribe('popSnack', callback => {
+      this.openSnackBar(callback.content.message, callback.content.action);
+    });
+  }
+
+  private openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000
     });
   }
 
@@ -185,5 +204,4 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         }
         break;
     }
-  }
 }

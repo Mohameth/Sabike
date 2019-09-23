@@ -1,9 +1,11 @@
 package com.sabi.bikes.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sabi.bikes.domain.enumeration.OrderState;
+import org.hibernate.annotations.Cache;
 
 /**
  * A Command.
@@ -45,7 +48,12 @@ public class Command implements Serializable {
     @JsonIgnoreProperties("commands")
     private Client client;
 
+    // TODO try with this config
+    //    @OneToMany(mappedBy = "command", fetch = FetchType.LAZY)
+    //    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+
     @OneToMany(mappedBy = "command", fetch = FetchType.EAGER)
+    @NotFound(action = NotFoundAction.IGNORE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrderItems> orderItems = new HashSet<>();
 

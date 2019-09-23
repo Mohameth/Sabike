@@ -10,6 +10,7 @@ export class NavigationService {
   private navigation = new Subject<any>();
   private subjectBreadcrumb = new Subject<any>();
   private subject = new Subject<boolean>();
+  private requestLoginFromCheckout = false;
 
   constructor() {}
 
@@ -41,5 +42,13 @@ export class NavigationService {
 
   handleBreadcrumb(breadcrumbs: Breadcrumb[]) {
     this.subjectBreadcrumb.next(breadcrumbs);
+  }
+
+  requestLoginFromCheckoutCall(request: boolean) {
+    this.requestLoginFromCheckout = request;
+  }
+
+  checkIfLoginFromCheckoutCall() {
+    return this.requestLoginFromCheckout;
   }
 }

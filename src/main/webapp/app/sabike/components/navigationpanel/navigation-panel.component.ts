@@ -124,6 +124,7 @@ export class NavigationPanelComponent implements OnInit {
     let routeName: string;
     const breads: Breadcrumb[] = [];
     let i = 0;
+
     const max = 6;
     const routeChunks = this.router.url.split('/').reverse();
 

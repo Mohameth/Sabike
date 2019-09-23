@@ -9,9 +9,12 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
 import { IProduct } from 'app/shared/model/product.model';
-import { OrderItems } from 'app/shared/model/order-items.model';
+import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
 import { AccountService } from 'app/core';
-import { Client } from 'app/shared/model/client.model';
+import { IClient } from 'app/shared/model/client.model';
+import { ClientService } from 'app/entities/client';
+import { OrderItemsService } from 'app/entities/order-items';
+import { ProductService } from 'app/entities/product';
 
 type EntityResponseType = HttpResponse<ICommand>;
 type EntityArrayResponseType = HttpResponse<ICommand[]>;
@@ -27,15 +30,27 @@ export class CommandService {
   private interval;
 
   // Cart - will become command once state will change
-  private cart: ICommand = null;
+  private localCart: ICommand;
+  private cart = new Subject<ICommand>();
 
   // total items count for toolbar
   private totalCount = 0;
   private totalNewCount = new Subject<number>();
+  private snackPopper = new Subject<IProduct>();
 
   // Sabike <<<<<
 
-  constructor(protected http: HttpClient, private accountService: AccountService) {}
+  constructor(
+    protected http: HttpClient,
+    private accountService: AccountService,
+    private clientService: ClientService,
+    private orderItemsService: OrderItemsService,
+    private productService: ProductService
+  ) {
+    this.localCart = new Command();
+    this.localCart.orderItems = [];
+    this.cart.next(this.localCart);
+  }
 
   create(command: ICommand): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(command);
@@ -95,13 +110,53 @@ export class CommandService {
   }
 
   // SABIKE
+  observeCart(): Observable<ICommand> {
+    return this.cart.asObservable();
+  }
+
+  createCommandCart(client: IClient): ICommand {
+    return {
+      ...new Command(),
+      id: undefined,
+      state: OrderState.CART,
+      orderDate: null,
+      totalAmount: 0,
+      paymentDate: undefined,
+      client: client,
+      orderItems: []
+    };
+  }
 
   hasCart(id: number): Observable<EntityResponseType> {
     return this.http.get<ICommand>(`${this.resourceUrl}/${id}/hascart`, { observe: 'response' });
   }
 
+  hasCartAsPromise(id: number): Promise<EntityResponseType> {
+    return this.http
+      .get<ICommand>(`${this.resourceUrl}/${id}/hascart`, { observe: 'response' })
+      .toPromise()
+      .then(msg => {
+        return Promise.resolve(msg);
+      })
+      .catch(error => {
+        return Promise.reject(error.json().error);
+      });
+  }
+
   get getCart(): ICommand {
-    return this.cart;
+    return this.localCart;
+  }
+
+  get refreshCart(): Promise<ICommand> {
+    return this.find(this.localCart.id)
+      .toPromise()
+      .then(updated => {
+        return Promise.resolve(updated.body);
+      })
+      .catch(error => {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
 
   manageTimer() {
@@ -125,113 +180,328 @@ export class CommandService {
     }, 1000);
   }
 
-  addToCart(product: IProduct, quantity: number) {
-    console.log('ADDTOCART in command service');
-    if (this.cart === null) {
-      console.log('cart is null yeah');
-      this.initCart(true);
-    }
-
-    let itemIndex = 0;
-    const itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
-      if (element.product.name === product.name) {
-        itemIndex = index;
-        return true;
-      }
-    });
-
-    if (itemAlreadyInCart) {
-      this.cart.orderItems[itemIndex].quantity++;
-      this.cart.orderItems[itemIndex].paidPrice += this.cart.orderItems[itemIndex].product.price;
-    } else {
-      this.cart.orderItems.push(new OrderItems(null, quantity, quantity * product.price, this.cart, product));
-    }
-
-    // this.totalCount += quantity;
-    this.totalCount = 0;
-    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
-    this.totalNewCount.next(this.totalCount);
-
+  updateCartProduct(product: IProduct, quantity: number, isInSelect: boolean) {
     if (this.accountService.isAuthenticated()) {
-      // save cart to REST
+      // Check if localCart is not empty, it means we already fetched
+      // from remote or already added a product to cart
+      if (this.localCart.orderItems.length === 0) {
+        // create remote cart
+        this.clientService
+          .get(this.accountService.userIdentityId)
+          .then(client => {
+            this.createRemoteCart(client)
+              .then(remoteCart => {
+                // we can push an item inside the new cart, but we need to push it to remote
+                // so each orderitem has its OWN id
+                this.updateToCart(product, quantity, isInSelect);
+              })
+              .catch(error => console.log(error));
+          })
+          .catch(error => console.log(error));
+      } else {
+        // check if there is already this Product inside
+        // if yes just add to quantity of the OrderItem
+        this.updateToCart(product, quantity, isInSelect);
+      }
+    } else {
+      // Local cart only
+
+      // Check if local cart is empty => init localCart
+
+      if (this.localCart.orderItems.length === 0) {
+        // then push the OrderItem inside
+        // and that's it
+        console.log('length = 0... push');
+        this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, product.price * quantity, this.localCart));
+      } else {
+        // cart has already items
+        // check if already existing Product etc..
+        if (this.alreadyInCart(product)) {
+          console.log('Already in cart.. do not push');
+          this.updateToCart(product, quantity, isInSelect);
+        } else {
+          console.log('Not in cart.. push');
+          this.localCart.orderItems.push(
+            this.orderItemsService.createOrderItem(product, quantity, product.price * quantity, this.localCart)
+          );
+        }
+      }
     }
+    // Update badge  [...].next(...);
+    this.updateBadge();
+    this.popSnack(product);
   }
 
-  updateToCart(product: IProduct, quantity: number) {
+  private alreadyInCart(product: IProduct): boolean {
+    let itemAlreadyInCart = false;
+    this.localCart.orderItems.find(element => {
+      if (element.product.name === product.name) {
+        itemAlreadyInCart = true;
+        return true;
+      }
+    });
+
+    return itemAlreadyInCart;
+  }
+
+  calculateTotalAmount(): number {
+    let totalAmount = 0;
+    this.localCart.orderItems.map(orderItem => {
+      totalAmount += orderItem.paidPrice;
+    });
+    return totalAmount;
+  }
+
+  updateToCart(product: IProduct, quantity: number, isInSelect: boolean) {
     let itemIndex = 0;
-    const itemAlreadyInCart = this.cart.orderItems.find((element, index, obj) => {
+    const itemAlreadyInCart = this.localCart.orderItems.find((element, index, obj) => {
       if (element.product.name === product.name) {
         itemIndex = index;
         return true;
       }
     });
 
-    if (itemAlreadyInCart) {
-      this.cart.orderItems[itemIndex].quantity = quantity;
-      this.cart.orderItems[itemIndex].paidPrice = this.cart.orderItems[itemIndex].product.price * quantity;
-    } else {
-      this.cart.orderItems.push(new OrderItems(null, quantity, quantity * product.price, this.cart, product));
-    }
+    console.log('itemAlreadyInCart in updateToCart', itemAlreadyInCart);
 
-    this.totalCount = 0;
-    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
-    this.totalNewCount.next(this.totalCount);
+    if (this.alreadyInCart(product)) {
+      console.log('updateToCart begin ', this.localCart);
+      // Item is already in cart - do LOCALLY
+      console.log('itemAlreadyInCart YES');
+
+      if (isInSelect) {
+        this.localCart.orderItems[itemIndex].quantity = quantity;
+        this.localCart.orderItems[itemIndex].paidPrice = this.localCart.orderItems[itemIndex].product.price * quantity;
+      } else {
+        this.localCart.orderItems[itemIndex].quantity++;
+        this.localCart.orderItems[itemIndex].paidPrice += this.localCart.orderItems[itemIndex].product.price;
+      }
+      if (this.accountService.isAuthenticated()) {
+        // Item is already in cart - and then do REMOTELY
+        // update total count
+        let totalOrderItemsCount = 0;
+        this.localCart.orderItems.forEach(orderItem => {
+          totalOrderItemsCount += orderItem.quantity;
+        });
+        this.localCart.totalAmount = this.calculateTotalAmount();
+        this.orderItemsService
+          .update(this.localCart.orderItems[itemIndex])
+          .toPromise()
+          .then(updatedOrderItem => {
+            this.update(this.localCart)
+              .toPromise()
+              .then(updatedCart => {
+                this.updateBadge();
+                this.popSnack(product);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(error => console.log(error));
+      }
+      this.updateBadge();
+      this.popSnack(product);
+    } else {
+      // Item is not in cart - we need to create associated OrderItem
+      if (this.accountService.isAuthenticated()) {
+        // Item is not in cart - do REMOTELY
+        this.orderItemsService
+          .createAndPushToServer(product, quantity, this.localCart)
+          .then(serverOrderItem => {
+            this.localCart.orderItems.push(serverOrderItem);
+            this.localCart.totalAmount = this.calculateTotalAmount();
+            this.update(this.localCart)
+              .toPromise()
+              .then(updatedCart => {
+                this.updateBadge();
+                this.popSnack(product);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        // Item is not in cart - do LOCALLY
+        // TODO mergeCart when you reconnect (id undefined + create orderItems remotely)
+        // this.localCart.orderItems.push(this.orderItemsService.createOrderItem(product, quantity, quantity * product.price, this.localCart));
+      }
+    }
   }
 
-  initCart(loggedIn: boolean) {
-    this.cart = new Command();
-    this.cart.orderItems = [];
-    this.cart.state = OrderState.CART;
-    this.cart.totalAmount = 0.0;
-    this.cart.orderDate = null;
-    this.cart.paymentDate = null;
-    this.cart.client = new Client();
-    this.cart.client.orders = [];
-    this.cart.client.orders.push(this.cart);
-    this.cart.client.id = 5000;
-    // Cart ID = user id
+  initCart(loggedIn: boolean, product: IProduct, quantity: number) {
+    this.localCart = new Command();
+    this.localCart.state = OrderState.CART;
+    this.localCart.orderItems = [];
+    this.localCart.paymentDate = null;
+    this.localCart.totalAmount = 0;
+    this.localCart.client = null;
+
     console.log('IN INITCART');
     if (this.accountService.isAuthenticated()) {
-      console.log('IN INITCART AFTER AUTH');
-      this.hasCart(this.accountService.userIdentityId).subscribe(msg => {
-        console.log('IN INITCAR AFTER AUTH AFTER HASCART and msg => ', msg);
-        if (msg.body) {
-          // this.cart.client.id = this.accountService.userIdentityId;
-          this.create(this.cart).subscribe(message => {
-            console.log('___________---______ CREATED CART', message);
-          });
-        }
-      });
-      // this.accountService.userIdentityId();
-      // this.cart.id = this.accountService.userIdentityId;
+      this.clientService
+        .find(this.accountService.userIdentityId)
+        .toPromise()
+        .then(client => {
+          console.log('client PROMISE:', client);
+          const createCart = this.createCommandCart(client.body);
+          this.create(createCart)
+            .toPromise()
+            .then(responseServer => {
+              console.log('Response Server :', responseServer);
+              this.orderItemsService.createOrderItem(product, quantity, product.price * quantity, responseServer.body);
+            });
+        });
     } else {
-      this.cart.id = null;
+      // TODO
+      this.localCart.id = null;
       console.log('IN INITCART ELSE NOT AUTH');
     }
-    // Cart Time TODO
-    // this.cart.expireOn = null;
-    // Cart Order Items
   }
 
   // when client has a cart and reconnects
   reloadCart(orderItems: OrderItems[]) {
-    this.cart = new Command();
-    this.cart.orderItems = orderItems;
+    console.log('on est dans RELOADCART');
+    this.localCart = new Command();
+    this.localCart.orderItems = orderItems;
 
     // update badge
     this.totalCount = 0;
-    this.cart.orderItems.map(item => (this.totalCount += item.quantity));
+    this.localCart.orderItems.map(item => (this.totalCount += item.quantity));
     this.totalNewCount.next(this.totalCount);
   }
 
   // when client disconnect
   emptyCart() {
-    this.cart = null;
+    this.localCart = new Command();
+    this.localCart.orderItems = [];
     this.totalCount = 0;
     this.totalNewCount.next(this.totalCount);
   }
 
   listenTotalCount(): Observable<any> {
     return this.totalNewCount.asObservable();
+  }
+
+  addToLocalCart(item: IOrderItems) {
+    this.localCart.orderItems.push(item);
+  }
+
+  private createRemoteCart(client: IClient): Promise<ICommand> {
+    const localCart = this.createCommandCart(client);
+    console.log('++++++++++++++++++++++++ bite', localCart);
+    // the cart is created but has no id, will update after
+    return this.create(localCart)
+      .toPromise()
+      .then(serverCart => {
+        console.log('++++++++++++++++++++++++ bite du serveur', serverCart);
+        // Update local ID
+        this.localCart = serverCart.body;
+        return Promise.resolve(serverCart.body);
+        // then we push OrderItems later after the promise
+      })
+      .catch(error => {
+        console.log('++++++++++++++++++++++++ bite du serveur error');
+        return Promise.reject(error);
+      });
+  }
+
+  private updateBadge() {
+    this.totalCount = 0;
+    this.localCart.orderItems.map(item => (this.totalCount += item.quantity));
+    this.totalNewCount.next(this.totalCount);
+  }
+
+  private popSnack(product: IProduct) {
+    this.snackPopper.next(product);
+  }
+
+  public popSnackListener(): Observable<IProduct> {
+    return this.snackPopper.asObservable();
+  }
+
+  hasLessThanFive(productId: number): boolean {
+    let itemIndex = 0;
+    let foundItem = this.localCart.orderItems.find((element, index, obj) => {
+      if (element.product.id === productId) {
+        itemIndex = index;
+        return true;
+      }
+    });
+    if (foundItem) {
+      return this.localCart.orderItems[itemIndex].quantity < 5;
+    } else {
+      // None yet
+      return true;
+    }
+  }
+
+  removeFromCart(orderItem: OrderItems) {
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+    console.log('++++++++++++++++++++++++');
+
+    console.log('removeFromCart removing ', orderItem);
+    const index = this.localCart.orderItems.indexOf(orderItem);
+    console.log('at index ', index);
+    console.log('directly ', this.localCart.orderItems[index]);
+
+    if (this.accountService.isAuthenticated()) {
+      // first reload product entirely
+      this.productService
+        .find(orderItem.product.id)
+        .toPromise()
+        .then(finalProduct => {
+          let product = finalProduct.body;
+          // add stock
+          product.stock += orderItem.quantity;
+          // then reset the stock in server (update product)
+          this.productService
+            .update(product)
+            .toPromise()
+            .then(() => {
+              // then remove OrderItem remotely
+              this.orderItemsService
+                .delete(orderItem.id)
+                .toPromise()
+                .then(() => {
+                  // now update cart total amount
+                  this.localCart.totalAmount -= orderItem.paidPrice;
+                  this.update(this.localCart)
+                    .toPromise()
+                    .then(() => {
+                      // refresh cart
+                      // remove item locally - we use lazy
+                      const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+                      if (itemIndex > -1) {
+                        this.localCart.orderItems.splice(itemIndex, 1);
+                      }
+                    })
+                    .catch(error => console.log(error));
+                })
+                .catch(error => console.log(error));
+            })
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
+    } else {
+      // first reset stock in server
+      this.productService
+        .update(orderItem.product)
+        .toPromise()
+        .then(updatedProduct => {
+          // then remove locally
+          const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+          if (itemIndex > -1) {
+            this.localCart.orderItems.splice(itemIndex, 1);
+          }
+        })
+        .catch(error => console.log(error));
+    }
   }
 }

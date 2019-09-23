@@ -1,16 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { JhiEventManager } from 'ng-jhipster';
 import { LoginService, StateStorageService } from 'app/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-export interface DialogData {
-  username: string;
-  password: string;
-  rememberMe: boolean;
-}
 
 @Component({
   selector: 'jhi-dialog-connect',
@@ -30,7 +24,10 @@ export class DialogConnectComponent implements AfterViewInit {
 
   _username: string;
   _password: string;
-  _rememberMe: boolean;
+  hide = true;
+  private toCheckout: boolean;
+
+  @ViewChild('username', { static: false }) usernameField: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<DialogConnectComponent>,
@@ -38,16 +35,15 @@ export class DialogConnectComponent implements AfterViewInit {
     private eventManager: JhiEventManager,
     private loginService: LoginService,
     private stateStorageService: StateStorageService,
-    private elementRef: ElementRef,
-    private renderer: Renderer,
     private router: Router,
     public activeModal: NgbActiveModal,
     private fb: FormBuilder
-  ) {}
+  ) {
+    //
+  }
 
-  ngAfterViewInit() {
-    console.log('++++++++');
-    setTimeout(() => this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#username'), 'focus', []), 0);
+  ngAfterViewInit(): void {
+    this.usernameField.nativeElement.focus();
   }
 
   cancel() {
@@ -60,8 +56,6 @@ export class DialogConnectComponent implements AfterViewInit {
   }
 
   login() {
-    // console.log('++++++ login called', this._username, this._password);
-    // todo rememberMe !!
     this.loginService
       .login({
         username: this._username,
@@ -69,19 +63,17 @@ export class DialogConnectComponent implements AfterViewInit {
         rememberMe: false
       })
       .then(() => {
-        // console.log(1);
         this.authenticationError = false;
         this.activeModal.dismiss('login success');
+
         if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
           this.router.navigate(['']);
         }
-        // console.log(2);
+
         this.eventManager.broadcast({
           name: 'authenticationSuccess',
           content: 'connected'
         });
-
-        // console.log(3);
 
         // previousState was set in the authExpiredInterceptor before being redirected to login modal.
         // since login is successful, go to stored previousState and clear previousState
@@ -107,10 +99,6 @@ export class DialogConnectComponent implements AfterViewInit {
   }
 
   // SABIKE
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' : this.email.hasError('email') ? 'Not a valid email' : '';
   }

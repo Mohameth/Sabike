@@ -23,16 +23,14 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="cart_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="command_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="product_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_order_items_product_id" />
+                <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 

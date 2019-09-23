@@ -57,6 +57,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PaginatorCustomComponent } from './sabike/components/paginator-custom/paginator-custom.component';
+import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sabike-register.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -119,10 +121,12 @@ import { PaginatorCustomComponent } from './sabike/components/paginator-custom/p
     ItemListCartComponent,
     BreadcrumbComponent,
     CheckoutComponent,
-    PaginatorCustomComponent
+    PaginatorCustomComponent,
+    SabikeRegisterComponent
   ],
   providers: [
     NgbActiveModal,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -146,7 +150,7 @@ import { PaginatorCustomComponent } from './sabike/components/paginator-custom/p
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: {
-        hasBackdrop: false
+        hasBackdrop: true
       }
     },
     {

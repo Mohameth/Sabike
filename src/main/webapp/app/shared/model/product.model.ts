@@ -62,7 +62,7 @@ export interface IProduct {
   partCategory?: PartCategory;
   partCategoryType?: PartCategoryType;
   description?: string;
-  orderItems?: IOrderItems;
+  orderItems?: IOrderItems[];
 }
 
 export class Product implements IProduct {
@@ -81,6 +81,6 @@ export class Product implements IProduct {
     public partCategory?: PartCategory,
     public partCategoryType?: PartCategoryType,
     public description?: string,
-    public orderItems?: IOrderItems
+    public orderItems?: IOrderItems[]
   ) {}
 }
