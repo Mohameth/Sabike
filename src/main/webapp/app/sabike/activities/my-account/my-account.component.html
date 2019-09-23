@@ -1,0 +1,106 @@
+<div id="my-account-root">
+    <p class="mat-h1 mat-headline">My account</p>
+    <form [formGroup]="clientFormGroup">
+        <div class="vbox-form">
+            <mat-form-field>
+                <input
+                    disabled
+                    value="{{client.user.login}}"
+                    matInput
+                    placeholder="Login">
+            </mat-form-field>
+            <!-- First name -->
+            <mat-form-field *ngIf="client.user.firstName === undefined">
+                <input
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="client.user.firstName !== undefined">
+                <input
+                    value="{{client.user.firstName}}"
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Last name -->
+            <mat-form-field *ngIf="client.user.lastName === undefined">
+                <input
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="client.user.lastName !== undefined">
+                <input
+                    value="{{client.user.lastName}}"
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastCtrl"
+                    required>
+            </mat-form-field>
+        </div>
+    </form>
+    <button
+        class="my-account-update-button"
+        mat-raised-button
+        color="accent"
+        (click)="updateName()">
+        UPDATE NAME
+    </button>
+    <div id="spacer">
+    </div>
+    <form [formGroup]="addressFormGroup">
+        <div class="vbox-form">
+            <mat-form-field>
+                <input
+                    value="{{client.addresses[0].deliveryNumber}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="numberCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{client.addresses[0].deliveryStreet}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="numberCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{client.addresses[0].deliveryPostalCode}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="numberCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{client.addresses[0].deliveryCity}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="numberCtrl"
+                    required>
+            </mat-form-field>
+            <!--            <mat-form-field>-->
+            <!--                <input-->
+            <!--                    value="{{client.addresses[0].deliveryCountry}}"-->
+            <!--                    matInput-->
+            <!--                    placeholder="Number"-->
+            <!--                    formControlName="numberCtrl"-->
+            <!--                    required>-->
+            <!--            </mat-form-field>-->
+        </div>
+    </form>
+    <button
+        class="my-account-update-button"
+        mat-raised-button
+        color="accent"
+        (click)="updateAddress()">
+        UPDATE ADDRESS
+    </button>
+</div>
