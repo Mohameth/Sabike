@@ -163,6 +163,10 @@ export class ListArticlesComponent implements OnInit {
       this.openSnackBar('Added product ' + next.name + ' to cart', 'DISMISS');
     });
 
+    this.commandService.popSnackMessageListener().subscribe(next => {
+      this.openSnackBar(next, 'DISMISS');
+    });
+
     this.eventManager.subscribe('popSnack', callback => {
       this.openSnackBar(callback.content.message, callback.content.action);
     });

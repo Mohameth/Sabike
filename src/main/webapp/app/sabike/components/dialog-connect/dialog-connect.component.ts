@@ -82,12 +82,25 @@ export class DialogConnectComponent implements AfterViewInit {
         });
 
         this.commandService.hasCartAsPromise(this.accountService.userIdentityId).then(msg => {
+          // we have already a cart in remote
           if (msg.body[0] !== undefined) {
             console.log('//////////////////////////////');
             console.log('in if msg body');
             console.log('msg body ->', msg.body);
             console.log('//////////////////////////////');
-            this.commandService.reloadCart(msg.body[0]);
+            const localCart = this.commandService.getCart;
+            // we have also a cart in local
+            if (localCart !== null && localCart.orderItems.length !== 0) {
+              this.clientService.get(this.accountService.userIdentityId).then(client => {
+                this.commandService.mergeRemoteCartWithLocalCart(this.accountService.userIdentityId, msg.body[0]).then(cart => {
+                  console.log('CART MERGE YEAH :', cart);
+                });
+              });
+              // we have RemoteCart but not local => reload remote cart
+            } else {
+              this.commandService.reloadCart(msg.body[0]);
+            }
+            // we don't have a remote cart
           } else {
             console.log('//////////////////////////////');
             console.log('in else msg body empty');
