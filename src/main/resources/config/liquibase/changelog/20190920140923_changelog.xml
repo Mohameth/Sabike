@@ -1,0 +1,173 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="moham (generated)" id="1568988629544-1">
+        <createSequence sequenceName="sequence_generator"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-2">
+        <createTable tableName="address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="addressPK"/>
+            </column>
+            <column name="delivery_city" type="VARCHAR(255)"/>
+            <column name="delivery_country" type="VARCHAR(255)"/>
+            <column name="delivery_number" type="VARCHAR(255)"/>
+            <column name="delivery_postal_code" type="VARCHAR(255)"/>
+            <column name="delivery_street" type="VARCHAR(255)"/>
+            <column name="client_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-3">
+        <createTable tableName="client">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="clientPK"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-4">
+        <createTable tableName="command">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="commandPK"/>
+            </column>
+            <column name="order_date" type="date"/>
+            <column name="payment_date" type="TIMESTAMP"/>
+            <column name="state" type="VARCHAR(255)"/>
+            <column name="total_amount" type="FLOAT"/>
+            <column name="client_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-5">
+        <createTable tableName="jhi_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints primaryKey="true" primaryKeyName="jhi_authorityPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-6">
+        <createTable tableName="jhi_persistent_audit_event">
+            <column autoIncrement="true" name="event_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="jhi_persistent_audit_eventPK"/>
+            </column>
+            <column name="event_date" type="TIMESTAMP"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-7">
+        <createTable tableName="jhi_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-8">
+        <createTable tableName="jhi_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="jhi_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP"/>
+            <column name="activated" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(10)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_date" type="TIMESTAMP"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-9">
+        <createTable tableName="jhi_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-10">
+        <createTable tableName="order_items">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="order_itemsPK"/>
+            </column>
+            <column name="paid_price" type="FLOAT"/>
+            <column name="quantity" type="INT"/>
+            <column name="command_id" type="BIGINT"/>
+            <column name="product_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-11">
+        <createTable tableName="product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="productPK"/>
+            </column>
+            <column name="bike_category" type="VARCHAR(255)"/>
+            <column name="bike_color" type="VARCHAR(255)"/>
+            <column name="bike_seeds" type="INT"/>
+            <column name="bike_size" type="VARCHAR(255)"/>
+            <column name="brand" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="part_category" type="VARCHAR(255)"/>
+            <column name="part_category_type" type="VARCHAR(255)"/>
+            <column name="picture" type="VARCHAR(255)"/>
+            <column name="price" type="FLOAT"/>
+            <column name="stock" type="INT"/>
+            <column name="type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-12">
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-13">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-14">
+        <addUniqueConstraint columnNames="product_id" constraintName="UC_ORDER_ITEMSPRODUCT_ID_COL" tableName="order_items"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-15">
+        <addForeignKeyConstraint baseColumnNames="command_id" baseTableName="order_items" constraintName="FK19qba5w8qapbcu430u6ycbjlh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="command" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-16">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jhi_user_authority" constraintName="FK290okww5jujghp4el5i7mgwu0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-17">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="jhi_persistent_audit_evt_data" constraintName="FK2ehnyx2si4tjd2nt4q7y40v8m" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="jhi_persistent_audit_event" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-18">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="jhi_user_authority" constraintName="FK4psxl0jtx6nr7rhqbynr6itoc" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_authority" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-19">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="address" constraintName="FK7156ty2o5atyuy9f6kuup9dna" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-20">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="command" constraintName="FKeupg56s5qot4lbsgc5cgw7e99" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-21">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_items" constraintName="FKlf6f9q956mt144wiv6p1yko16" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product" validate="true"/>
+    </changeSet>
+    <changeSet author="moham (generated)" id="1568988629544-22">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="client" constraintName="FKrsle5ogx0wd54pkol3byl67a3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

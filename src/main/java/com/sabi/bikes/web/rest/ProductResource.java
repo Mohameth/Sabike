@@ -134,8 +134,7 @@ public class ProductResource {
         @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size
     ) {
-        Pageable p = new PageRequest(page, size);
-        List<Product> products = productRepository.getBikeByCategory(p, "ROAD");
+        List<Product> products = productRepository.getBikeByCategory(new PageRequest(page, size), category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
