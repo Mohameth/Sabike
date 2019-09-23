@@ -31,6 +31,7 @@ export class CommandService {
 
   // Cart - will become command once state will change
   private localCart: ICommand;
+  private cart = new Subject<ICommand>();
 
   // total items count for toolbar
   private totalCount = 0;
@@ -48,6 +49,7 @@ export class CommandService {
   ) {
     this.localCart = new Command();
     this.localCart.orderItems = [];
+    this.cart.next(this.localCart);
   }
 
   create(command: ICommand): Observable<EntityResponseType> {
@@ -108,6 +110,10 @@ export class CommandService {
   }
 
   // SABIKE
+  observeCart(): Observable<ICommand> {
+    return this.cart.asObservable();
+  }
+
   createCommandCart(client: IClient): ICommand {
     return {
       ...new Command(),
@@ -468,14 +474,13 @@ export class CommandService {
                   this.localCart.totalAmount -= orderItem.paidPrice;
                   this.update(this.localCart)
                     .toPromise()
-                    .then(updatedCart => {
+                    .then(() => {
                       // refresh cart
-                      this.localCart = updatedCart.body;
-                      // remove item locally
-                      // const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
-                      // if (itemIndex > -1) {
-                      //   this.localCart.orderItems.splice(itemIndex, 1);
-                      // }
+                      // remove item locally - we use lazy
+                      const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+                      if (itemIndex > -1) {
+                        this.localCart.orderItems.splice(itemIndex, 1);
+                      }
                     })
                     .catch(error => console.log(error));
                 })
