@@ -48,6 +48,9 @@ public class Command implements Serializable {
     @JsonIgnoreProperties("commands")
     private Client client;
 
+    // TODO try with this config
+    //    @OneToMany(mappedBy = "command", fetch = FetchType.LAZY)
+    //    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 
     @OneToMany(mappedBy = "command", fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)

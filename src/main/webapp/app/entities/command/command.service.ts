@@ -141,6 +141,18 @@ export class CommandService {
     return this.localCart;
   }
 
+  get refreshCart(): Promise<ICommand> {
+    return this.find(this.localCart.id)
+      .toPromise()
+      .then(updated => {
+        return Promise.resolve(updated.body);
+      })
+      .catch(error => {
+        console.log(error);
+        return Promise.reject(error);
+      });
+  }
+
   manageTimer() {
     if (this.timeLeft === -1) {
       this.startTimer();
@@ -452,26 +464,20 @@ export class CommandService {
                 .delete(orderItem.id)
                 .toPromise()
                 .then(() => {
-                  // // refresh cart
-                  // this.find(this.localCart.id)
-                  //   .toPromise()
-                  //   .then(cart => {
-                  //     this.localCart = cart.body;
-                  // then remove locally
-                  const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
-                  if (itemIndex > -1) {
-                    console.log('removeFromCart removing 4', itemIndex);
-                    this.localCart.orderItems.splice(itemIndex, 1);
-                    // update cart
-                    // this.update(this.localCart)
-                    //   .toPromise()
-                    //   .then(updatedCart => {
-                    //     console.log('++++++++++++++++++++++++ updatedCart', updatedCart);
-                    //   })
-                    //   .catch(error => console.log(error));
-                  }
-                  // })
-                  // .catch(error => console.log(error));
+                  // now update cart total amount
+                  this.localCart.totalAmount -= orderItem.paidPrice;
+                  this.update(this.localCart)
+                    .toPromise()
+                    .then(updatedCart => {
+                      // refresh cart
+                      this.localCart = updatedCart.body;
+                      // remove item locally
+                      // const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+                      // if (itemIndex > -1) {
+                      //   this.localCart.orderItems.splice(itemIndex, 1);
+                      // }
+                    })
+                    .catch(error => console.log(error));
                 })
                 .catch(error => console.log(error));
             })
