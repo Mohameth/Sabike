@@ -70,7 +70,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.paginator.event.subscribe(pageEvent => {
-      console.log('AFTER INIT', pageEvent);
       this.pageSize = pageEvent.pageSize;
       this.pageIndex = pageEvent.pageIndex;
       this.fetchProductsWithQuery();
@@ -78,7 +77,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
   }
 
   setNumberOfItems(number) {
-    console.log('Length: ', number);
     this.totalNumberOfItems = number;
     this.paginator.setLength(this.totalNumberOfItems);
   }
@@ -116,10 +114,12 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         switch (parameter) {
           // Bikes category
           case 'mountain':
+
           case 'road':
           case 'city':
           case 'ebike':
           case 'bmx':
+            console.log(parameter.toUpperCase());
             this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
               this.setNumberOfItems(message.body);
             });

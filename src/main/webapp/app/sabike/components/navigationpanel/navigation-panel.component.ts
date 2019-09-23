@@ -34,6 +34,8 @@ export interface FlatTreeNode {
   styleUrls: ['./navigation-panel.component.scss']
 })
 export class NavigationPanelComponent implements OnInit {
+  public activeNode;
+
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -50,8 +52,12 @@ export class NavigationPanelComponent implements OnInit {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    this.router.events.subscribe(p => {
-      this.navigationService.handleBreadcrumb(this.buildBreads());
+    this.router.events.subscribe(routerEvent => {
+      if (routerEvent instanceof NavigationEnd) {
+        console.log('####', routerEvent);
+        this.navigationService.handleBreadcrumb(this.buildBreads());
+        this.selectActiveNode(this.findNodeWithRoute(this.router.url.split('/').reverse()[0]));
+      }
     });
 
     /*routerEventService.listenNavigationEndEvent().subscribe(m => {
@@ -118,9 +124,10 @@ export class NavigationPanelComponent implements OnInit {
     let routeName: string;
     const breads: Breadcrumb[] = [];
     let i = 0;
-    const max = 100;
+    const max = 6;
+    const routeChunks = this.router.url.split('/').reverse();
 
-    while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
+    while ((routeName = routeChunks[i]) !== 'articles' && i < max) {
       currentNode = this.findNodeWithRoute(routeName);
       if (currentNode === undefined) {
         i = max;
@@ -135,6 +142,14 @@ export class NavigationPanelComponent implements OnInit {
       i++;
     }
     return breads.reverse();
+  }
+
+  selectActiveNode(currentNode: FlatTreeNode) {
+    //this.treeControl.collapseAll();
+    //this.treeControl.expand(currentNode);
+    //while (parent = this.treeControl.)
+    //this.treeControl.toggle(currentNode);
+    this.activeNode = currentNode;
   }
 
   /** Use the treeControl and compare names ignoring cases (only the first is considered) */
