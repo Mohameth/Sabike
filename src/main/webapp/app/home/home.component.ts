@@ -4,6 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, AccountService, Account } from 'app/core';
 import { NavigationService } from 'app/sabike/services/navigation-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-home',
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private navigationService: NavigationService,
-    private eventManager: JhiEventManager
+    private eventManager: JhiEventManager,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -41,10 +43,12 @@ export class HomeComponent implements OnInit {
   }
 
   openBikesMenu() {
+    this.router.navigate(['/articles/bikes']);
     this.navigationService.expandCategory('bikes');
   }
 
   openPartsMenu() {
+    this.router.navigate(['/articles/parts']);
     this.navigationService.expandCategory('parts');
   }
 

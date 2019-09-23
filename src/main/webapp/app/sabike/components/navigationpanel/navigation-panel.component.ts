@@ -34,6 +34,8 @@ export interface FlatTreeNode {
   styleUrls: ['./navigation-panel.component.scss']
 })
 export class NavigationPanelComponent implements OnInit {
+  public activeNode;
+
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -50,15 +52,18 @@ export class NavigationPanelComponent implements OnInit {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = sabike_paths;
 
-    /* this.router.events.subscribe(p => {
-      console.log("about to cry :("); // Always called if only instruction in block
-      this.navigationService.handleBreadcrumb(this.buildBreads());
-    }); */
-
-    routerEventService.listenNavigationEndEvent().subscribe(m => {
-      console.log(' Trying to handle breadcrumbs ', m);
-      this.navigationService.handleBreadcrumb(this.buildBreads());
+    this.router.events.subscribe(routerEvent => {
+      if (routerEvent instanceof NavigationEnd) {
+        console.log('####', routerEvent);
+        this.navigationService.handleBreadcrumb(this.buildBreads());
+        this.selectActiveNode(this.findNodeWithRoute(this.router.url.split('/').reverse()[0]));
+      }
     });
+
+    /*routerEventService.listenNavigationEndEvent().subscribe(m => {
+      console.log(' Trying to handle breadcrumbs ', m);
+      //this.navigationService.handleBreadcrumb(this.buildBreads());
+    });*/
 
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
@@ -119,12 +124,16 @@ export class NavigationPanelComponent implements OnInit {
     let routeName: string;
     const breads: Breadcrumb[] = [];
     let i = 0;
-    const max = 100;
 
-    while ((routeName = this.router.url.split('/').reverse()[i]) !== 'articles' && i < max) {
-      currentNode = this.findNodeWithName(routeName);
-      // if (currentNode != null) {
-      console.log(currentNode);
+    const max = 6;
+    const routeChunks = this.router.url.split('/').reverse();
+
+    while ((routeName = routeChunks[i]) !== 'articles' && i < max) {
+      currentNode = this.findNodeWithRoute(routeName);
+      if (currentNode === undefined) {
+        i = max;
+        continue;
+      }
       const bread: Breadcrumb = {
         label: currentNode.name,
         url: currentNode.route
@@ -132,14 +141,31 @@ export class NavigationPanelComponent implements OnInit {
 
       breads.push(bread);
       i++;
-      // }
     }
     return breads.reverse();
+  }
+
+  selectActiveNode(currentNode: FlatTreeNode) {
+    //this.treeControl.collapseAll();
+    //this.treeControl.expand(currentNode);
+    //while (parent = this.treeControl.)
+    //this.treeControl.toggle(currentNode);
+    this.activeNode = currentNode;
   }
 
   /** Use the treeControl and compare names ignoring cases (only the first is considered) */
   findNodeWithName(nodeName: String): FlatTreeNode {
     return this.treeControl.dataNodes.find(node => node.name.toLowerCase() === nodeName.toLowerCase());
+  }
+
+  findNodeWithRoute(nodeRoute: String): FlatTreeNode {
+    return this.treeControl.dataNodes.find(
+      node =>
+        node.route
+          .split('/')
+          .reverse()[0]
+          .toLowerCase() === nodeRoute.toLowerCase()
+    );
   }
 
   expand(nodeName: String) {

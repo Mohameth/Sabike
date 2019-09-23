@@ -8,6 +8,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -128,29 +129,94 @@ public class ProductResource {
     // SABIKE
 
     @GetMapping("/products/bybikecategory/{category}")
-    public ResponseEntity<List<Product>> findProductByBikeCategory(Pageable pageable, @PathVariable String category) {
-        List<Product> products = productRepository.getAllByBikeCategory(pageable, category);
+    public ResponseEntity<List<Product>> findProductByBikeCategory(
+        Pageable pageable, @PathVariable String category,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
+    ) {
+        List<Product> products = productRepository.getBikeByCategory(new PageRequest(page, size), category);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/bybikecategory/{category}/count")
+    public ResponseEntity<List<Long>> findProductByBikeCategoryCount(Pageable pageable, @PathVariable String category) {
+        List<Long> products = productRepository.getBikeByCategoryCount(pageable, category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/products/bypartcategory/{category}")
     public ResponseEntity<List<Product>> findProductByPartCategory(
-        Pageable pageable,
-        @PathVariable String category
+        Pageable pageable, @PathVariable String category,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
     ) {
-        List<Product> products = productRepository.getAllByPartCategory(pageable, category);
+        List<Product> products = productRepository.getPartByCategory(new PageRequest(page, size), category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/products/bikes/all")
+    @GetMapping("/products/bypartcategory/{category}/count")
+    public ResponseEntity<List<Long> > findProductByPartCategoryCount(
+        Pageable pageable, @PathVariable String category
+    ) {
+        List<Long> products = productRepository.getPartByCategoryCount(pageable, category);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/bypartcategorytype/{categoryType}")
+    public ResponseEntity<List<Product>> findProductByPartCategoryType(
+        Pageable pageable, @PathVariable String categoryType,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
+    ) {
+        List<Product> products = productRepository.getPartByCategoryType(new PageRequest(page, size), categoryType);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/bypartcategorytype/{categoryType}/count")
+    public ResponseEntity<List<Long> > findProductByPartCategoryTypeCount(
+        Pageable pageable, @PathVariable String categoryType
+    ) {
+        List<Long> products = productRepository.getPartByCategoryTypeCount(pageable, categoryType);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    // Not used anymore in code but useful for direct access via url
+    /* @GetMapping("/products/bikes/all")
     public ResponseEntity<List<Product>> findBikes(Pageable pageable) {
         List<Product> products = productRepository.getAllBikes(pageable);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }*/
+
+    @GetMapping("/products/bikes/all")
+    public ResponseEntity<List<Product>> findBikes(
+        Pageable pageable,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
+    ) {
+        Pageable p = new PageRequest(page, size);
+        List<Product> products = productRepository.getAllBikes(p);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/bikes/all/count")
+    public ResponseEntity<List<Long> > findBikesCount(Pageable pageable) {
+        List<Long> products = productRepository.getAllBikesCount(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/products/parts/all")
-    public ResponseEntity<List<Product>> findParts(Pageable pageable) {
-        List<Product> products = productRepository.getAllParts(pageable);
+    public ResponseEntity<List<Product>> findParts(
+        Pageable pageable,
+        @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size
+    ) {
+        List<Product> products = productRepository.getAllParts(new PageRequest(page, size));
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/parts/all/count")
+    public ResponseEntity<List<Long>> findPartsCount(Pageable pageable) {
+        List<Long> products = productRepository.getAllPartsCount(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

@@ -32,8 +32,8 @@ export const sabike_paths = [
         route: '/articles/parts/saddle',
         children: [
           { name: 'Saddle', type: 'saddle', route: '/articles/parts/saddle/saddle' },
-          { name: 'Seat posts', type: 'seat-posts', route: '/articles/parts/saddle/seatposts' },
-          { name: 'Seat clamps', type: 'seat-clamps', route: '/articles/parts/saddle/seatclamps' }
+          { name: 'Seat posts', type: 'seat-post', route: '/articles/parts/saddle/seatpost' },
+          { name: 'Seat clamps', type: 'seat-clamp', route: '/articles/parts/saddle/seatclamp' }
         ]
       },
       {

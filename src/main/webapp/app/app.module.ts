@@ -56,6 +56,7 @@ import { BreadcrumbComponent } from './sabike/components/breadcrumb/breadcrumb.c
 import { MatBadgeModule } from '@angular/material/badge';
 import { CheckoutComponent } from './sabike/activities/checkout/checkout.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { PaginatorCustomComponent } from './sabike/components/paginator-custom/paginator-custom.component';
 import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sabike-register.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
@@ -120,6 +121,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     ItemListCartComponent,
     BreadcrumbComponent,
     CheckoutComponent,
+    PaginatorCustomComponent,
     SabikeRegisterComponent
   ],
   providers: [
