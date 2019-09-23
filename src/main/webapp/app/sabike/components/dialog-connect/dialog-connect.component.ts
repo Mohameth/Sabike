@@ -1,10 +1,13 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { JhiEventManager } from 'ng-jhipster';
-import { LoginService, StateStorageService } from 'app/core';
+import { AccountService, LoginService, StateStorageService } from 'app/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommandService } from 'app/entities/command';
+import { OrderState } from 'app/shared/model/command.model';
+import { ClientService } from 'app/entities/client';
 
 @Component({
   selector: 'jhi-dialog-connect',
@@ -37,7 +40,10 @@ export class DialogConnectComponent implements AfterViewInit {
     private stateStorageService: StateStorageService,
     private router: Router,
     public activeModal: NgbActiveModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private commandService: CommandService,
+    private accountService: AccountService,
+    private clientService: ClientService
   ) {
     //
   }
@@ -73,6 +79,31 @@ export class DialogConnectComponent implements AfterViewInit {
         this.eventManager.broadcast({
           name: 'authenticationSuccess',
           content: 'connected'
+        });
+
+        this.commandService.hasCartAsPromise(this.accountService.userIdentityId).then(msg => {
+          if (msg.body[0] !== undefined) {
+            console.log('//////////////////////////////');
+            console.log('in if msg body');
+            console.log('msg body ->', msg.body);
+            console.log('//////////////////////////////');
+            this.commandService.reloadCart(msg.body[0]);
+          } else {
+            console.log('//////////////////////////////');
+            console.log('in else msg body empty');
+            console.log('//////////////////////////////');
+            const localCart = this.commandService.getCart;
+            if (localCart !== null && localCart.orderItems.length !== 0) {
+              console.log('//////////////////////////////');
+              console.log('localCart');
+              console.log('//////////////////////////////');
+              this.clientService.get(this.accountService.userIdentityId).then(client => {
+                this.commandService.createRemoteCartFromLocalCart(client).then(cart => {
+                  console.log('CART NEW YEAH :', cart);
+                });
+              });
+            }
+          }
         });
 
         // previousState was set in the authExpiredInterceptor before being redirected to login modal.

@@ -344,10 +344,14 @@ export class CommandService {
   }
 
   // when client has a cart and reconnects
-  reloadCart(orderItems: OrderItems[]) {
-    console.log('on est dans RELOADCART');
-    this.localCart = new Command();
-    this.localCart.orderItems = orderItems;
+  reloadCart(command: Command) {
+    if (this.localCart.orderItems.length === 0) {
+      this.localCart = new Command();
+      this.localCart = command;
+    } else {
+      // mergeCart (after login)
+    }
+    // this.localCart.orderItems = orderItems;
 
     // update badge
     this.totalCount = 0;
@@ -369,6 +373,42 @@ export class CommandService {
 
   addToLocalCart(item: IOrderItems) {
     this.localCart.orderItems.push(item);
+  }
+
+  createRemoteCartFromLocalCart(client: IClient): Promise<ICommand> {
+    let localCart = this.createCommandCart(client);
+    let totalAmount = 0;
+    return this.create(localCart)
+      .toPromise()
+      .then(serverCart => {
+        // Update local ID
+        localCart = serverCart.body;
+        this.localCart.orderItems.map(item => {
+          this.orderItemsService
+            .createAndPushToServer(item.product, item.quantity, localCart)
+            .then(serverOrderItem => {
+              localCart.orderItems.push(serverOrderItem);
+              totalAmount = 0;
+              localCart.orderItems.map(orderItem => {
+                totalAmount += orderItem.paidPrice;
+              });
+              localCart.totalAmount = totalAmount;
+              this.update(localCart)
+                .toPromise()
+                .then(updatedCart => {})
+                .catch(error => {
+                  console.log(error);
+                });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        return Promise.resolve(localCart);
+      })
+      .catch(error => {
+        return Promise.reject(error);
+      });
   }
 
   private createRemoteCart(client: IClient): Promise<ICommand> {

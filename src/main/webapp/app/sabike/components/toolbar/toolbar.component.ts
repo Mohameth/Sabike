@@ -45,22 +45,34 @@ export class ToolbarComponent implements OnInit {
 
     // Checking if existing Card (linked to account)
     // For connection
-    this.broadcast.subscribe('loginCallback', msg => {
-      if (msg.content === 'ok') {
-        this.accountService.identity(true).then(account => {
-          this.userName = account.login;
-        });
-        console.log('DANS CALLBACK TOOLBAR :', msg);
-        console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
-        this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
-          console.log('HAS CART ?', msg2);
-          if (msg2.body[0] !== null) {
-            console.log('dans ngOnInit msg  ->', msg2);
-            this.commandService.reloadCart(msg2.body[0].orderItems);
-          }
-        });
-      }
-    });
+    // this.broadcast.subscribe('loginCallback', msg => {
+    //   if (msg.content === 'ok') {
+    //     this.accountService.identity(true).then(account => {
+    //       this.userName = account.login;
+    //     });
+    //     console.log('DANS CALLBACK TOOLBAR :', msg);
+    // console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
+    // this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
+    //   console.log('HAS CART ?', msg2);
+    //   if (msg2.body[0] !== null) {
+    //     console.log('dans ngOnInit msg  ->', msg2);
+    //     this.commandService.reloadCart(msg2.body[0].orderItems);
+    //   }
+    // });
+    // }
+
+    if (this.accountService.isAuthenticated()) {
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('SUCCESS isAuthenticated!!!!!');
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('++++++++++++++++++++++++++++++++');
+      console.log('++++++++++++++++++++++++++++++++');
+    }
+    // }
+    // });
 
     // For reload
     this.accountService.identity(true).then(account => {
