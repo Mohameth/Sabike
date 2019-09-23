@@ -349,11 +349,7 @@ export class CommandService {
     if (this.localCart.orderItems.length === 0) {
       this.localCart = new Command();
       this.localCart = command;
-    } else {
-      // mergeCart (after login)
     }
-    // this.localCart.orderItems = orderItems;
-
     // update badge
     this.totalCount = 0;
     this.localCart.orderItems.map(item => (this.totalCount += item.quantity));
@@ -448,7 +444,11 @@ export class CommandService {
             serverCommand.totalAmount = totalAmount;
             this.update(serverCommand)
               .toPromise()
-              .then(updatedCart => {})
+              .then(updatedCart => {
+                // update local cart
+                this.localCart = updatedCart.body;
+                this.updateBadge();
+              })
               .catch(error => console.log(error));
           })
           .catch(error => console.log(error));
@@ -465,15 +465,16 @@ export class CommandService {
             serverCommand.totalAmount = totalAmount;
             this.update(serverCommand)
               .toPromise()
-              .then(updatedCart => {})
+              .then(updatedCart => {
+                // update local cart
+                this.localCart = updatedCart.body;
+                this.updateBadge();
+              })
               .catch(error => console.log(error));
           })
           .catch(error => console.log(error));
       }
     });
-    // update local cart
-    this.localCart = serverCommand;
-    this.updateBadge();
     this.popSnackMessage('Your cart was merged by the cart from before');
     return Promise.resolve(this.localCart);
   }
