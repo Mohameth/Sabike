@@ -31,6 +31,7 @@ export class CommandService {
 
   // Cart - will become command once state will change
   private localCart: ICommand;
+  private cart = new Subject<ICommand>();
 
   // total items count for toolbar
   private totalCount = 0;
@@ -48,6 +49,7 @@ export class CommandService {
   ) {
     this.localCart = new Command();
     this.localCart.orderItems = [];
+    this.cart.next(this.localCart);
   }
 
   create(command: ICommand): Observable<EntityResponseType> {
@@ -108,6 +110,10 @@ export class CommandService {
   }
 
   // SABIKE
+  observeCart(): Observable<ICommand> {
+    return this.cart.asObservable();
+  }
+
   createCommandCart(client: IClient): ICommand {
     return {
       ...new Command(),
@@ -139,6 +145,18 @@ export class CommandService {
 
   get getCart(): ICommand {
     return this.localCart;
+  }
+
+  get refreshCart(): Promise<ICommand> {
+    return this.find(this.localCart.id)
+      .toPromise()
+      .then(updated => {
+        return Promise.resolve(updated.body);
+      })
+      .catch(error => {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
 
   manageTimer() {
@@ -452,26 +470,19 @@ export class CommandService {
                 .delete(orderItem.id)
                 .toPromise()
                 .then(() => {
-                  // // refresh cart
-                  // this.find(this.localCart.id)
-                  //   .toPromise()
-                  //   .then(cart => {
-                  //     this.localCart = cart.body;
-                  // then remove locally
-                  const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
-                  if (itemIndex > -1) {
-                    console.log('removeFromCart removing 4', itemIndex);
-                    this.localCart.orderItems.splice(itemIndex, 1);
-                    // update cart
-                    // this.update(this.localCart)
-                    //   .toPromise()
-                    //   .then(updatedCart => {
-                    //     console.log('++++++++++++++++++++++++ updatedCart', updatedCart);
-                    //   })
-                    //   .catch(error => console.log(error));
-                  }
-                  // })
-                  // .catch(error => console.log(error));
+                  // now update cart total amount
+                  this.localCart.totalAmount -= orderItem.paidPrice;
+                  this.update(this.localCart)
+                    .toPromise()
+                    .then(() => {
+                      // refresh cart
+                      // remove item locally - we use lazy
+                      const itemIndex = this.localCart.orderItems.indexOf(orderItem, 0);
+                      if (itemIndex > -1) {
+                        this.localCart.orderItems.splice(itemIndex, 1);
+                      }
+                    })
+                    .catch(error => console.log(error));
                 })
                 .catch(error => console.log(error));
             })

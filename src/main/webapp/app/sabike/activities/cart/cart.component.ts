@@ -34,7 +34,17 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     if (this.commandService.getCart !== null && this.commandService.getCart.orderItems.length !== 0) {
+      // this.commandService
+      //   .observeCart()
+      //   .toPromise()
+      //   .then(
+      //     cart => {
+      //       this.orderItems = cart.orderItems;
+      //     })
+      //   .catch(error => console.log(error));
+
       this.orderItems = this.commandService.getCart.orderItems;
+
       this.orderItems.map(item => {
         this.totalPrice += item.paidPrice;
         console.log(this.totalPrice, typeof this.totalPrice);
