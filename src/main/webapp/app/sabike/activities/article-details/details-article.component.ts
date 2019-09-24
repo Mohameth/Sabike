@@ -5,6 +5,7 @@ import { IProduct, Product } from 'app/shared/model/product.model';
 import { Router } from '@angular/router';
 import { CommandService } from 'app/entities/command';
 import { JhiEventManager } from 'ng-jhipster';
+import { CommunicationService } from 'app/sabike/services/communication.service';
 
 @Component({
   selector: 'jhi-details-article',
@@ -23,7 +24,8 @@ export class DetailsArticleComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private commandService: CommandService,
-    private eventManager: JhiEventManager
+    private eventManager: JhiEventManager,
+    private communication: CommunicationService
   ) {}
 
   ngOnInit() {
@@ -34,6 +36,15 @@ export class DetailsArticleComponent implements OnInit {
     // console.log(splitter[splitter.length - 1]);
     this.productService.find(Number(splitter[splitter.length - 1])).subscribe(message => {
       this.product = message.body;
+    });
+
+    this.communication.getSearchedValue().subscribe(msg => {
+      this.productService
+        .getProductsNameLike(msg.valueOf())
+        .toPromise()
+        .then(message => {
+          this.product = message.body[0];
+        });
     });
   }
 
