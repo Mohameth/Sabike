@@ -59,7 +59,6 @@ export class CartComponent implements OnInit {
 
     this.commandService.cartReadyListener().subscribe(next => {
       this.orderItems = next.orderItems;
-
       this.orderItems.map(item => {
         this.totalPrice += item.paidPrice;
         console.log(this.totalPrice, typeof this.totalPrice);

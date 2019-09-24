@@ -1,6 +1,7 @@
 package com.sabi.bikes.web.rest;
 
 import com.sabi.bikes.domain.Command;
+import com.sabi.bikes.domain.enumeration.OrderState;
 import com.sabi.bikes.repository.CommandRepository;
 import com.sabi.bikes.web.rest.errors.BadRequestAlertException;
 
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +78,12 @@ public class CommandResource {
         if (command.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (command.getState() == OrderState.PENDING) {
+            log.debug("'++++++++++++++++++++++++''++++++++++++++++++++++++''++++++++++++++++++++++++''++++++++++++++++++++++++'");
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            command.setOrderDate(localDate);
+        }
         Command result = commandRepository.save(command);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, command.getId().toString()))
@@ -83,7 +93,6 @@ public class CommandResource {
     /**
      * {@code GET  /commands} : get all the commands.
      *
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of commands in body.
      */
     @GetMapping("/commands")

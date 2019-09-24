@@ -5,6 +5,8 @@ import { ClientService } from 'app/entities/client';
 import { IClient } from 'app/shared/model/client.model';
 import { AddressService } from 'app/entities/address';
 import { Address } from 'app/shared/model/address.model';
+import { CommandService } from 'app/entities/command';
+import { OrderState } from 'app/shared/model/command.model';
 
 @Component({
   selector: 'jhi-checkout',
@@ -12,47 +14,59 @@ import { Address } from 'app/shared/model/address.model';
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  nameFormGroup: FormGroup;
+  addressFormGroup: FormGroup;
+  paymentFormGroup: FormGroup;
 
   private client: IClient;
   private account: Account;
   private address: Address;
 
+  private totalPrice: number;
+  private numberOfItems: number;
+
   constructor(
     private _formBuilder: FormBuilder,
     private accountService: AccountService,
     private clientService: ClientService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private commandService: CommandService
   ) {
     //
   }
 
   ngOnInit() {
+    // reload cart informations
+    this.commandService.cartReadyListener().subscribe(command => {
+      command.orderItems.map(item => {
+        this.totalPrice += item.paidPrice;
+        this.numberOfItems += item.quantity;
+      });
+    });
+
     // load account data, we must be logged in to enter checkout anyways
     this.loadCurrentAccountInformations();
 
     ///////////////////////////////////
     // Validators
     // first step validation : first and last name
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required], // TODO
-      lastCtrl: ['', Validators.required] // TODO
+    this.nameFormGroup = this._formBuilder.group({
+      firstCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      lastCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]]
     });
     // second step validation : address fields
-    this.secondFormGroup = this._formBuilder.group({
-      addressNumberCtrl: ['', Validators.required], // TODO
-      addressStreetCtrl: ['', Validators.required], // TODO
-      addressPostalCodeCtrl: ['', Validators.required], // TODO
-      addressCityCtrl: ['', Validators.required] // TODO
+    this.addressFormGroup = this._formBuilder.group({
+      addressNumberCtrl: ['', [Validators.required, Validators.pattern('^\\d{1,5}$')]],
+      addressStreetCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      addressPostalCodeCtrl: ['', [Validators.required, Validators.pattern('^\\d{5}$')]],
+      addressCityCtrl: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]]
     });
     // third step validation : address fields
-    this.thirdFormGroup = this._formBuilder.group({
-      paymentCardNumberCtrl: ['', Validators.required], // TODO
-      paymentCardNameCtrl: ['', Validators.required], // TODO
-      paymentCardExpirationCtrl: ['', Validators.required], // TODO
-      paymentCardSecurityCtrl: ['', Validators.required] // TODO
+    this.paymentFormGroup = this._formBuilder.group({
+      paymentCardNumberCtrl: ['', [Validators.required, Validators.minLength(16), Validators.maxLength(16)]],
+      paymentCardNameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      paymentCardExpirationCtrl: ['', [Validators.required, Validators.pattern('^\\d{2}\\/\\d{2}$')]],
+      paymentCardSecurityCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]]
     });
   }
 
@@ -62,8 +76,10 @@ export class CheckoutComponent implements OnInit {
       .identity()
       .then(account => {
         this.account = account;
-        this.firstFormGroup.get('firstCtrl').setValue(this.account.firstName);
-        this.firstFormGroup.get('lastCtrl').setValue(this.account.lastName);
+        this.nameFormGroup.get('firstCtrl').setValue(this.account.firstName);
+        console.log('++++++++++++++++++++++++', this.nameFormGroup.get('lastCtrl'));
+        this.nameFormGroup.get('lastCtrl').setValue(this.account.lastName);
+        console.log('++++++++++++++++++++++++', this.nameFormGroup.get('lastCtrl'));
       })
       .catch(error => console.log(error));
 
@@ -86,13 +102,32 @@ export class CheckoutComponent implements OnInit {
       .then(address => {
         this.address = address.body[0];
         if (this.address !== undefined) {
-          this.secondFormGroup.get('addressNumberCtrl').setValue(this.address.deliveryNumber);
-          this.secondFormGroup.get('addressStreetCtrl').setValue(this.address.deliveryStreet);
-          this.secondFormGroup.get('addressPostalCodeCtrl').setValue(this.address.deliveryPostalCode);
-          this.secondFormGroup.get('addressCityCtrl').setValue(this.address.deliveryCity);
+          this.addressFormGroup.get('addressNumberCtrl').setValue(this.address.deliveryNumber);
+          this.addressFormGroup.get('addressStreetCtrl').setValue(this.address.deliveryStreet);
+          this.addressFormGroup.get('addressPostalCodeCtrl').setValue(this.address.deliveryPostalCode);
+          this.addressFormGroup.get('addressCityCtrl').setValue(this.address.deliveryCity);
         }
         console.log(this.address);
       })
       .catch(error => console.log(error));
+  }
+
+  validate() {
+    if (this.nameFormGroup.valid && this.addressFormGroup.valid && this.paymentFormGroup.valid) {
+      // we can validate transaction !!
+      console.log('+++++++++++ WE CAN FINISH');
+      this.commandService.getCart.state = OrderState.PENDING;
+      this.commandService
+        .update(this.commandService.getCart)
+        .toPromise()
+        .then(updatedCart => {
+          console.log('++++++++++++++++++++++++ NIKOMOOK', updatedCart);
+        })
+        .catch(error => console.log(error));
+    }
+  }
+
+  validForms(): boolean {
+    return this.nameFormGroup.valid && this.addressFormGroup.valid && this.paymentFormGroup.valid;
   }
 }

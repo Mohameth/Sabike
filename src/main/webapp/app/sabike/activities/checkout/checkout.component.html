@@ -1,8 +1,8 @@
 <div id="checkout-root">
     <div id="checkout-root-left">
         <mat-horizontal-stepper #stepper linear>
-            <mat-step [stepControl]="firstFormGroup">
-                <form [formGroup]="firstFormGroup">
+            <mat-step [stepControl]="nameFormGroup">
+                <form [formGroup]="nameFormGroup">
                     <ng-template matStepLabel>Personal information</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
@@ -63,8 +63,8 @@
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="secondFormGroup">
-                <form [formGroup]="secondFormGroup">
+            <mat-step [stepControl]="addressFormGroup">
+                <form [formGroup]="addressFormGroup">
                     <ng-template matStepLabel>Address</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
@@ -98,8 +98,8 @@
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="thirdFormGroup">
-                <form [formGroup]="thirdFormGroup">
+            <mat-step [stepControl]="paymentFormGroup">
+                <form [formGroup]="paymentFormGroup">
                     <ng-template matStepLabel>Payment</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
@@ -140,17 +140,19 @@
                 <p class="mat-h2 mat-headline">My Cart</p>
                 <div class="horizontal-flexbox">
                     <p class="mat-h4">Number of products:&nbsp;</p>
-                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                    <p class="mat-h4" style="font-weight: bold;">{{numberOfItems}}</p>
                 </div>
                 <div class="horizontal-flexbox">
                     <p class="mat-h4">Total price:&nbsp;</p>
-                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                    <p class="mat-h4" style="font-weight: bold;">{{totalPrice}}</p>
                 </div>
                 <div>
                     <button
                         mat-raised-button
-                        color="accent">
-                        TODO
+                        [disabled]="false"
+                        color="accent"
+                        (click)="validate()">
+                        VALIDATE
                     </button>
                 </div>
             </div>
