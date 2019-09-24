@@ -208,4 +208,5 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         }
         break;
     }
+  }
 }
