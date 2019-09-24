@@ -6,6 +6,7 @@ import { CartComponent } from 'app/sabike/activities/cart/cart.component';
 import { HomeComponent } from 'app/home';
 import { CheckoutComponent } from 'app/sabike/activities/checkout/checkout.component';
 import { MyAccountComponent } from 'app/sabike/activities/my-account/my-account.component';
+import { CheckoutDoneComponent } from 'app/sabike/activities/checkout-done/checkout-done.component';
 
 export const activitiesRoute: Routes = [
   {
@@ -35,6 +36,10 @@ export const activitiesRoute: Routes = [
   {
     path: 'checkout',
     component: CheckoutComponent
+  },
+  {
+    path: 'checkout/success',
+    component: CheckoutDoneComponent
   },
   {
     path: 'search/:name',
