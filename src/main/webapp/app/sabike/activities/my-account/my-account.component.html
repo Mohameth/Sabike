@@ -5,102 +5,107 @@
             <mat-form-field>
                 <input
                     disabled
-                    value="{{client.user.login}}"
+                    value="{{account?.login}}"
                     matInput
                     placeholder="Login">
             </mat-form-field>
             <!-- First name -->
-            <mat-form-field *ngIf="client.user.firstName === undefined">
+            <mat-form-field *ngIf="account?.firstName === undefined || account?.firstName === null">
                 <input
                     matInput
                     placeholder="First name"
                     formControlName="firstCtrl"
                     required>
             </mat-form-field>
-            <mat-form-field *ngIf="client.user.firstName !== undefined">
+            <mat-form-field *ngIf="account?.firstName !== undefined || account?.firstName !== null">
                 <input
-                    value="{{client.user.firstName}}"
+                    value="{{account?.firstName}}"
                     matInput
                     placeholder="First name"
                     formControlName="firstCtrl"
                     required>
             </mat-form-field>
             <!-- Last name -->
-            <mat-form-field *ngIf="client.user.lastName === undefined">
+            <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">
                 <input
-                    matInput
-                    placeholder="First name"
-                    formControlName="firstCtrl"
-                    required>
-            </mat-form-field>
-            <mat-form-field *ngIf="client.user.lastName !== undefined">
-                <input
-                    value="{{client.user.lastName}}"
                     matInput
                     placeholder="Last name"
                     formControlName="lastCtrl"
                     required>
             </mat-form-field>
+            <mat-form-field *ngIf="account?.lastName !== undefined || account?.lastName !== null">
+                <input
+                    value="{{account?.lastName}}"
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Phone number -->
+            <mat-form-field *ngIf="client?.phoneNumber === undefined || client?.phoneNumber === null">
+                <input
+                    matInput
+                    placeholder="Phone name"
+                    formControlName="phoneCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="client?.phoneNumber !== undefined || client?.phoneNumber !== null">
+                <input
+                    value="{{client?.phoneNumber}}"
+                    matInput
+                    placeholder="Phone number"
+                    formControlName="phoneCtrl"
+                    required>
+            </mat-form-field>
         </div>
     </form>
-    <button
-        class="my-account-update-button"
-        mat-raised-button
-        color="accent"
-        (click)="updateName()">
-        UPDATE NAME
-    </button>
     <div id="spacer">
+        <p class="mat-h3 mat-subheading-2">Address</p>
     </div>
     <form [formGroup]="addressFormGroup">
         <div class="vbox-form">
             <mat-form-field>
                 <input
-                    value="{{client.addresses[0].deliveryNumber}}"
+                    value="{{address?.deliveryNumber}}"
                     matInput
                     placeholder="Number"
-                    formControlName="numberCtrl"
-                    required>
+                    formControlName="Number">
             </mat-form-field>
             <mat-form-field>
                 <input
-                    value="{{client.addresses[0].deliveryStreet}}"
+                    value="{{address?.deliveryStreet}}"
                     matInput
                     placeholder="Number"
-                    formControlName="numberCtrl"
-                    required>
+                    formControlName="Street">
             </mat-form-field>
             <mat-form-field>
                 <input
-                    value="{{client.addresses[0].deliveryPostalCode}}"
+                    value="{{address?.deliveryPostalCode}}"
                     matInput
-                    placeholder="Number"
-                    formControlName="numberCtrl"
-                    required>
+                    placeholder="Postal Code"
+                    formControlName="numberCtrl">
             </mat-form-field>
             <mat-form-field>
                 <input
-                    value="{{client.addresses[0].deliveryCity}}"
+                    value="{{address?.deliveryCity}}"
                     matInput
-                    placeholder="Number"
-                    formControlName="numberCtrl"
-                    required>
+                    placeholder="City"
+                    formControlName="numberCtrl">
             </mat-form-field>
-            <!--            <mat-form-field>-->
-            <!--                <input-->
-            <!--                    value="{{client.addresses[0].deliveryCountry}}"-->
-            <!--                    matInput-->
-            <!--                    placeholder="Number"-->
-            <!--                    formControlName="numberCtrl"-->
-            <!--                    required>-->
-            <!--            </mat-form-field>-->
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryCountry}}"
+                    matInput
+                    placeholder="Country"
+                    formControlName="numberCtrl">
+            </mat-form-field>
         </div>
     </form>
     <button
         class="my-account-update-button"
         mat-raised-button
         color="accent"
-        (click)="updateAddress()">
-        UPDATE ADDRESS
+        (click)="update()">
+        UPDATE
     </button>
 </div>

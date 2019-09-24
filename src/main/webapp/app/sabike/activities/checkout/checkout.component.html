@@ -6,11 +6,57 @@
                     <ng-template matStepLabel>Personal information</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
-                            <input matInput placeholder="Last name" formControlName="lastCtrl" required>
+                            <input
+                                matInput
+                                placeholder="First name"
+                                formControlName="firstCtrl"
+                                required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="First name" formControlName="firstCtrl" required>
+                            <input
+                                matInput
+                                placeholder="Last name"
+                                formControlName="lastCtrl"
+                                required>
                         </mat-form-field>
+                        <!--                        <mat-form-field *ngIf="account?.firstName === undefined || account?.firstName === null">-->
+                        <!--                            <input-->
+                        <!--                                matInput-->
+                        <!--                                placeholder="First name"-->
+                        <!--                                formControlName="firstCtrl"-->
+                        <!--                                required>-->
+                        <!--                        </mat-form-field>-->
+                        <!--                        <mat-form-field *ngIf="account?.firstName !== undefined || account?.firstName !== null">-->
+                        <!--                            <input-->
+                        <!--                                value="{{account?.firstName}}"-->
+                        <!--                                matInput-->
+                        <!--                                placeholder="First name"-->
+                        <!--                                formControlName="firstCtrl"-->
+                        <!--                                required>-->
+                        <!--                        </mat-form-field>-->
+                        <!--                        Last-->
+                        <!--                        <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">-->
+                        <!--                            <input-->
+                        <!--                                matInput-->
+                        <!--                                placeholder="Last name"-->
+                        <!--                                formControlName="lastCtrl"-->
+                        <!--                                required>-->
+                        <!--                        </mat-form-field>-->
+                        <!--                        <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">-->
+                        <!--                            <input-->
+                        <!--                                matInput-->
+                        <!--                                placeholder="Last name"-->
+                        <!--                                formControlName="lastCtrl"-->
+                        <!--                                required>-->
+                        <!--                        </mat-form-field>-->
+                        <!--                        <mat-form-field *ngIf="account?.lastName !== undefined || account?.lastName !== null">-->
+                        <!--                            <input-->
+                        <!--                                value="{{account?.lastName}}"-->
+                        <!--                                matInput-->
+                        <!--                                placeholder="Last name"-->
+                        <!--                                formControlName="lastCtrl"-->
+                        <!--                                required>-->
+                        <!--                        </mat-form-field>-->
                     </div>
                     <div class="stepper-button-wrapper">
                         <button mat-button matStepperNext>Next</button>
@@ -22,16 +68,28 @@
                     <ng-template matStepLabel>Address</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
-                            <input matInput placeholder="Street number" formControlName="addressNumberCtrl" required>
+                            <input matInput
+                                   placeholder="Street number"
+                                   formControlName="addressNumberCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Street name" formControlName="addressStreetCtrl" required>
+                            <input matInput
+                                   placeholder="Street name"
+                                   formControlName="addressStreetCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Postal code" formControlName="addressPostalCodeCtrl" required>
+                            <input matInput
+                                   placeholder="Postal code"
+                                   formControlName="addressPostalCodeCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="City" formControlName="addressCityCtrl" required>
+                            <input matInput
+                                   placeholder="City"
+                                   formControlName="addressCityCtrl"
+                                   required>
                         </mat-form-field>
                     </div>
                     <div class="stepper-button-wrapper">
