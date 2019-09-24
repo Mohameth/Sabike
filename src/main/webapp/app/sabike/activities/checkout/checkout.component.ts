@@ -36,12 +36,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    // reload cart informations
-    this.commandService.cartReadyListener().subscribe(command => {
-      command.orderItems.map(item => {
-        this.totalPrice += item.paidPrice;
-        this.numberOfItems += item.quantity;
-      });
+    this.totalPrice = 0.0;
+    this.numberOfItems = 0;
+    this.commandService.getCart.orderItems.map(item => {
+      this.totalPrice += item.paidPrice;
+      this.numberOfItems += item.quantity;
     });
 
     // load account data, we must be logged in to enter checkout anyways
