@@ -83,6 +83,8 @@ export class CartComponent implements OnInit {
 
   openConnectDialog(): void {
     this.navigationService.requestLoginFromCheckoutCall(true);
-    this.dialogConnect.open(DialogConnectComponent);
+    this.dialogConnect.open(DialogConnectComponent, {
+      autoFocus: true
+    });
   }
 }

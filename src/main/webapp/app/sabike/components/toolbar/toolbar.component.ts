@@ -91,6 +91,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   openConnectDialog(): void {
-    this.dialogConnect.open(DialogConnectComponent);
+    this.dialogConnect.open(DialogConnectComponent, {
+      autoFocus: true
+    });
   }
 }
