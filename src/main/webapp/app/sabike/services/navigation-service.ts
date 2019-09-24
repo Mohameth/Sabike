@@ -9,7 +9,7 @@ import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.componen
 export class NavigationService {
   private navigation = new Subject<any>();
   private subjectBreadcrumb = new Subject<any>();
-  private subject = new Subject<boolean>();
+  private subject = new Subject<String>();
   private requestLoginFromCheckout = false;
 
   constructor() {}
@@ -24,12 +24,17 @@ export class NavigationService {
 
   removeFilters() {
     console.log('removing filters');
-    this.subject.next(true);
+    this.subject.next(null);
   }
 
-  addFilters() {
-    console.log('removing filters');
-    this.subject.next(false);
+  addBikeFilters() {
+    console.log('adding bike filters');
+    this.subject.next('bike');
+  }
+
+  addPartFilters() {
+    console.log('adding part filters');
+    this.subject.next('part');
   }
 
   listenSubject(): Observable<any> {

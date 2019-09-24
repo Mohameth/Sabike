@@ -35,19 +35,25 @@
 
 
     <mat-divider id="nav-left-root-divider"></mat-divider>
-    <div id="nav-left-root-label-filters" *ngIf="shouldHideFilters()">
+    <div id="nav-left-root-label-filters" *ngIf="shouldShowGlobalFilters()">
         <p>Filtres</p>
         <form>
             <div id="nav-left-root-filter-prices">
                 <mat-form-field class="nav-left-root-filter-price">
-                    <input matInput type="number" placeholder="Prix min">
+                    <input #minPrice matInput type="number" placeholder="Min price">
                 </mat-form-field>
                 <mat-form-field class="nav-left-root-filter-price" style="margin-left: 16px;">
-                    <input matInput type="number" placeholder="Prix max">
+                    <input #maxPrice matInput type="number" placeholder="Max price">
                 </mat-form-field>
-                <button id="nav-left-root-filter-price-validate" mat-raised-button color="accent">Appliquer</button>
+
+                <div id="nav-left-root-filter-bike"*ngIf="shouldShowBikeFilters()">
+                    <h5>Bike filter</h5>
+                </div>
+                <button id="nav-left-root-filter-price-validate" mat-raised-button color="accent"
+                        (click)="applyFilters(minPrice.value, maxPrice.value, undefined)">Apply</button>
             </div>
-            <mat-checkbox>En stock</mat-checkbox>
+            <mat-checkbox (change)="applyFilters(undefined)">En stock</mat-checkbox>
+
         </form>
     </div>
 </div>

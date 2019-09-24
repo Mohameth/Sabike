@@ -9,6 +9,7 @@ import { NavigationError, NavigationStart } from '@angular/router';
 import { PaginatorCustomComponent } from 'app/sabike/components/paginator-custom/paginator-custom.component';
 import { CommandService } from 'app/entities/command';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FilterService } from 'app/sabike/services/filter.service';
 
 @Component({
   selector: 'jhi-articles',
@@ -18,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ListArticlesComponent implements OnInit, AfterViewInit {
   selected: 'option1';
   products: IProduct[];
+  productsBackup: IProduct[];
   private pageIndex = 0;
   private pageSize = 10;
   private totalNumberOfItems = -1;
@@ -29,6 +31,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     protected jhiAlertService: JhiAlertService,
     private communication: CommunicationService,
     private navigationService: NavigationService,
+    private filterServive: FilterService,
     private router: Router,
     private commandService: CommandService,
     private _snackBar: MatSnackBar,
@@ -44,7 +47,21 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
 
       if (m instanceof NavigationEnd) {
         // Hide loading indicator
-        this.navigationService.addFilters();
+        this.navigationService.addBikeFilters();
+        this.filterServive.listenFilter().subscribe(m => {
+          if (!this.productsBackup || this.productsBackup.length < this.products.length) this.productsBackup = this.products;
+          console.log('filter processing ...', m);
+
+          this.products = this.productsBackup.filter(
+            product =>
+              (!m.minPrice || (m.minPrice && product.price > m.minPrice)) &&
+              (!m.maxPrice || (m.maxPrice && product.price < m.maxPrice)) &&
+              (!m.bikeColor || (m.bikeColor && product.bikeColor === m.bikeColor)) &&
+              (!m.bikeSize || (m.bikeSize && product.bikeSize === m.bikeSize))
+          );
+
+          console.log('Done with the filters', this.products);
+        });
       }
 
       if (m instanceof NavigationError) {
@@ -58,7 +75,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.communication.getSearchedValue().subscribe(msg => {
-      const parameter = this.router.url.split('/')[2];
       if (this.router.url.split('/')[1] === 'search') {
         this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
           this.products = message.body;
@@ -204,4 +220,5 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         }
         break;
     }
+  }
 }

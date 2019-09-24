@@ -7,6 +7,7 @@ import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
 import { RouterEventService } from 'app/sabike/services/routerEvent.service';
+import { Filter, FilterService } from 'app/sabike/services/filter.service';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -45,7 +46,7 @@ export class NavigationPanelComponent implements OnInit {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private navigationService: NavigationService, private router: Router, private routerEventService: RouterEventService) {
+  constructor(private navigationService: NavigationService, private router: Router, private filterService: FilterService) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
@@ -68,10 +69,11 @@ export class NavigationPanelComponent implements OnInit {
     this.navigationService.listenSubject().subscribe(message => {
       console.log('hiding fields', message);
       if (document.getElementById('nav-left-root-label-filters')) {
-        if (message) {
+        if (message == null) {
           document.getElementById('nav-left-root-label-filters').style.display = 'none';
         } else {
           document.getElementById('nav-left-root-label-filters').style.display = 'block';
+          if (message == 'bike') document.getElementById('nav-left-root-filter-bike').style.display = 'block';
         }
       }
     });
@@ -181,7 +183,23 @@ export class NavigationPanelComponent implements OnInit {
   /**
    * On devrait cacher les filtres si on est pas en train de regarder des articles.
    */
-  shouldHideFilters() {
+  shouldShowGlobalFilters() {
     return this.router.url.startsWith('/articles/', 0);
+  }
+
+  shouldShowBikeFilters() {
+    if (this.router.url.startsWith('/articles/bikes/')) console.log('Bike filter enabled!');
+    return this.router.url.startsWith('/articles/bikes/');
+  }
+
+  applyFilters(minPrice?, maxPrice?, inStock = null) {
+    let filter: Filter = new Filter();
+    if (minPrice) filter.minPrice = minPrice;
+    if (maxPrice) filter.maxPrice = maxPrice;
+
+    if (inStock) filter.inStock = true;
+
+    console.log('Filter : ' + filter);
+    this.filterService.handleFilter(filter);
   }
 }
