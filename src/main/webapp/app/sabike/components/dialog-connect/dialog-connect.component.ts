@@ -81,44 +81,6 @@ export class DialogConnectComponent implements AfterViewInit {
           content: 'connected'
         });
 
-        this.commandService.hasCartAsPromise(this.accountService.userIdentityId).then(msg => {
-          // we have already a cart in remote
-          if (msg.body[0] !== undefined) {
-            console.log('//////////////////////////////');
-            console.log('in if msg body');
-            console.log('msg body ->', msg.body);
-            console.log('//////////////////////////////');
-            const localCart = this.commandService.getCart;
-            // we have also a cart in local
-            if (localCart !== null && localCart.orderItems.length !== 0) {
-              this.clientService.get(this.accountService.userIdentityId).then(client => {
-                this.commandService.mergeRemoteCartWithLocalCart(this.accountService.userIdentityId, msg.body[0]).then(cart => {
-                  console.log('CART MERGE YEAH :', cart);
-                });
-              });
-              // we have RemoteCart but not local => reload remote cart
-            } else {
-              this.commandService.reloadCart(msg.body[0]);
-            }
-            // we don't have a remote cart
-          } else {
-            console.log('//////////////////////////////');
-            console.log('in else msg body empty');
-            console.log('//////////////////////////////');
-            const localCart = this.commandService.getCart;
-            if (localCart !== null && localCart.orderItems.length !== 0) {
-              console.log('//////////////////////////////');
-              console.log('localCart');
-              console.log('//////////////////////////////');
-              this.clientService.get(this.accountService.userIdentityId).then(client => {
-                this.commandService.createRemoteCartFromLocalCart(client).then(cart => {
-                  console.log('CART NEW YEAH :', cart);
-                });
-              });
-            }
-          }
-        });
-
         // previousState was set in the authExpiredInterceptor before being redirected to login modal.
         // since login is successful, go to stored previousState and clear previousState
         const redirect = this.stateStorageService.getUrl();

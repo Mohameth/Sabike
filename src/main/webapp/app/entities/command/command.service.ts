@@ -38,6 +38,7 @@ export class CommandService {
   private totalNewCount = new Subject<number>();
   private snackPopper = new Subject<IProduct>();
   private snackPopperMessage = new Subject<string>();
+  private cartReady = new Subject<ICommand>();
 
   // Sabike <<<<<
 
@@ -530,6 +531,14 @@ export class CommandService {
     this.snackPopperMessage.next(message);
   }
 
+  public cartReadyNext(command: ICommand) {
+    return this.cartReady.next(command);
+  }
+
+  public cartReadyListener(): Observable<ICommand> {
+    return this.cartReady.asObservable();
+  }
+
   public popSnackListener(): Observable<IProduct> {
     return this.snackPopper.asObservable();
   }
@@ -597,6 +606,12 @@ export class CommandService {
                       if (itemIndex > -1) {
                         this.localCart.orderItems.splice(itemIndex, 1);
                       }
+                      this.hasCartAsPromise(this.accountService.userIdentityId).then(remoteCart => {
+                        if (remoteCart.body[0] !== undefined) {
+                          this.localCart = remoteCart.body[0];
+                          this.updateBadge();
+                        }
+                      });
                     })
                     .catch(error => console.log(error));
                 })

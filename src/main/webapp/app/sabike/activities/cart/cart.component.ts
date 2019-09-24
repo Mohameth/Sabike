@@ -34,15 +34,6 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     if (this.commandService.getCart !== null && this.commandService.getCart.orderItems.length !== 0) {
-      // this.commandService
-      //   .observeCart()
-      //   .toPromise()
-      //   .then(
-      //     cart => {
-      //       this.orderItems = cart.orderItems;
-      //     })
-      //   .catch(error => console.log(error));
-
       this.orderItems = this.commandService.getCart.orderItems;
 
       this.orderItems.map(item => {
@@ -65,8 +56,17 @@ export class CartComponent implements OnInit {
     } else {
       // cart is empty
     }
-    // console.log('++++++++++++++++ORDER CART ', this.orderItems);
-    // console.log('totalPRica in CART : ', this.totalPrice);
+
+    this.commandService.cartReadyListener().subscribe(next => {
+      this.orderItems = next.orderItems;
+
+      this.orderItems.map(item => {
+        this.totalPrice += item.paidPrice;
+        console.log(this.totalPrice, typeof this.totalPrice);
+        this.numberOfItems += item.quantity;
+        console.log(this.numberOfItems, typeof this.numberOfItems);
+      });
+    });
 
     this.eventManager.subscribe('authenticationSuccess', message => {
       if (message.content === 'connected') {
