@@ -631,6 +631,7 @@ export class CommandService {
           if (itemIndex > -1) {
             this.localCart.orderItems.splice(itemIndex, 1);
           }
+          this.updateBadge();
         })
         .catch(error => console.log(error));
     }
