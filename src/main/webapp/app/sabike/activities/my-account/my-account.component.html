@@ -1,0 +1,111 @@
+<div id="my-account-root">
+    <p class="mat-h1 mat-headline">My account</p>
+    <form [formGroup]="clientFormGroup">
+        <div class="vbox-form">
+            <mat-form-field>
+                <input
+                    disabled
+                    value="{{account?.login}}"
+                    matInput
+                    placeholder="Login">
+            </mat-form-field>
+            <!-- First name -->
+            <mat-form-field *ngIf="account?.firstName === undefined || account?.firstName === null">
+                <input
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="account?.firstName !== undefined || account?.firstName !== null">
+                <input
+                    value="{{account?.firstName}}"
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Last name -->
+            <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">
+                <input
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="account?.lastName !== undefined || account?.lastName !== null">
+                <input
+                    value="{{account?.lastName}}"
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Phone number -->
+            <mat-form-field *ngIf="client?.phoneNumber === undefined || client?.phoneNumber === null">
+                <input
+                    matInput
+                    placeholder="Phone name"
+                    formControlName="phoneCtrl"
+                    required>
+            </mat-form-field>
+            <mat-form-field *ngIf="client?.phoneNumber !== undefined || client?.phoneNumber !== null">
+                <input
+                    value="{{client?.phoneNumber}}"
+                    matInput
+                    placeholder="Phone number"
+                    formControlName="phoneCtrl"
+                    required>
+            </mat-form-field>
+        </div>
+    </form>
+    <div id="spacer">
+        <p class="mat-h3 mat-subheading-2">Address</p>
+    </div>
+    <form [formGroup]="addressFormGroup">
+        <div class="vbox-form">
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryNumber}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="Number">
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryStreet}}"
+                    matInput
+                    placeholder="Number"
+                    formControlName="Street">
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryPostalCode}}"
+                    matInput
+                    placeholder="Postal Code"
+                    formControlName="numberCtrl">
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryCity}}"
+                    matInput
+                    placeholder="City"
+                    formControlName="numberCtrl">
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    value="{{address?.deliveryCountry}}"
+                    matInput
+                    placeholder="Country"
+                    formControlName="numberCtrl">
+            </mat-form-field>
+        </div>
+    </form>
+    <button
+        class="my-account-update-button"
+        mat-raised-button
+        color="accent"
+        (click)="update()">
+        UPDATE
+    </button>
+</div>

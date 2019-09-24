@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
 
 /**
  * REST controller for managing {@link com.sabi.bikes.domain.Address}.
@@ -114,5 +116,19 @@ public class AddressResource {
         log.debug("REST request to delete Address : {}", id);
         addressRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+
+    /**
+     * {@code GET  /addresses/client/:id} : get the client address
+     *
+     * @param clientId the id of the client.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the address, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/addresses/client/{clientId}")
+    public ResponseEntity<List<Address>> getAddressByClientId(Pageable pageable, @PathVariable Long clientId) {
+        log.debug("REST request to getAddressByClient : {}", clientId);
+        List<Address> address = addressRepository.getAddressesByClient(pageable, clientId);
+        return new ResponseEntity<>(address, HttpStatus.OK);
     }
 }
