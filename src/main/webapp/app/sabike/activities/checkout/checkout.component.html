@@ -1,6 +1,6 @@
 <div id="checkout-root">
     <div id="checkout-root-left">
-        <mat-horizontal-stepper #stepper linear>
+        <mat-horizontal-stepper linear>
             <mat-step [stepControl]="nameFormGroup">
                 <form [formGroup]="nameFormGroup">
                     <ng-template matStepLabel>Personal information</ng-template>
@@ -19,44 +19,6 @@
                                 formControlName="lastCtrl"
                                 required>
                         </mat-form-field>
-                        <!--                        <mat-form-field *ngIf="account?.firstName === undefined || account?.firstName === null">-->
-                        <!--                            <input-->
-                        <!--                                matInput-->
-                        <!--                                placeholder="First name"-->
-                        <!--                                formControlName="firstCtrl"-->
-                        <!--                                required>-->
-                        <!--                        </mat-form-field>-->
-                        <!--                        <mat-form-field *ngIf="account?.firstName !== undefined || account?.firstName !== null">-->
-                        <!--                            <input-->
-                        <!--                                value="{{account?.firstName}}"-->
-                        <!--                                matInput-->
-                        <!--                                placeholder="First name"-->
-                        <!--                                formControlName="firstCtrl"-->
-                        <!--                                required>-->
-                        <!--                        </mat-form-field>-->
-                        <!--                        Last-->
-                        <!--                        <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">-->
-                        <!--                            <input-->
-                        <!--                                matInput-->
-                        <!--                                placeholder="Last name"-->
-                        <!--                                formControlName="lastCtrl"-->
-                        <!--                                required>-->
-                        <!--                        </mat-form-field>-->
-                        <!--                        <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">-->
-                        <!--                            <input-->
-                        <!--                                matInput-->
-                        <!--                                placeholder="Last name"-->
-                        <!--                                formControlName="lastCtrl"-->
-                        <!--                                required>-->
-                        <!--                        </mat-form-field>-->
-                        <!--                        <mat-form-field *ngIf="account?.lastName !== undefined || account?.lastName !== null">-->
-                        <!--                            <input-->
-                        <!--                                value="{{account?.lastName}}"-->
-                        <!--                                matInput-->
-                        <!--                                placeholder="Last name"-->
-                        <!--                                formControlName="lastCtrl"-->
-                        <!--                                required>-->
-                        <!--                        </mat-form-field>-->
                     </div>
                     <div class="stepper-button-wrapper">
                         <button mat-button matStepperNext>Next</button>
@@ -127,7 +89,6 @@
                     </div>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
-                        <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
                     </div>
                 </form>
             </mat-step>

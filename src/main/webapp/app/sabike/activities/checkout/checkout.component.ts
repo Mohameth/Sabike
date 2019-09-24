@@ -77,9 +77,7 @@ export class CheckoutComponent implements OnInit {
       .then(account => {
         this.account = account;
         this.nameFormGroup.get('firstCtrl').setValue(this.account.firstName);
-        console.log('++++++++++++++++++++++++', this.nameFormGroup.get('lastCtrl'));
         this.nameFormGroup.get('lastCtrl').setValue(this.account.lastName);
-        console.log('++++++++++++++++++++++++', this.nameFormGroup.get('lastCtrl'));
       })
       .catch(error => console.log(error));
 
@@ -107,7 +105,6 @@ export class CheckoutComponent implements OnInit {
           this.addressFormGroup.get('addressPostalCodeCtrl').setValue(this.address.deliveryPostalCode);
           this.addressFormGroup.get('addressCityCtrl').setValue(this.address.deliveryCity);
         }
-        console.log(this.address);
       })
       .catch(error => console.log(error));
   }

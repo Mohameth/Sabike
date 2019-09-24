@@ -1,5 +1,6 @@
 package com.sabi.bikes.repository;
 
+import com.sabi.bikes.domain.Product;
 import com.sabi.bikes.domain.User;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -48,4 +50,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+
+//    @Query("UPDATE User SET firstName = ?2 , lastName = ?3 WHERE id = ?1")
+//    List<User> renameUser(Pageable pageable, String first, String last);
 }
