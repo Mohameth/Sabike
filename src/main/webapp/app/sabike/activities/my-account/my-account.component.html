@@ -2,6 +2,7 @@
     <p class="mat-h1 mat-headline">My account</p>
     <form [formGroup]="clientFormGroup">
         <div class="vbox-form">
+            <!-- Account login -->
             <mat-form-field>
                 <input
                     disabled
@@ -9,51 +10,27 @@
                     matInput
                     placeholder="Login">
             </mat-form-field>
-            <!-- First name -->
-            <mat-form-field *ngIf="account?.firstName === undefined || account?.firstName === null">
+            <!-- First -->
+            <mat-form-field>
                 <input
                     matInput
                     placeholder="First name"
                     formControlName="firstCtrl"
                     required>
             </mat-form-field>
-            <mat-form-field *ngIf="account?.firstName !== undefined || account?.firstName !== null">
+            <!-- Last -->
+            <mat-form-field>
                 <input
-                    value="{{account?.firstName}}"
-                    matInput
-                    placeholder="First name"
-                    formControlName="firstCtrl"
-                    required>
-            </mat-form-field>
-            <!-- Last name -->
-            <mat-form-field *ngIf="account?.lastName === undefined || account?.lastName === null">
-                <input
-                    matInput
-                    placeholder="Last name"
-                    formControlName="lastCtrl"
-                    required>
-            </mat-form-field>
-            <mat-form-field *ngIf="account?.lastName !== undefined || account?.lastName !== null">
-                <input
-                    value="{{account?.lastName}}"
                     matInput
                     placeholder="Last name"
                     formControlName="lastCtrl"
                     required>
             </mat-form-field>
             <!-- Phone number -->
-            <mat-form-field *ngIf="client?.phoneNumber === undefined || client?.phoneNumber === null">
+            <mat-form-field>
                 <input
                     matInput
-                    placeholder="Phone name"
-                    formControlName="phoneCtrl"
-                    required>
-            </mat-form-field>
-            <mat-form-field *ngIf="client?.phoneNumber !== undefined || client?.phoneNumber !== null">
-                <input
-                    value="{{client?.phoneNumber}}"
-                    matInput
-                    placeholder="Phone number"
+                    placeholder="Phone"
                     formControlName="phoneCtrl"
                     required>
             </mat-form-field>
@@ -65,39 +42,28 @@
     <form [formGroup]="addressFormGroup">
         <div class="vbox-form">
             <mat-form-field>
-                <input
-                    value="{{address?.deliveryNumber}}"
-                    matInput
-                    placeholder="Number"
-                    formControlName="Number">
+                <input matInput
+                       placeholder="Street number"
+                       formControlName="addressNumberCtrl"
+                       required>
             </mat-form-field>
             <mat-form-field>
-                <input
-                    value="{{address?.deliveryStreet}}"
-                    matInput
-                    placeholder="Number"
-                    formControlName="Street">
+                <input matInput
+                       placeholder="Street name"
+                       formControlName="addressStreetCtrl"
+                       required>
             </mat-form-field>
             <mat-form-field>
-                <input
-                    value="{{address?.deliveryPostalCode}}"
-                    matInput
-                    placeholder="Postal Code"
-                    formControlName="numberCtrl">
+                <input matInput
+                       placeholder="Postal code"
+                       formControlName="addressPostalCodeCtrl"
+                       required>
             </mat-form-field>
             <mat-form-field>
-                <input
-                    value="{{address?.deliveryCity}}"
-                    matInput
-                    placeholder="City"
-                    formControlName="numberCtrl">
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    value="{{address?.deliveryCountry}}"
-                    matInput
-                    placeholder="Country"
-                    formControlName="numberCtrl">
+                <input matInput
+                       placeholder="City"
+                       formControlName="addressCityCtrl"
+                       required>
             </mat-form-field>
         </div>
     </form>
