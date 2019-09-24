@@ -7,6 +7,7 @@ import { AddressService } from 'app/entities/address';
 import { Address } from 'app/shared/model/address.model';
 import { CommandService } from 'app/entities/command';
 import { OrderState } from 'app/shared/model/command.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-checkout',
@@ -30,7 +31,9 @@ export class CheckoutComponent implements OnInit {
     private accountService: AccountService,
     private clientService: ClientService,
     private addressService: AddressService,
-    private commandService: CommandService
+    private commandService: CommandService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     //
   }
@@ -111,15 +114,40 @@ export class CheckoutComponent implements OnInit {
   validate() {
     if (this.nameFormGroup.valid && this.addressFormGroup.valid && this.paymentFormGroup.valid) {
       // we can validate transaction !!
-      console.log('+++++++++++ WE CAN FINISH');
-      this.commandService.getCart.state = OrderState.PENDING;
       this.commandService
-        .update(this.commandService.getCart)
-        .toPromise()
-        .then(updatedCart => {
-          console.log('++++++++++++++++++++++++ NIKOMOOK', updatedCart);
+        .hasCartAsPromise(this.accountService.userIdentityId)
+        .then(remoteCart => {
+          remoteCart.body[0].state = OrderState.PENDING;
+          this.commandService
+            .update(remoteCart.body[0])
+            .toPromise()
+            .then(updatedCart => {
+              if (updatedCart.body.state === OrderState.PENDING) {
+                this.router.navigate(['/checkout/success'], { relativeTo: this.route }).then(r => {
+                  console.log('++++++++++++++++++++++++ we should empty badge cart', r);
+                  this.commandService.emptyCart();
+                });
+              }
+            })
+            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
+
+      // this.commandService.getCart.state = OrderState.PENDING;
+      // this.commandService
+      //   .update(this.commandService.getCart)
+      //   .toPromise()
+      //   .then(updatedCart => {
+      //     console.log('++++++++++++++++++++++++', updatedCart);
+      //     if (updatedCart.body.state === OrderState.PENDING) {
+      //       this.router
+      //         .navigate(['/checkout/success'], {relativeTo: this.route})
+      //         .then(r => {
+      //           console.log('++++++++++++++++++++++++ we should empty badge cart', r);
+      //         });
+      //     }
+      //   })
+      //   .catch(error => console.log(error));
     }
   }
 
