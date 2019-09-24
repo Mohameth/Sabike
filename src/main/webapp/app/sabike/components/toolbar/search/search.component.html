@@ -1,8 +1,8 @@
 <div id="search-root">
     <form class="example-form">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="example-full-width" [floatLabel]="'never'">
             <input type="text" aria-label="Number" matInput [(ngModel)]="searched" [formControl]="myControl"
-                   [matAutocomplete]="auto">
+                   [matAutocomplete]="auto" placeholder="Search a product">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                     {{option}}

@@ -54,20 +54,18 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         console.log(m.error);
       }
     });
+
+    this.communication.getSearchedValue().subscribe(msg => {
+      this.productService
+        .getProductsNameLike(msg.valueOf())
+        .toPromise()
+        .then(message => {
+          this.products = message.body;
+        });
+    });
   }
 
   ngOnInit(): void {
-    this.communication.getSearchedValue().subscribe(msg => {
-      const parameter = this.router.url.split('/')[2];
-      if (this.router.url.split('/')[1] === 'search') {
-        this.productService.getProductsNameLike(msg.valueOf()).subscribe(message => {
-          this.products = message.body;
-          console.log('msg value of : ', msg.valueOf());
-          console.log('IN LIST message : ', message);
-        });
-      }
-    });
-
     this.commandService.popSnackListener().subscribe(next => {
       this.openSnackBar('Added product ' + next.name + ' to cart', 'DISMISS');
     });
@@ -208,4 +206,5 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         }
         break;
     }
+  }
 }
