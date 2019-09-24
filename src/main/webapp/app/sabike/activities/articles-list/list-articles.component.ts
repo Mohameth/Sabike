@@ -9,7 +9,7 @@ import { NavigationError, NavigationStart } from '@angular/router';
 import { PaginatorCustomComponent } from 'app/sabike/components/paginator-custom/paginator-custom.component';
 import { CommandService } from 'app/entities/command';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FilterService } from 'app/sabike/services/filter.service';
+import { FilterLabels, FilterService } from 'app/sabike/services/filter.service';
 
 @Component({
   selector: 'jhi-articles',
@@ -57,7 +57,8 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
               (!m.minPrice || (m.minPrice && product.price > m.minPrice)) &&
               (!m.maxPrice || (m.maxPrice && product.price < m.maxPrice)) &&
               (!m.bikeColor || (m.bikeColor && product.bikeColor === m.bikeColor)) &&
-              (!m.bikeSize || (m.bikeSize && product.bikeSize === m.bikeSize))
+              (!m.bikeSize || (m.bikeSize && product.bikeSize === m.bikeSize)) &&
+              (!m.inStock || (m.inStock && product.stock > 0))
           );
 
           console.log('Done with the filters', this.products);
@@ -116,6 +117,24 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     this.paginator.setLength(this.totalNumberOfItems);
   }
 
+  setBikeFilters() {
+    let labels: FilterLabels = new FilterLabels();
+    labels.color = new Array<string>();
+    labels.size = new Array<string>();
+
+    this.products.map(product => {
+      if (labels.color.indexOf(product.bikeColor) < 0) {
+        labels.color.push(product.bikeColor);
+      }
+      if (labels.size.indexOf(product.bikeSize) < 0) {
+        labels.size.push(product.bikeSize);
+      }
+    });
+    labels.color = labels.color.sort();
+    labels.size = labels.size.sort();
+    this.filterServive.setBikeFiltersLabels(labels);
+  }
+
   fetchProductsWithQuery() {
     // LOAD here
     // sabike.com/articles/Bikes --> level 3, .../Parts/Steering --> level 4, etc.
@@ -132,6 +151,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
             });
             this.productService.getAllBikes(this.pageIndex, this.pageSize).subscribe(message => {
               this.products = message.body;
+              this.setBikeFilters();
             });
             break;
           // All parts
@@ -160,6 +180,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
             });
             this.productService.getBikesByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
               this.products = message.body;
+              this.setBikeFilters();
             });
             break;
           // Parts category

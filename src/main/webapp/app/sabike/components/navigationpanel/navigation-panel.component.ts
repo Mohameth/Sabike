@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { of as observableOf } from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { sabike_paths } from './navigation-nodes';
 import { NavigationService } from 'app/sabike/services/navigation-service';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Breadcrumb } from 'app/sabike/components/breadcrumb/breadcrumb.component';
-import { RouterEventService } from 'app/sabike/services/routerEvent.service';
-import { Filter, FilterService } from 'app/sabike/services/filter.service';
+import { Filter, FilterLabels, FilterService } from 'app/sabike/services/filter.service';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -36,6 +36,7 @@ export interface FlatTreeNode {
 })
 export class NavigationPanelComponent implements OnInit {
   public activeNode;
+  public bikeFiltersLabels: FilterLabels = new FilterLabels();
 
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
@@ -67,13 +68,15 @@ export class NavigationPanelComponent implements OnInit {
     });*/
 
     this.navigationService.listenSubject().subscribe(message => {
-      console.log('hiding fields', message);
+      console.log('Handling the display of filters', message);
       if (document.getElementById('nav-left-root-label-filters')) {
         if (message == null) {
           document.getElementById('nav-left-root-label-filters').style.display = 'none';
         } else {
           document.getElementById('nav-left-root-label-filters').style.display = 'block';
-          if (message == 'bike') document.getElementById('nav-left-root-filter-bike').style.display = 'block';
+          if (message === 'bike')
+            if (document.getElementById('nav-left-root-filter-bike'))
+              document.getElementById('nav-left-root-filter-bike').style.display = 'block';
         }
       }
     });
@@ -87,7 +90,12 @@ export class NavigationPanelComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.filterService.listenBikeFiltersLabels().subscribe(m => {
+      console.log('Ok filters labels => ', m);
+      this.bikeFiltersLabels = m;
+    });
+  }
 
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number) {
@@ -148,10 +156,10 @@ export class NavigationPanelComponent implements OnInit {
   }
 
   selectActiveNode(currentNode: FlatTreeNode) {
-    //this.treeControl.collapseAll();
-    //this.treeControl.expand(currentNode);
-    //while (parent = this.treeControl.)
-    //this.treeControl.toggle(currentNode);
+    // this.treeControl.collapseAll();
+    // this.treeControl.expand(currentNode);
+    // while (parent = this.treeControl.)
+    // this.treeControl.toggle(currentNode);
     this.activeNode = currentNode;
   }
 
@@ -184,12 +192,11 @@ export class NavigationPanelComponent implements OnInit {
    * On devrait cacher les filtres si on est pas en train de regarder des articles.
    */
   shouldShowGlobalFilters() {
-    return this.router.url.startsWith('/articles/', 0);
+    return this.router.url.startsWith('/articles/');
   }
 
   shouldShowBikeFilters() {
-    if (this.router.url.startsWith('/articles/bikes/')) console.log('Bike filter enabled!');
-    return this.router.url.startsWith('/articles/bikes/');
+    return this.router.url.startsWith('/articles/bikes');
   }
 
   applyFilters(minPrice?, maxPrice?, inStock = null) {
@@ -199,7 +206,26 @@ export class NavigationPanelComponent implements OnInit {
 
     if (inStock) filter.inStock = true;
 
-    console.log('Filter : ' + filter);
+    this.filterService.handleFilter(filter);
+  }
+
+  applyColorFilter(color, event) {
+    let filter: Filter = new Filter();
+    if (event.checked) {
+      filter.bikeColor = color;
+    } else {
+      filter.bikeColor = null;
+    }
+    this.filterService.handleFilter(filter);
+  }
+
+  applySizeFilter(size, event) {
+    let filter: Filter = new Filter();
+    if (event.checked) {
+      filter.bikeSize = size;
+    } else {
+      filter.bikeSize = null;
+    }
     this.filterService.handleFilter(filter);
   }
 }

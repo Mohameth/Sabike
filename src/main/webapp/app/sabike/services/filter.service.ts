@@ -7,6 +7,7 @@ import { NavigationEnd } from '@angular/router';
 })
 export class FilterService {
   private filter = new Subject<Filter>();
+  private bikeFiltersLabels = new Subject<FilterLabels>();
 
   constructor() {}
 
@@ -17,6 +18,14 @@ export class FilterService {
   handleFilter(value: Filter) {
     this.filter.next(value);
   }
+
+  listenBikeFiltersLabels(): Observable<FilterLabels> {
+    return this.bikeFiltersLabels.asObservable();
+  }
+
+  setBikeFiltersLabels(filtersLabels: FilterLabels) {
+    this.bikeFiltersLabels.next(filtersLabels);
+  }
 }
 
 export class Filter {
@@ -26,4 +35,9 @@ export class Filter {
   bikeColor?: string;
   brand?: string;
   inStock?: boolean = false;
+}
+
+export class FilterLabels {
+  color?: Array<string>;
+  size?: Array<string>;
 }
