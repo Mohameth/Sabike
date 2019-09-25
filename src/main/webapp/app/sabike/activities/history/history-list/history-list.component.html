@@ -1,0 +1,33 @@
+<style type="text/css">
+    .order-list-item-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .order-list-item-card {
+        margin-top: 8px;
+    }
+
+    .order-list-items {
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+<mat-list>
+    <h3 mat-subheader>Orders</h3>
+    <div *ngFor="let order of orderList">
+        <mat-card class="order-list-item-card">
+            <div class="order-list-item-wrapper">
+                <p>Order ID : {{order?.id}}</p>
+                <p>Order date : {{order?.orderDate}}</p>
+                <p>Total price : {{order?.totalAmount}}</p>
+                <div *ngFor="let orderItem of order?.orderItems">
+                    <div class="order-list-items">
+                        <p>{{orderItem?.product.name}},</p>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+
+</mat-list>
