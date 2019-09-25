@@ -2,6 +2,8 @@ version: '2'
 services:
   sabike-postgresql:
     image: postgres:11.4
+    volumes:
+      - ~/volumes/jhipster/Sabike/postgresql/:/Users/bengous/Downloads/sabike.mv.db
     # volumes:
     #     - ~/volumes/jhipster/Sabike/postgresql/:/var/lib/postgresql/data/
     environment:
