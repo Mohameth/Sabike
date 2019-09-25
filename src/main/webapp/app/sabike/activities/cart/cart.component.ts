@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IOrderItems } from 'app/shared/model/order-items.model';
 import { CommandService } from 'app/entities/command';
 import { AccountService } from 'app/core';
@@ -15,10 +15,8 @@ import { NavigationService } from 'app/sabike/services/navigation-service';
 })
 export class CartComponent implements OnInit {
   orderItems: IOrderItems[];
-  private totalPrice = 0.0;
-  private numberOfItems = 0;
-
-  // private numberOfItemsString: string;
+  totalPrice = 0.0;
+  numberOfItems = 0;
 
   constructor(
     private accountService: AccountService,
@@ -38,9 +36,7 @@ export class CartComponent implements OnInit {
 
       this.orderItems.map(item => {
         this.totalPrice += item.paidPrice;
-        console.log(this.totalPrice, typeof this.totalPrice);
         this.numberOfItems += item.quantity;
-        console.log(this.numberOfItems, typeof this.numberOfItems);
       });
 
       console.log('should show ', this.numberOfItems, this.totalPrice);

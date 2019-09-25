@@ -23,8 +23,8 @@ export class CheckoutComponent implements OnInit {
   private account: Account;
   private address: Address;
 
-  private totalPrice: number;
-  private numberOfItems: number;
+  totalPrice: number;
+  numberOfItems: number;
 
   constructor(
     private _formBuilder: FormBuilder,

@@ -13,11 +13,11 @@ import { AddressService } from 'app/entities/address';
 })
 export class MyAccountComponent implements OnInit {
   private client: IClient;
-  private account: Account;
+  account: Account;
   private address: Address;
 
-  private clientFormGroup: FormGroup;
-  private addressFormGroup: FormGroup;
+  clientFormGroup: FormGroup;
+  addressFormGroup: FormGroup;
 
   constructor(
     private _formBuilder: FormBuilder,

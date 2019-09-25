@@ -13,11 +13,9 @@ import { CommunicationService } from 'app/sabike/services/communication.service'
   styleUrls: ['./details-article.component.scss']
 })
 export class DetailsArticleComponent implements OnInit {
-  selectedQuantity = '1';
-
-  @Input() private product: Product;
-  private isInStock = 'In stock';
-  private isDisabled = false;
+  @Input() product: Product;
+  isInStock = 'In stock';
+  isDisabled = false;
 
   constructor(
     private navigationServiceService: NavigationService,
@@ -26,7 +24,9 @@ export class DetailsArticleComponent implements OnInit {
     private commandService: CommandService,
     private eventManager: JhiEventManager,
     private communication: CommunicationService
-  ) {}
+  ) {
+    //
+  }
 
   ngOnInit() {
     this.navigationServiceService.removeFilters();
