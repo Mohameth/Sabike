@@ -19,7 +19,7 @@ import { FilterService } from 'app/sabike/services/filter.service';
 export class ListArticlesComponent implements OnInit, AfterViewInit {
   selected: 'option1';
   products: IProduct[];
-  productsBackup: IProduct[];
+  allProducts: IProduct[];
   private pageIndex = 0;
   private pageSize = 10;
   private totalNumberOfItems = -1;
@@ -49,10 +49,10 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         // Hide loading indicator
         this.navigationService.addBikeFilters();
         this.filterServive.listenFilter().subscribe(m => {
-          if (!this.productsBackup || this.productsBackup.length < this.products.length) this.productsBackup = this.products;
+          if (!this.allProducts || this.allProducts.length < this.products.length) this.allProducts = this.products;
           console.log('filter processing ...', m);
 
-          this.products = this.productsBackup.filter(
+          this.products = this.allProducts.filter(
             product =>
               (!m.minPrice || (m.minPrice && product.price > m.minPrice)) &&
               (!m.maxPrice || (m.maxPrice && product.price < m.maxPrice)) &&
@@ -107,13 +107,33 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     this.paginator.event.subscribe(pageEvent => {
       this.pageSize = pageEvent.pageSize;
       this.pageIndex = pageEvent.pageIndex;
-      this.fetchProductsWithQuery();
+      // this.fetchProductsWithQuery();
+      this.setAndShowProducts(this.allProducts);
     });
   }
 
   setNumberOfItems(number) {
     this.totalNumberOfItems = number;
     this.paginator.setLength(this.totalNumberOfItems);
+  }
+
+  setAndShowProducts(products) {
+    // We update the products and the paginator
+    this.allProducts = products;
+    this.setNumberOfItems(this.allProducts.length);
+
+    // We show the correct number of items
+    this.products = this.allProducts.slice(this.pageIndex * this.pageSize, this.pageSize * (this.pageIndex + 1));
+    console.log(
+      'Début: ' +
+        this.pageIndex * this.pageSize +
+        '; Fin: ' +
+        this.pageSize * (this.pageIndex + 1) +
+        '; index: ' +
+        this.pageIndex +
+        '; size: ' +
+        this.pageSize
+    );
   }
 
   fetchProductsWithQuery() {
@@ -127,20 +147,20 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         switch (parameter) {
           // All bikes
           case 'bikes':
-            this.productService.getAllBikesCount().subscribe(message => {
-              this.setNumberOfItems(message.body);
-            });
+            // this.productService.getAllBikesCount().subscribe(message => {
+            //   this.setNumberOfItems(message.body);
+            // });
             this.productService.getAllBikes(this.pageIndex, this.pageSize).subscribe(message => {
-              this.products = message.body;
+              this.setAndShowProducts(message.body);
             });
             break;
           // All parts
           case 'parts':
-            this.productService.getAllPartsCount().subscribe(message => {
-              this.setNumberOfItems(message.body);
-            });
+            // this.productService.getAllPartsCount().subscribe(message => {
+            //   this.setNumberOfItems(message.body);
+            // });
             this.productService.getAllParts(this.pageIndex, this.pageSize).subscribe(message => {
-              this.products = message.body;
+              this.setAndShowProducts(message.body);
             });
             break;
         }
@@ -154,12 +174,12 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           case 'city':
           case 'ebike':
           case 'bmx':
-            console.log(parameter.toUpperCase());
-            this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
-              this.setNumberOfItems(message.body);
-            });
+            // console.log(parameter.toUpperCase());
+            // this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
+            //   this.setNumberOfItems(message.body);
+            // });
             this.productService.getBikesByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
-              this.products = message.body;
+              this.setAndShowProducts(message.body);
             });
             break;
           // Parts category
@@ -169,11 +189,11 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           case 'wheels':
           case 'brakes':
           case 'frames':
-            this.productService.getPartsByCategoryCount(parameter.toUpperCase()).subscribe(message => {
-              this.setNumberOfItems(message.body);
-            });
+            // this.productService.getPartsByCategoryCount(parameter.toUpperCase()).subscribe(message => {
+            //   this.setNumberOfItems(message.body);
+            // });
             this.productService.getPartsByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
-              this.products = message.body;
+              this.setAndShowProducts(message.body);
             });
             break;
         }
@@ -208,13 +228,13 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           case 'frame-kits':
           case 'frames':
           case 'forks':
-            this.productService.getPartsByCategoryTypeCount(parameter.toUpperCase()).subscribe(message => {
-              this.setNumberOfItems(message.body);
-            });
+            // this.productService.getPartsByCategoryTypeCount(parameter.toUpperCase()).subscribe(message => {
+            //   this.setNumberOfItems(message.body);
+            // });
             this.productService
               .getPartsByCategoryType(this.pageIndex, this.pageSize, parameter.toUpperCase().replace('-', '_'))
               .subscribe(message => {
-                this.products = message.body;
+                this.setAndShowProducts(message.body);
               });
             break;
         }
