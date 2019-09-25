@@ -17,9 +17,7 @@ export class PaginatorCustomComponent implements OnInit {
 
   setBindedPaginator() {}
 
-  ngOnInit(): void {
-    //this.pageEvent.
-  }
+  ngOnInit(): void {}
 
   getPaginatorData($event: PageEvent) {
     this.bindedPaginator.handleEventFromOtherPaginator($event);

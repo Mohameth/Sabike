@@ -39,8 +39,6 @@ export class CartComponent implements OnInit {
         this.numberOfItems += item.quantity;
       });
 
-      console.log('should show ', this.numberOfItems, this.totalPrice);
-
       // Observe future changes
       this.commandService.listenTotalCount().subscribe(quantity => {
         this.numberOfItems = quantity;
@@ -49,17 +47,13 @@ export class CartComponent implements OnInit {
         this.totalPrice = 0.0;
         this.commandService.getCart.orderItems.map(item => (this.totalPrice += item.paidPrice));
       });
-    } else {
-      // cart is empty
     }
 
     this.commandService.cartReadyListener().subscribe(next => {
       this.orderItems = next.orderItems;
       this.orderItems.map(item => {
         this.totalPrice += item.paidPrice;
-        console.log(this.totalPrice, typeof this.totalPrice);
         this.numberOfItems += item.quantity;
-        console.log(this.numberOfItems, typeof this.numberOfItems);
       });
     });
 

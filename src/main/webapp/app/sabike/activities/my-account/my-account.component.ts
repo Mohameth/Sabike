@@ -96,7 +96,6 @@ export class MyAccountComponent implements OnInit {
       .find(this.account.login)
       .toPromise()
       .then(user => {
-        console.log('++++++++++++++++++++++++++++++++++++++++++++++++', user);
         user.body.firstName = this.clientFormGroup.get('firstCtrl').value;
         user.body.lastName = this.clientFormGroup.get('lastCtrl').value;
         this.updateUser(user.body);
@@ -105,7 +104,6 @@ export class MyAccountComponent implements OnInit {
 
   private updateClient() {
     this.client.phoneNumber = this.clientFormGroup.get('phoneCtrl').value.toString();
-    console.log('++++++ updateClient', this.client);
     this.clientService
       .update(this.client)
       .toPromise()
@@ -117,7 +115,6 @@ export class MyAccountComponent implements OnInit {
     this.address.deliveryStreet = this.addressFormGroup.get('addressStreetCtrl').value;
     this.address.deliveryStreet = this.addressFormGroup.get('addressPostalCodeCtrl').value;
     this.address.deliveryCity = this.addressFormGroup.get('addressCityCtrl').value;
-    console.log('++++++ updateAddress', this.address);
     this.addressService
       .update(this.address)
       .toPromise()
@@ -125,7 +122,6 @@ export class MyAccountComponent implements OnInit {
   }
 
   private updateUser(user: IUser) {
-    console.log('++++++ updateUser', user);
     this.userService
       .update(user)
       .toPromise()

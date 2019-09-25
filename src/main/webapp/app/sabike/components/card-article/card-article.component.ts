@@ -1,16 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IProduct, Product } from 'app/shared/model/product.model';
-import { CartService } from 'app/entities/cart';
 import { ProductService } from 'app/entities/product';
-import { timer } from 'rxjs';
 import { CommandService } from 'app/entities/command';
-import { OrderItemsService } from 'app/entities/order-items';
-import { AccountService } from 'app/core';
-import { ClientService } from 'app/entities/client';
-import { IClient } from 'app/shared/model/client.model';
-import { Command, ICommand, OrderState } from 'app/shared/model/command.model';
-import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
-import { error } from 'util';
 import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
@@ -34,7 +25,6 @@ export class CardArticleComponent implements OnInit {
       this.i_product = message.body;
       // now we can decrease
       if (this.i_product.stock === 0) {
-        console.log('++++++ NOPE ++++++');
         this.isInStock = 'Out of stock';
         this.isDisabled = true;
       }

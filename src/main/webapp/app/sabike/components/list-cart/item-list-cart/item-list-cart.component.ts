@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IOrderItems, OrderItems } from 'app/shared/model/order-items.model';
+import { OrderItems } from 'app/shared/model/order-items.model';
 import { CommandService } from 'app/entities/command';
 import { ProductService } from 'app/entities/product';
 import { Observable, Subject } from 'rxjs';
-import { IProduct } from 'app/shared/model/product.model';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -22,35 +21,18 @@ export class ItemListCartComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedQuantity = this.orderItem.quantity.toString();
-    console.log('SELECTED QTE :', this.selectedQuantity);
-    console.log('orderitems string :', this.orderItem.quantity.toString());
   }
 
   changeQuantity($newQuantity: any) {
     this.productService
       .updateQuantityProduct(this.orderItem.product, this.orderItem.quantity, Number($newQuantity))
       .then(updatedProduct => {
-        console.log('updateQuantityProduct updatedProduct :', updatedProduct);
         this.commandService.updateToCart(this.orderItem.product, Number($newQuantity), true);
         this.orderItem.quantity = Number($newQuantity);
-        console.log('new QTE :', this.orderItem.quantity);
-        console.log('type qte', typeof $newQuantity);
       })
       .catch(e => {
-        console.log('cached : ', e);
-        console.log(
-          'selectedQuantity TYPEOF , this.orderItem.quantity.toString() : ',
-          typeof this.selectedQuantity,
-          typeof this.orderItem.quantity.toString()
-        );
-
         this.selectedQuantity = this.orderItem.quantity.toString();
-        // this.selectedQuantity = '1';
-        console.log('selectedQuantity , this.orderItem.quantity.toString() : ', this.selectedQuantity, this.orderItem.quantity.toString());
-        console.log('this.cart', this.commandService.getCart);
-        console.log('quantiy items catch', this.orderItem.quantity);
         this.isOutOfStock = true;
-
         this.popSnack(e);
         this.popSnackListener().subscribe(next => {
           this.openSnackBar(e, 'DISMISS');
@@ -59,7 +41,6 @@ export class ItemListCartComponent implements OnInit {
   }
 
   private openSnackBar(message: string, action: string) {
-    console.log('++++++++++++++++++++++++ openSnackBar');
     this._snackBar.open(message, action, {
       duration: 2000
     });

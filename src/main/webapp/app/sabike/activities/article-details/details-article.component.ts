@@ -33,7 +33,6 @@ export class DetailsArticleComponent implements OnInit {
 
     // Load the article details / just a common get from service
     const splitter = this.router.url.split('/');
-    // console.log(splitter[splitter.length - 1]);
     this.productService.find(Number(splitter[splitter.length - 1])).subscribe(message => {
       this.product = message.body;
     });

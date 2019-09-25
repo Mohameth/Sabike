@@ -35,9 +35,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     private eventManager: JhiEventManager
   ) {
     this.router.events.subscribe(m => {
-      if (m instanceof NavigationStart) {
-        // Show loading indicator
-      }
       if (m instanceof ActivationEnd) {
         this.fetchProductsWithQuery();
       }
@@ -45,13 +42,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
       if (m instanceof NavigationEnd) {
         // Hide loading indicator
         this.navigationService.addFilters();
-      }
-
-      if (m instanceof NavigationError) {
-        // Hide loading indicator
-
-        // Present error to user
-        console.log(m.error);
       }
     });
 
@@ -140,7 +130,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           case 'city':
           case 'ebike':
           case 'bmx':
-            console.log(parameter.toUpperCase());
             this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
               this.setNumberOfItems(message.body);
             });

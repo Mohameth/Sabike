@@ -54,19 +54,12 @@ export class NavigationPanelComponent implements OnInit {
 
     this.router.events.subscribe(routerEvent => {
       if (routerEvent instanceof NavigationEnd) {
-        console.log('####', routerEvent);
         this.navigationService.handleBreadcrumb(this.buildBreads());
         this.selectActiveNode(this.findNodeWithRoute(this.router.url.split('/').reverse()[0]));
       }
     });
 
-    /*routerEventService.listenNavigationEndEvent().subscribe(m => {
-      console.log(' Trying to handle breadcrumbs ', m);
-      //this.navigationService.handleBreadcrumb(this.buildBreads());
-    });*/
-
     this.navigationService.listenSubject().subscribe(message => {
-      console.log('hiding fields', message);
       if (document.getElementById('nav-left-root-label-filters')) {
         if (message) {
           document.getElementById('nav-left-root-label-filters').style.display = 'none';
@@ -79,8 +72,6 @@ export class NavigationPanelComponent implements OnInit {
     this.navigationService.listenNavigation().subscribe(message => {
       if (message === 'bikes' || message === 'parts') {
         this.expand(message);
-      } else {
-        console.log('We are in the nav component, weird message', message);
       }
     });
   }
@@ -146,10 +137,6 @@ export class NavigationPanelComponent implements OnInit {
   }
 
   selectActiveNode(currentNode: FlatTreeNode) {
-    //this.treeControl.collapseAll();
-    //this.treeControl.expand(currentNode);
-    //while (parent = this.treeControl.)
-    //this.treeControl.toggle(currentNode);
     this.activeNode = currentNode;
   }
 
@@ -172,10 +159,6 @@ export class NavigationPanelComponent implements OnInit {
     this.treeControl.collapseAll();
     const node: FlatTreeNode = this.findNodeWithName(nodeName);
     this.treeControl.expand(node);
-  }
-
-  onListClick(item) {
-    // this.treeControl.collapseAll();
   }
 
   /**
