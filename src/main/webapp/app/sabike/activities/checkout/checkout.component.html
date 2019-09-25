@@ -110,7 +110,7 @@
                 <div>
                     <button
                         mat-raised-button
-                        [disabled]="false"
+                        [disabled]="!(nameFormGroup.valid && addressFormGroup.valid && paymentFormGroup.valid)"
                         color="accent"
                         (click)="validate()">
                         VALIDATE
