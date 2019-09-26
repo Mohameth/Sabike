@@ -18,4 +18,7 @@ public interface CommandRepository extends JpaRepository<Command, Long> {
     @Query("FROM Command WHERE client_id = ?1 AND state = 'CART'")
     List<Command> getUserCart(Pageable pageable, Long clientId);
 
+
+    @Query("FROM Command WHERE client_id = ?1 AND state <> 'CART'")
+    List<Command> getUserCommandHistoty(Pageable pageable, Long clientId);
 }

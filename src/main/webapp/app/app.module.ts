@@ -61,6 +61,9 @@ import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sab
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MyAccountComponent } from './sabike/activities/my-account/my-account.component';
 import { CheckoutDoneComponent } from './sabike/activities/checkout-done/checkout-done.component';
+import { HistoryComponent } from './sabike/activities/history/history.component';
+import { HistoryListComponent } from './sabike/activities/history/history-list/history-list.component';
+import { HistoryListItemComponent } from './sabike/activities/history/history-list/history-list-item/history-list-item.component';
 
 @NgModule({
   imports: [
@@ -126,7 +129,10 @@ import { CheckoutDoneComponent } from './sabike/activities/checkout-done/checkou
     PaginatorCustomComponent,
     SabikeRegisterComponent,
     MyAccountComponent,
-    CheckoutDoneComponent
+    CheckoutDoneComponent,
+    HistoryComponent,
+    HistoryListComponent,
+    HistoryListItemComponent
   ],
   providers: [
     NgbActiveModal,

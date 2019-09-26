@@ -133,6 +133,12 @@ public class CommandResource {
         return new ResponseEntity<>(commands, HttpStatus.OK);
     }
 
+    @GetMapping("/commands/history/{id}")
+    public ResponseEntity<List<Command>> getHistory(Pageable pageable, @PathVariable Long id) {
+        List<Command> commands = commandRepository.getUserCommandHistoty(pageable, id);
+        return new ResponseEntity<>(commands, HttpStatus.OK);
+    }
+
 //    @GetMapping("/commands/create")
 //    public ResponseEntity<Command> createCart(Pageable pageable, @PathVariable Command cart) {
 //        Command command = commandRepository.createUserCart(pageable, cart);

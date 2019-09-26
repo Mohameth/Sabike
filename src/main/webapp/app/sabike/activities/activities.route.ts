@@ -7,6 +7,7 @@ import { HomeComponent } from 'app/home';
 import { CheckoutComponent } from 'app/sabike/activities/checkout/checkout.component';
 import { MyAccountComponent } from 'app/sabike/activities/my-account/my-account.component';
 import { CheckoutDoneComponent } from 'app/sabike/activities/checkout-done/checkout-done.component';
+import { HistoryComponent } from 'app/sabike/activities/history/history.component';
 
 export const activitiesRoute: Routes = [
   {
@@ -52,5 +53,9 @@ export const activitiesRoute: Routes = [
   {
     path: 'my-account',
     component: MyAccountComponent
+  },
+  {
+    path: 'my-account/history',
+    component: HistoryComponent
   }
 ];
