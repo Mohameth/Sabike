@@ -1,47 +1,67 @@
 <div id="checkout-root">
     <div id="checkout-root-left">
-        <mat-horizontal-stepper #stepper linear>
-            <mat-step [stepControl]="firstFormGroup">
-                <form [formGroup]="firstFormGroup">
+        <mat-horizontal-stepper linear>
+            <mat-step [stepControl]="nameFormGroup">
+                <form [formGroup]="nameFormGroup">
                     <ng-template matStepLabel>Personal information</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
-                            <input matInput placeholder="Last name" formControlName="lastCtrl" required>
+                            <input
+                                matInput
+                                placeholder="First name"
+                                formControlName="firstCtrl"
+                                required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="First name" formControlName="firstCtrl" required>
+                            <input
+                                matInput
+                                placeholder="Last name"
+                                formControlName="lastCtrl"
+                                required>
                         </mat-form-field>
                     </div>
                     <div class="stepper-button-wrapper">
-                        <button mat-button matStepperNext>Next</button>
+                        <button mat-stroked-button matStepperNext>Next</button>
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="secondFormGroup">
-                <form [formGroup]="secondFormGroup">
+            <mat-step [stepControl]="addressFormGroup">
+                <form [formGroup]="addressFormGroup">
                     <ng-template matStepLabel>Address</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
-                            <input matInput placeholder="Street number" formControlName="addressNumberCtrl" required>
+                            <input matInput
+                                   placeholder="Street number"
+                                   formControlName="addressNumberCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Street name" formControlName="addressStreetCtrl" required>
+                            <input matInput
+                                   placeholder="Street name"
+                                   formControlName="addressStreetCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Postal code" formControlName="addressPostalCodeCtrl" required>
+                            <input matInput
+                                   placeholder="Postal code"
+                                   formControlName="addressPostalCodeCtrl"
+                                   required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="City" formControlName="addressCityCtrl" required>
+                            <input matInput
+                                   placeholder="City"
+                                   formControlName="addressCityCtrl"
+                                   required>
                         </mat-form-field>
                     </div>
                     <div class="stepper-button-wrapper">
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
+                        <button mat-stroked-button matStepperPrevious>Back</button>
+                        <button mat-stroked-button matStepperNext>Next</button>
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="thirdFormGroup">
-                <form [formGroup]="thirdFormGroup">
+            <mat-step [stepControl]="paymentFormGroup">
+                <form [formGroup]="paymentFormGroup">
                     <ng-template matStepLabel>Payment</ng-template>
                     <div class="vbox-form">
                         <mat-form-field>
@@ -68,8 +88,7 @@
                         </div>
                     </div>
                     <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
+                        <button mat-stroked-button matStepperPrevious>Back</button>
                     </div>
                 </form>
             </mat-step>
@@ -82,17 +101,19 @@
                 <p class="mat-h2 mat-headline">My Cart</p>
                 <div class="horizontal-flexbox">
                     <p class="mat-h4">Number of products:&nbsp;</p>
-                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                    <p class="mat-h4" style="font-weight: bold;">{{numberOfItems}}</p>
                 </div>
                 <div class="horizontal-flexbox">
                     <p class="mat-h4">Total price:&nbsp;</p>
-                    <p class="mat-h4" style="font-weight: bold;">TODO</p>
+                    <p class="mat-h4" style="font-weight: bold;">{{totalPrice}}</p>
                 </div>
                 <div>
                     <button
                         mat-raised-button
-                        color="accent">
-                        TODO
+                        [disabled]="!(nameFormGroup.valid && addressFormGroup.valid && paymentFormGroup.valid)"
+                        color="accent"
+                        (click)="validate()">
+                        VALIDATE
                     </button>
                 </div>
             </div>

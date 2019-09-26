@@ -59,6 +59,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { PaginatorCustomComponent } from './sabike/components/paginator-custom/paginator-custom.component';
 import { SabikeRegisterComponent } from './sabike/activities/sabike-register/sabike-register.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MyAccountComponent } from './sabike/activities/my-account/my-account.component';
+import { CheckoutDoneComponent } from './sabike/activities/checkout-done/checkout-done.component';
 
 @NgModule({
   imports: [
@@ -122,7 +124,9 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     BreadcrumbComponent,
     CheckoutComponent,
     PaginatorCustomComponent,
-    SabikeRegisterComponent
+    SabikeRegisterComponent,
+    MyAccountComponent,
+    CheckoutDoneComponent
   ],
   providers: [
     NgbActiveModal,

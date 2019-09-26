@@ -35,4 +35,9 @@ export class AddressService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  // Sabike
+  findByClient(id: number): Observable<EntityResponseType> {
+    return this.http.get<IAddress>(`${this.resourceUrl}/client/${id}`, { observe: 'response' });
+  }
 }

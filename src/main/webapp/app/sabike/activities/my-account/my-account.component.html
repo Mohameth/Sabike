@@ -1,0 +1,77 @@
+<div id="my-account-root">
+    <p class="mat-h1 mat-headline">My account</p>
+    <form [formGroup]="clientFormGroup">
+        <div class="vbox-form">
+            <!-- Account login -->
+            <mat-form-field>
+                <input
+                    disabled
+                    value="{{account?.login}}"
+                    matInput
+                    placeholder="Login">
+            </mat-form-field>
+            <!-- First -->
+            <mat-form-field>
+                <input
+                    matInput
+                    placeholder="First name"
+                    formControlName="firstCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Last -->
+            <mat-form-field>
+                <input
+                    matInput
+                    placeholder="Last name"
+                    formControlName="lastCtrl"
+                    required>
+            </mat-form-field>
+            <!-- Phone number -->
+            <mat-form-field>
+                <input
+                    matInput
+                    placeholder="Phone"
+                    formControlName="phoneCtrl"
+                    required>
+            </mat-form-field>
+        </div>
+    </form>
+    <div id="spacer">
+        <p class="mat-h3 mat-subheading-2">Address</p>
+    </div>
+    <form [formGroup]="addressFormGroup">
+        <div class="vbox-form">
+            <mat-form-field>
+                <input matInput
+                       placeholder="Street number"
+                       formControlName="addressNumberCtrl"
+                       required>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput
+                       placeholder="Street name"
+                       formControlName="addressStreetCtrl"
+                       required>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput
+                       placeholder="Postal code"
+                       formControlName="addressPostalCodeCtrl"
+                       required>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput
+                       placeholder="City"
+                       formControlName="addressCityCtrl"
+                       required>
+            </mat-form-field>
+        </div>
+    </form>
+    <button
+        class="my-account-update-button"
+        mat-raised-button
+        color="accent"
+        (click)="update()">
+        UPDATE
+    </button>
+</div>

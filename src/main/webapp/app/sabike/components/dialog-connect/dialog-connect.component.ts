@@ -1,18 +1,21 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { JhiEventManager } from 'ng-jhipster';
-import { LoginService, StateStorageService } from 'app/core';
+import { AccountService, LoginService, StateStorageService } from 'app/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommandService } from 'app/entities/command';
+import { OrderState } from 'app/shared/model/command.model';
+import { ClientService } from 'app/entities/client';
 
 @Component({
   selector: 'jhi-dialog-connect',
   templateUrl: './dialog-connect.component.html',
   styleUrls: ['./dialog-connect.component.scss']
 })
-export class DialogConnectComponent implements AfterViewInit {
-  authenticationError: boolean;
+export class DialogConnectComponent {
+  authenticationError: boolean = false;
 
   email = new FormControl('', [Validators.required, Validators.email]);
 
@@ -25,8 +28,6 @@ export class DialogConnectComponent implements AfterViewInit {
   _username: string;
   _password: string;
   hide = true;
-  private toCheckout: boolean;
-
   @ViewChild('username', { static: false }) usernameField: ElementRef;
 
   constructor(
@@ -34,16 +35,12 @@ export class DialogConnectComponent implements AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private eventManager: JhiEventManager,
     private loginService: LoginService,
+    private accountService: AccountService,
     private stateStorageService: StateStorageService,
     private router: Router,
-    public activeModal: NgbActiveModal,
     private fb: FormBuilder
   ) {
     //
-  }
-
-  ngAfterViewInit(): void {
-    this.usernameField.nativeElement.focus();
   }
 
   cancel() {
@@ -52,7 +49,6 @@ export class DialogConnectComponent implements AfterViewInit {
       username: '',
       password: ''
     });
-    this.activeModal.dismiss('cancel');
   }
 
   login() {
@@ -64,7 +60,9 @@ export class DialogConnectComponent implements AfterViewInit {
       })
       .then(() => {
         this.authenticationError = false;
-        this.activeModal.dismiss('login success');
+        // this.activeModal.dismiss('login success');
+        // this.activeModal.close('success');
+        this.dialogRef.close();
 
         if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
           this.router.navigate(['']);
@@ -86,20 +84,5 @@ export class DialogConnectComponent implements AfterViewInit {
       .catch(() => {
         this.authenticationError = true;
       });
-  }
-
-  register() {
-    this.activeModal.dismiss('to state register');
-    this.router.navigate(['/register']);
-  }
-
-  requestResetPassword() {
-    this.activeModal.dismiss('to state requestReset');
-    this.router.navigate(['/reset', 'request']);
-  }
-
-  // SABIKE
-  getErrorMessage() {
-    return this.email.hasError('required') ? 'You must enter a value' : this.email.hasError('email') ? 'Not a valid email' : '';
   }
 }

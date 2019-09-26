@@ -3,12 +3,15 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { DialogConnectComponent } from 'app/sabike/components/dialog-connect/dialog-connect.component';
 // Services
-import { AccountService, LoginModalService, LoginService } from 'app/core';
+import { AccountService, LoginService } from 'app/core';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 // Misc
 import { CommandService } from 'app/entities/command';
-import { JhiEventManager } from 'ng-jhipster';
-import { Subject } from 'rxjs';
+import { ClientService } from 'app/entities/client';
+import { IOrderItems } from 'app/shared/model/order-items.model';
+import { Observable, Subject } from 'rxjs';
+import { ICommand } from 'app/shared/model/command.model';
+import { IProduct } from 'app/shared/model/product.model';
 
 @Component({
   selector: 'jhi-toolbar',
@@ -20,7 +23,6 @@ export class ToolbarComponent implements OnInit {
   swaggerEnabled: boolean;
   version: string;
   numberOfItems = 0;
-  currentAccount: any;
   userName: string = null;
 
   constructor(
@@ -30,7 +32,7 @@ export class ToolbarComponent implements OnInit {
     private router: Router,
     private dialogConnect: MatDialog,
     private commandService: CommandService,
-    private broadcast: JhiEventManager
+    private clientService: ClientService
   ) {}
 
   ngOnInit() {
@@ -43,39 +45,38 @@ export class ToolbarComponent implements OnInit {
       this.numberOfItems = quantity;
     });
 
-    // Checking if existing Card (linked to account)
-    // For connection
-    this.broadcast.subscribe('loginCallback', msg => {
-      if (msg.content === 'ok') {
-        this.accountService.identity(true).then(account => {
-          this.userName = account.login;
-        });
-        console.log('DANS CALLBACK TOOLBAR :', msg);
-        console.log('this.accountService.userIdentityId', this.accountService.userIdentityId);
-        this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg2 => {
-          console.log('HAS CART ?', msg2);
-          if (msg2.body[0] !== null) {
-            console.log('dans ngOnInit msg  ->', msg2);
-            this.commandService.reloadCart(msg2.body[0].orderItems);
+    this.accountService.getAccName().subscribe(identity => {
+      this.userName = identity;
+      this.commandService.hasCartAsPromise(this.accountService.userIdentityId).then(msg => {
+        // we have already a cart in remote
+        if (msg.body[0] !== undefined) {
+          const localCart = this.commandService.getCart;
+          // we have also a cart in local
+          if (localCart !== null && localCart.orderItems.length !== 0) {
+            this.clientService.get(this.accountService.userIdentityId).then(client => {
+              this.commandService.mergeRemoteCartWithLocalCart(this.accountService.userIdentityId, msg.body[0]).then(cart => {
+                // console.log('CART MERGE YEAH :', cart);
+              });
+            });
+            // we have RemoteCart but not local => reload remote cart
+          } else {
+            this.commandService.reloadCart(msg.body[0]);
+            // update it in cart component
+            this.commandService.cartReadyNext(this.commandService.getCart);
           }
-        });
-      }
+          // we don't have a remote cart
+        } else {
+          const localCart = this.commandService.getCart;
+          if (localCart !== null && localCart.orderItems.length !== 0) {
+            this.clientService.get(this.accountService.userIdentityId).then(client => {
+              this.commandService.createRemoteCartFromLocalCart(client).then(cart => {
+                console.log('CART NEW YEAH :', cart);
+              });
+            });
+          }
+        }
+      });
     });
-
-    // For reload
-    this.accountService.identity(true).then(account => {
-      if (account != null) {
-        this.userName = account.login;
-        this.currentAccount = account;
-        console.log('MSG :', account.login);
-        this.commandService.hasCart(this.accountService.userIdentityId).subscribe(msg => {
-          console.log('HAS CART ?', msg);
-          this.commandService.getCart;
-        });
-      }
-    });
-
-    // TODO manage after disconnect - reconnect
   }
 
   isAuthenticated() {
@@ -90,6 +91,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   openConnectDialog(): void {
-    this.dialogConnect.open(DialogConnectComponent);
+    this.dialogConnect.open(DialogConnectComponent, {
+      autoFocus: true
+    });
   }
 }

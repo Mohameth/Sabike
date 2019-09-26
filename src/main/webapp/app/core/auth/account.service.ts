@@ -12,6 +12,7 @@ export class AccountService {
   private _userIdentity: any;
   private authenticated = false;
   private authenticationState = new Subject<any>();
+  private accName = new Subject<string>();
 
   constructor(private http: HttpClient, private trackerService: JhiTrackerService, private broadcaster: JhiEventManager) {}
 
@@ -79,10 +80,7 @@ export class AccountService {
           this.authenticated = true;
           this.trackerService.connect();
           console.log('============>', this._userIdentity);
-          this.broadcaster.broadcast({
-            name: 'loginCallback',
-            content: 'ok'
-          });
+          this.accName.next(account.login);
         } else {
           this._userIdentity = null;
           this.authenticated = false;
@@ -111,6 +109,10 @@ export class AccountService {
 
   getAuthenticationState(): Observable<any> {
     return this.authenticationState.asObservable();
+  }
+
+  getAccName(): Observable<string> {
+    return this.accName.asObservable();
   }
 
   getImageUrl(): string {
