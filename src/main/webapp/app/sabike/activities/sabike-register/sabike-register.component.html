@@ -31,16 +31,20 @@
                        formControlName="login"
                        required>
 
-                <mat-error *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.required">
+                <mat-error
+                    *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.required">
                     Your username is required.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.minlength">
+                <mat-error
+                    *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.minlength">
                     Your username is required to be at least 1 character.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.maxlength">
+                <mat-error
+                    *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.maxlength">
                     Your username cannot be longer than 50 characters.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.pattern">
+                <mat-error
+                    *ngIf="(registerForm.get('login').invalid && (registerForm.get('login').dirty || registerForm.get('login').touched)) && registerForm.get('login').errors.pattern">
                     Your username can only contain letters and digits.
                 </mat-error>
             </mat-form-field>
@@ -51,16 +55,20 @@
                        placeholder="Email"
                        formControlName="email"
                        required>
-                <mat-error *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.required">
+                <mat-error
+                    *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.required">
                     Your email is required.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.invalid">
+                <mat-error
+                    *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.invalid">
                     Your email is invalid.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.minlength">
+                <mat-error
+                    *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.minlength">
                     Your email is required to be at least 5 characters.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.maxlength">
+                <mat-error
+                    *ngIf="(registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)) && registerForm.get('email').errors.maxlength">
                     Your email cannot be longer than 100 characters.
                 </mat-error>
             </mat-form-field>
@@ -71,13 +79,16 @@
                        placeholder="New password"
                        formControlName="password"
                        required>
-                <mat-error *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.required">
+                <mat-error
+                    *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.required">
                     Your password is required.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.minlength">
+                <mat-error
+                    *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.minlength">
                     Your password is required to be at least 4 characters.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.maxlength">
+                <mat-error
+                    *ngIf="(registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)) && registerForm.get('password').errors.maxlength">
                     Your password cannot be longer than 50 characters.
                 </mat-error>
             </mat-form-field>
@@ -88,13 +99,16 @@
                        placeholder="New password confirmation"
                        formControlName="confirmPassword"
                        required>
-                <mat-error *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.required">
+                <mat-error
+                    *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.required">
                     Your confirmation password is required.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.minlength">
+                <mat-error
+                    *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.minlength">
                     Your confirmation password is required to be at least 4 characters.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.maxlength">
+                <mat-error
+                    *ngIf="(registerForm.get('confirmPassword').invalid && (registerForm.get('confirmPassword').dirty || registerForm.get('confirmPassword').touched)) && registerForm.get('confirmPassword').errors.maxlength">
                     Your confirmation password cannot be longer than 50 characters.
                 </mat-error>
             </mat-form-field>
@@ -104,16 +118,20 @@
                        type="tel"
                        placeholder="Phone number"
                        formControlName="phone">
-                <mat-error *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.required">
+                <mat-error
+                    *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.required">
                     Your phone is required.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.invalid">
+                <mat-error
+                    *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.invalid">
                     Your phone is invalid.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.minlength">
+                <mat-error
+                    *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.minlength">
                     Your phone is required to be at least 6 characters.
                 </mat-error>
-                <mat-error *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.maxlength">
+                <mat-error
+                    *ngIf="(registerForm.get('phone').invalid && (registerForm.get('phone').dirty || registerForm.get('phone').touched)) && registerForm.get('phone').errors.maxlength">
                     Your phone cannot be longer than 10 characters.
                 </mat-error>
             </mat-form-field>
@@ -121,6 +139,7 @@
     </form>
     <div>
         <button
+            *ngIf="!success"
             (click)="register()"
             id="register-button"
             mat-raised-button
