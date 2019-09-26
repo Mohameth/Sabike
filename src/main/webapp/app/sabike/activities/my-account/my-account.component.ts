@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ClientService } from 'app/entities/client';
 import { AccountService, Account, UserService, IUser } from 'app/core';
 import { IClient } from 'app/shared/model/client.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'app/shared/model/address.model';
 import { AddressService } from 'app/entities/address';
+import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'jhi-my-account',
   templateUrl: './my-account.component.html',
   styleUrls: ['./my-account.component.scss']
 })
-export class MyAccountComponent implements OnInit {
+export class MyAccountComponent implements OnInit, OnDestroy {
   private client: IClient;
   account: Account;
   private address: Address;
+
+  private __updatedAllCounter = new Subject<number>();
+  private updatedAllCounter = 0;
 
   clientFormGroup: FormGroup;
   addressFormGroup: FormGroup;
@@ -24,12 +29,18 @@ export class MyAccountComponent implements OnInit {
     private accountService: AccountService,
     private clientService: ClientService,
     private addressService: AddressService,
-    private userService: UserService
+    private userService: UserService,
+    private _snackBar: MatSnackBar
   ) {
     //
   }
 
   ngOnInit() {
+    this.__updatedAllCounter.asObservable().subscribe(value => {
+      if (value !== 0 && value % 3 === 0) {
+        this.openSnackBar('We updated your information', 'DISMISS');
+      }
+    });
     this.accountService
       .identity()
       .then(account => {
@@ -107,24 +118,64 @@ export class MyAccountComponent implements OnInit {
     this.clientService
       .update(this.client)
       .toPromise()
-      .then(updatedClient => console.log(updatedClient));
+      .then(updatedClient => {
+        console.log('updatedClient', updatedClient);
+        this.updatedAllCounter++;
+        this.__updatedAllCounter.next(this.updatedAllCounter);
+      });
   }
 
   private updateAddress() {
+    let wasUndefined = false;
+    if (this.address === undefined) {
+      this.address = new Address();
+      wasUndefined = true;
+    }
     this.address.deliveryNumber = this.addressFormGroup.get('addressNumberCtrl').value;
     this.address.deliveryStreet = this.addressFormGroup.get('addressStreetCtrl').value;
-    this.address.deliveryStreet = this.addressFormGroup.get('addressPostalCodeCtrl').value;
+    this.address.deliveryPostalCode = this.addressFormGroup.get('addressPostalCodeCtrl').value;
     this.address.deliveryCity = this.addressFormGroup.get('addressCityCtrl').value;
-    this.addressService
-      .update(this.address)
-      .toPromise()
-      .then(updatedAddress => console.log(updatedAddress));
+    console.log(this.address);
+    if (wasUndefined) {
+      this.address.client = this.client;
+      this.addressService
+        .create(this.address)
+        .toPromise()
+        .then(newAddress => {
+          console.log('newAddress', newAddress);
+          this.updatedAllCounter++;
+          this.__updatedAllCounter.next(this.updatedAllCounter);
+        });
+    } else {
+      this.addressService
+        .update(this.address)
+        .toPromise()
+        .then(updatedAddress => {
+          console.log('updatedAddress', updatedAddress);
+          this.updatedAllCounter++;
+          this.__updatedAllCounter.next(this.updatedAllCounter);
+        });
+    }
   }
 
   private updateUser(user: IUser) {
     this.userService
       .update(user)
       .toPromise()
-      .then(updatedUser => console.log(updatedUser));
+      .then(updatedUser => {
+        console.log('updatedUser', updatedUser);
+        this.updatedAllCounter++;
+        this.__updatedAllCounter.next(this.updatedAllCounter);
+      });
+  }
+
+  private openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000
+    });
+  }
+
+  ngOnDestroy() {
+    this.__updatedAllCounter.unsubscribe();
   }
 }
