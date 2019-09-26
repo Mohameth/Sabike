@@ -45,14 +45,24 @@
                 <mat-form-field class="nav-left-root-filter-price" style="margin-left: 16px;">
                     <input #maxPrice matInput type="number" placeholder="Max price">
                 </mat-form-field>
-
-                <div id="nav-left-root-filter-bike"*ngIf="shouldShowBikeFilters()">
-                    <h5>Bike filter</h5>
-                </div>
                 <button id="nav-left-root-filter-price-validate" mat-raised-button color="accent"
-                        (click)="applyFilters(minPrice.value, maxPrice.value, undefined)">Apply</button>
+                        (click)="applyPriceFilter(minPrice.value, maxPrice.value)">Apply</button>
             </div>
-            <mat-checkbox (change)="applyFilters(undefined)">En stock</mat-checkbox>
+            <mat-checkbox (change)="applyStockFilter($event.checked)">En stock</mat-checkbox>
+
+            <div #bikeContainer id="nav-left-root-filter-bike" *ngIf="shouldShowBikeFilters()">
+
+                <div *ngFor="let color of bikeFiltersLabels.color ">
+                    <mat-checkbox (change)="applyColorFilter(color,$event)">
+                        {{ color }}
+                    </mat-checkbox>
+                </div>
+                <div *ngFor="let size of bikeFiltersLabels.size ">
+                    <mat-checkbox (change)="applySizeFilter(size,$event)">
+                        {{ size }}
+                    </mat-checkbox>
+                </div>
+            </div>
 
         </form>
     </div>

@@ -3,13 +3,12 @@ import { NavigationService } from 'app/sabike/services/navigation-service';
 import { ProductService } from 'app/entities/product';
 import { IProduct } from 'app/shared/model/product.model';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { ActivationEnd, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { CommunicationService } from 'app/sabike/services/communication.service';
-import { NavigationError, NavigationStart } from '@angular/router';
 import { PaginatorCustomComponent } from 'app/sabike/components/paginator-custom/paginator-custom.component';
 import { CommandService } from 'app/entities/command';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FilterService } from 'app/sabike/services/filter.service';
+import { Filter, FilterLabels, FilterService, FilterType } from 'app/sabike/services/filter.service';
 
 @Component({
   selector: 'jhi-articles',
@@ -17,9 +16,10 @@ import { FilterService } from 'app/sabike/services/filter.service';
   styleUrls: ['./list-articles.component.scss']
 })
 export class ListArticlesComponent implements OnInit, AfterViewInit {
-  selected: 'option1';
+  selected: string = 'option1';
   products: IProduct[];
   allProducts: IProduct[];
+  currentFilters: Array<Filter> = new Array<Filter>();
   private pageIndex = 0;
   private pageSize = 10;
   private totalNumberOfItems = -1;
@@ -48,19 +48,12 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
       if (m instanceof NavigationEnd) {
         // Hide loading indicator
         this.navigationService.addBikeFilters();
-        this.filterServive.listenFilter().subscribe(m => {
-          if (!this.allProducts || this.allProducts.length < this.products.length) this.allProducts = this.products;
-          console.log('filter processing ...', m);
+        this.filterServive.listenFilter().subscribe(newFilter => {
+          console.log('filter processing ...', newFilter);
 
-          this.products = this.allProducts.filter(
-            product =>
-              (!m.minPrice || (m.minPrice && product.price > m.minPrice)) &&
-              (!m.maxPrice || (m.maxPrice && product.price < m.maxPrice)) &&
-              (!m.bikeColor || (m.bikeColor && product.bikeColor === m.bikeColor)) &&
-              (!m.bikeSize || (m.bikeSize && product.bikeSize === m.bikeSize))
-          );
+          this.showProducts(this.filter(newFilter));
 
-          console.log('Done with the filters', this.products);
+          console.log('Done with the filters', this.currentFilters);
         });
       }
 
@@ -71,6 +64,45 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         console.log(m.error);
       }
     });
+  }
+
+  filter(newFilter: Filter): IProduct[] {
+    // We update our current list of filter
+    if (newFilter) this.updateCurrentFilter(newFilter);
+
+    const productsFiltered = this.allProducts.filter(
+      product => this.currentFilters.map(f => this.filterProduct(f, product)).indexOf(true) != -1 || this.currentFilters.length == 0
+    );
+
+    return productsFiltered;
+  }
+
+  /** Return true if the product meet the criteria of the filter */
+  filterProduct(filter: Filter, product: IProduct): boolean {
+    return (
+      (!filter.minPrice || (filter.minPrice && product.price > filter.minPrice)) &&
+      (!filter.maxPrice || (filter.maxPrice && product.price < filter.maxPrice)) &&
+      (!filter.bikeColor || (filter.bikeColor[1] && product.bikeColor === filter.bikeColor[0])) &&
+      (!filter.bikeSize || (filter.bikeSize[1] && product.bikeSize === filter.bikeSize[0])) &&
+      (!filter.inStock || (filter.inStock && product.stock > 0))
+    );
+  }
+
+  updateCurrentFilter(newFilter: Filter) {
+    this.currentFilters = this.currentFilters.filter(
+      f =>
+        !(
+          newFilter.typeFilter === f.typeFilter &&
+          (f.typeFilter == FilterType.PRICE || // If there is already a price filter we remove it
+          (f.typeFilter == FilterType.BIKE_COLOR && f.bikeColor[0] === newFilter.bikeColor[0]) || // if the newFilter refers to the same color
+            (f.typeFilter == FilterType.BIKE_SIZE && f.bikeSize[0] === newFilter.bikeSize[0])) // Or the same size we remove it
+        )
+    );
+
+    // We don't add the new filter if the checkbox is empty
+    if (!((newFilter.bikeSize && newFilter.bikeSize[1] == false) || (newFilter.bikeColor && newFilter.bikeColor[1] == false))) {
+      this.currentFilters.push(newFilter);
+    }
   }
 
   ngOnInit(): void {
@@ -120,10 +152,14 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
   setAndShowProducts(products) {
     // We update the products and the paginator
     this.allProducts = products;
-    this.setNumberOfItems(this.allProducts.length);
+    this.showProducts(products);
+  }
+
+  showProducts(products) {
+    this.setNumberOfItems(products.length);
 
     // We show the correct number of items
-    this.products = this.allProducts.slice(this.pageIndex * this.pageSize, this.pageSize * (this.pageIndex + 1));
+    this.products = products.slice(this.pageIndex * this.pageSize, this.pageSize * (this.pageIndex + 1));
     console.log(
       'Début: ' +
         this.pageIndex * this.pageSize +
@@ -134,6 +170,61 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         '; size: ' +
         this.pageSize
     );
+  }
+
+  setBikeFilters() {
+    let labels: FilterLabels = new FilterLabels();
+    labels.color = new Array<string>();
+    labels.size = new Array<string>();
+
+    this.products.map(product => {
+      if (labels.color.indexOf(product.bikeColor) < 0) {
+        labels.color.push(product.bikeColor);
+      }
+      if (labels.size.indexOf(product.bikeSize) < 0) {
+        labels.size.push(product.bikeSize);
+      }
+    });
+    labels.color = labels.color.sort();
+    labels.size = labels.size.sort();
+    this.filterServive.setBikeFiltersLabels(labels);
+  }
+
+  changeSorting() {
+    console.log(this.selected);
+    if (this.selected === 'ascendingPrice') {
+      this.allProducts.sort((p1, p2) => p1.price - p2.price);
+    } else if (this.selected === 'descendingPrice') {
+      this.allProducts.sort((p1, p2) => p2.price - p1.price);
+    } else if (this.selected === 'ascendingName') {
+      this.allProducts.sort((p1, p2) => {
+        const nameP1 = p1.name.toUpperCase();
+        const nameP2 = p2.name.toUpperCase();
+
+        if (nameP1 < nameP2) {
+          return -1;
+        } else if (nameP1 > nameP2) {
+          return 1;
+        }
+
+        return 0;
+      });
+    } else if (this.selected === 'descendingName') {
+      this.allProducts.sort((p1, p2) => {
+        const nameP1 = p1.name.toUpperCase();
+        const nameP2 = p2.name.toUpperCase();
+
+        if (nameP1 > nameP2) {
+          return -1;
+        } else if (nameP1 < nameP2) {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+
+    this.showProducts(this.filter(null));
   }
 
   fetchProductsWithQuery() {
@@ -152,6 +243,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
             // });
             this.productService.getAllBikes(this.pageIndex, this.pageSize).subscribe(message => {
               this.setAndShowProducts(message.body);
+              this.setBikeFilters();
             });
             break;
           // All parts
@@ -180,6 +272,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
             // });
             this.productService.getBikesByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
               this.setAndShowProducts(message.body);
+              this.setBikeFilters();
             });
             break;
           // Parts category
