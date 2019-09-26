@@ -291,10 +291,9 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
           case 'city':
           case 'ebike':
           case 'bmx':
-            // console.log(parameter.toUpperCase());
-            // this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
-            //   this.setNumberOfItems(message.body);
-            // });
+            this.productService.getBikesByCategoryCount(parameter.toUpperCase()).subscribe(message => {
+              this.setNumberOfItems(message.body);
+            });
             this.productService.getBikesByCategory(this.pageIndex, this.pageSize, parameter.toUpperCase()).subscribe(message => {
               this.setAndShowProducts(message.body);
               this.setBikeFilters();

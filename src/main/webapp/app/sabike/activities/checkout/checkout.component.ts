@@ -23,8 +23,8 @@ export class CheckoutComponent implements OnInit {
   private account: Account;
   private address: Address;
 
-  private totalPrice: number;
-  private numberOfItems: number;
+  totalPrice: number;
+  numberOfItems: number;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -124,7 +124,6 @@ export class CheckoutComponent implements OnInit {
             .then(updatedCart => {
               if (updatedCart.body.state === OrderState.PENDING) {
                 this.router.navigate(['/checkout/success'], { relativeTo: this.route }).then(r => {
-                  console.log('++++++++++++++++++++++++ we should empty badge cart', r);
                   this.commandService.emptyCart();
                 });
               }
@@ -132,26 +131,6 @@ export class CheckoutComponent implements OnInit {
             .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
-
-      // this.commandService.getCart.state = OrderState.PENDING;
-      // this.commandService
-      //   .update(this.commandService.getCart)
-      //   .toPromise()
-      //   .then(updatedCart => {
-      //     console.log('++++++++++++++++++++++++', updatedCart);
-      //     if (updatedCart.body.state === OrderState.PENDING) {
-      //       this.router
-      //         .navigate(['/checkout/success'], {relativeTo: this.route})
-      //         .then(r => {
-      //           console.log('++++++++++++++++++++++++ we should empty badge cart', r);
-      //         });
-      //     }
-      //   })
-      //   .catch(error => console.log(error));
     }
-  }
-
-  validForms(): boolean {
-    return this.nameFormGroup.valid && this.addressFormGroup.valid && this.paymentFormGroup.valid;
   }
 }

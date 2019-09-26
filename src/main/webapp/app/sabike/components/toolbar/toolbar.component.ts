@@ -55,7 +55,7 @@ export class ToolbarComponent implements OnInit {
           if (localCart !== null && localCart.orderItems.length !== 0) {
             this.clientService.get(this.accountService.userIdentityId).then(client => {
               this.commandService.mergeRemoteCartWithLocalCart(this.accountService.userIdentityId, msg.body[0]).then(cart => {
-                // console.log('CART MERGE YEAH :', cart);
+                console.log('CART merged with local :', cart);
               });
             });
             // we have RemoteCart but not local => reload remote cart
@@ -70,7 +70,7 @@ export class ToolbarComponent implements OnInit {
           if (localCart !== null && localCart.orderItems.length !== 0) {
             this.clientService.get(this.accountService.userIdentityId).then(client => {
               this.commandService.createRemoteCartFromLocalCart(client).then(cart => {
-                console.log('CART NEW YEAH :', cart);
+                console.log('CART created remotely :', cart);
               });
             });
           }

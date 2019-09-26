@@ -13,11 +13,9 @@ import { CommunicationService } from 'app/sabike/services/communication.service'
   styleUrls: ['./details-article.component.scss']
 })
 export class DetailsArticleComponent implements OnInit {
-  selectedQuantity = '1';
-
-  @Input() private product: Product;
-  private isInStock = 'In stock';
-  private isDisabled = false;
+  @Input() product: Product;
+  isInStock = 'In stock';
+  isDisabled = false;
 
   constructor(
     private navigationServiceService: NavigationService,
@@ -26,14 +24,15 @@ export class DetailsArticleComponent implements OnInit {
     private commandService: CommandService,
     private eventManager: JhiEventManager,
     private communication: CommunicationService
-  ) {}
+  ) {
+    //
+  }
 
   ngOnInit() {
     this.navigationServiceService.removeFilters();
 
     // Load the article details / just a common get from service
     const splitter = this.router.url.split('/');
-    // console.log(splitter[splitter.length - 1]);
     this.productService.find(Number(splitter[splitter.length - 1])).subscribe(message => {
       this.product = message.body;
     });

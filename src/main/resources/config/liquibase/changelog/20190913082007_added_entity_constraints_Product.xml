@@ -6,13 +6,13 @@
     <!--
         Added the constraints for entity Product.
     -->
-    <changeSet id="20190913082007-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="order_items_id"
-                                 baseTableName="product"
-                                 constraintName="fk_product_order_items_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="order_items"/>
+<!--    <changeSet id="20190913082007-2" author="jhipster">-->
+<!--        -->
+<!--        <addForeignKeyConstraint baseColumnNames="order_items_id"-->
+<!--                                 baseTableName="product"-->
+<!--                                 constraintName="fk_product_order_items_id"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 referencedTableName="order_items"/>-->
 
-    </changeSet>
+<!--    </changeSet>-->
 </databaseChangeLog>

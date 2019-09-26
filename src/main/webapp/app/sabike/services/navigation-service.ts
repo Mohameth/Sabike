@@ -23,7 +23,6 @@ export class NavigationService {
   }
 
   removeFilters() {
-    console.log('removing filters');
     this.subject.next(null);
   }
 

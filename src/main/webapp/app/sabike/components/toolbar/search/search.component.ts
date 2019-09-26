@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'app/entities/product';
-import { IProduct, Product } from 'app/shared/model/product.model';
+import { IProduct } from 'app/shared/model/product.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommunicationService } from 'app/sabike/services/communication.service';
 
 @Component({
@@ -71,9 +70,5 @@ export class SearchComponent implements OnInit {
           });
         }
       });
-  }
-
-  printValue() {
-    console.log(this.searched);
   }
 }
