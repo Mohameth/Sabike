@@ -38,9 +38,6 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     private eventManager: JhiEventManager
   ) {
     this.router.events.subscribe(m => {
-      if (m instanceof NavigationStart) {
-        // Show loading indicator
-      }
       if (m instanceof ActivationEnd) {
         this.fetchProductsWithQuery();
       }
@@ -49,21 +46,11 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         // Hide loading indicator
         this.navigationService.addBikeFilters();
         this.filterServive.listenFilter().subscribe(newFilter => {
-          // console.log('filter processing ...', newFilter);
-
           this.showProducts(this.filter(newFilter));
-
-          // console.log('Done with the filters', this.currentFilters);
         });
       }
-
-      if (m instanceof NavigationError) {
-        // Hide loading indicator
-
-        // Present error to user
-        console.log(m.error);
-      }
     });
+  }
 
   filter(newFilter: Filter): IProduct[] {
     // We update our current list of filter
@@ -161,7 +148,7 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
     this.eventManager.subscribe('popSnack', callback => {
       this.openSnackBar(callback.content.message, callback.content.action);
     });
-      
+
     this.communication.getSearchedValue().subscribe(msg => {
       this.productService
         .getProductsNameLike(msg.valueOf())
