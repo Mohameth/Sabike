@@ -16,7 +16,7 @@ import { Filter, FilterLabels, FilterService, FilterType } from 'app/sabike/serv
   styleUrls: ['./list-articles.component.scss']
 })
 export class ListArticlesComponent implements OnInit, AfterViewInit {
-  selected: string = 'option1';
+  selected = 'ascendingName';
   products: IProduct[];
   allProducts: IProduct[];
   currentFilters: Array<Filter> = new Array<Filter>();
@@ -49,11 +49,11 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
         // Hide loading indicator
         this.navigationService.addBikeFilters();
         this.filterServive.listenFilter().subscribe(newFilter => {
-          console.log('filter processing ...', newFilter);
+          // console.log('filter processing ...', newFilter);
 
           this.showProducts(this.filter(newFilter));
 
-          console.log('Done with the filters', this.currentFilters);
+          // console.log('Done with the filters', this.currentFilters);
         });
       }
 
@@ -68,24 +68,69 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
 
   filter(newFilter: Filter): IProduct[] {
     // We update our current list of filter
-    if (newFilter) this.updateCurrentFilter(newFilter);
+    if (newFilter) {
+      this.updateCurrentFilter(newFilter);
+    }
 
-    const productsFiltered = this.allProducts.filter(
-      product => this.currentFilters.map(f => this.filterProduct(f, product)).indexOf(true) != -1 || this.currentFilters.length == 0
+    return this.allProducts.filter(
+      product => this.crossFilters(this.currentFilters.map(f => this.filterProduct(f, product))) || this.currentFilters.length === 0
     );
-
-    return productsFiltered;
   }
 
   /** Return true if the product meet the criteria of the filter */
   filterProduct(filter: Filter, product: IProduct): boolean {
     return (
-      (!filter.minPrice || (filter.minPrice && product.price > filter.minPrice)) &&
+      (!filter.minPrice || (filter.minPrice && product.price > filter.minPrice)) && // We include objects with the right prices
       (!filter.maxPrice || (filter.maxPrice && product.price < filter.maxPrice)) &&
-      (!filter.bikeColor || (filter.bikeColor[1] && product.bikeColor === filter.bikeColor[0])) &&
+      (!filter.bikeColor || (filter.bikeColor[1] && product.bikeColor === filter.bikeColor[0])) && // We add object with right color
       (!filter.bikeSize || (filter.bikeSize[1] && product.bikeSize === filter.bikeSize[0])) &&
       (!filter.inStock || (filter.inStock && product.stock > 0))
     );
+  }
+
+  /** Take in input an array of booleans corresponding to the currentFilters (array[i] == true <==> currentFilters[i] met */
+  crossFilters(array: Array<boolean>) {
+    let meetPriceCriterion: boolean = undefined;
+    let meetSizeCriterion: boolean = undefined;
+    let meetColorCriterion: boolean = undefined;
+    let meetStockCriterion: boolean = undefined;
+
+    let i = 0;
+    this.currentFilters.map(f => {
+      if (f.typeFilter === FilterType.PRICE) {
+        meetPriceCriterion = this.meetCriteria(array[i], meetPriceCriterion);
+      } else if (f.typeFilter === FilterType.BIKE_COLOR) {
+        meetColorCriterion = this.meetCriteria(array[i], meetColorCriterion);
+      } else if (f.typeFilter === FilterType.BIKE_SIZE) {
+        meetSizeCriterion = this.meetCriteria(array[i], meetSizeCriterion);
+      } else if (f.typeFilter === FilterType.STOCK) {
+        meetStockCriterion = this.meetCriteria(array[i], meetStockCriterion);
+      }
+      i++;
+    });
+
+    if (meetPriceCriterion === undefined) {
+      meetPriceCriterion = true;
+    }
+    if (meetColorCriterion === undefined) {
+      meetColorCriterion = true;
+    }
+    if (meetSizeCriterion === undefined) {
+      meetSizeCriterion = true;
+    }
+    if (meetStockCriterion === undefined) {
+      meetStockCriterion = true;
+    }
+
+    return meetPriceCriterion && meetSizeCriterion && meetColorCriterion && meetStockCriterion;
+  }
+
+  private meetCriteria(value: boolean, criteria: boolean): boolean {
+    if (value || criteria) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   updateCurrentFilter(newFilter: Filter) {
@@ -93,14 +138,14 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
       f =>
         !(
           newFilter.typeFilter === f.typeFilter &&
-          (f.typeFilter == FilterType.PRICE || // If there is already a price filter we remove it
-          (f.typeFilter == FilterType.BIKE_COLOR && f.bikeColor[0] === newFilter.bikeColor[0]) || // if the newFilter refers to the same color
-            (f.typeFilter == FilterType.BIKE_SIZE && f.bikeSize[0] === newFilter.bikeSize[0])) // Or the same size we remove it
-        )
+          (f.typeFilter === FilterType.PRICE || // If there is already a price filter we remove it
+          (f.typeFilter === FilterType.BIKE_COLOR && f.bikeColor[0] === newFilter.bikeColor[0]) || // if the newFilter refers to the same color
+            (f.typeFilter === FilterType.BIKE_SIZE && f.bikeSize[0] === newFilter.bikeSize[0]))
+        ) // Or the same size we remove it
     );
 
     // We don't add the new filter if the checkbox is empty
-    if (!((newFilter.bikeSize && newFilter.bikeSize[1] == false) || (newFilter.bikeColor && newFilter.bikeColor[1] == false))) {
+    if (!((newFilter.bikeSize && newFilter.bikeSize[1] === false) || (newFilter.bikeColor && newFilter.bikeColor[1] === false))) {
       this.currentFilters.push(newFilter);
     }
   }
@@ -160,20 +205,10 @@ export class ListArticlesComponent implements OnInit, AfterViewInit {
 
     // We show the correct number of items
     this.products = products.slice(this.pageIndex * this.pageSize, this.pageSize * (this.pageIndex + 1));
-    console.log(
-      'Début: ' +
-        this.pageIndex * this.pageSize +
-        '; Fin: ' +
-        this.pageSize * (this.pageIndex + 1) +
-        '; index: ' +
-        this.pageIndex +
-        '; size: ' +
-        this.pageSize
-    );
   }
 
   setBikeFilters() {
-    let labels: FilterLabels = new FilterLabels();
+    const labels: FilterLabels = new FilterLabels();
     labels.color = new Array<string>();
     labels.size = new Array<string>();
 

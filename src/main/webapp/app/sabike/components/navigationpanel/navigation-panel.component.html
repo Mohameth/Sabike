@@ -51,12 +51,13 @@
             <mat-checkbox (change)="applyStockFilter($event.checked)">En stock</mat-checkbox>
 
             <div #bikeContainer id="nav-left-root-filter-bike" *ngIf="shouldShowBikeFilters()">
-
+                <p>Filters on color</p>
                 <div *ngFor="let color of bikeFiltersLabels.color ">
                     <mat-checkbox (change)="applyColorFilter(color,$event)">
                         {{ color }}
                     </mat-checkbox>
                 </div>
+                <p>Filters on size</p>
                 <div *ngFor="let size of bikeFiltersLabels.size ">
                     <mat-checkbox (change)="applySizeFilter(size,$event)">
                         {{ size }}

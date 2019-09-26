@@ -28,7 +28,6 @@ export class NavigationService {
   }
 
   addBikeFilters() {
-    console.log('adding bike filters');
     this.subject.next('bike');
   }
 

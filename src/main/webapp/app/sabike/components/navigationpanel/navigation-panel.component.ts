@@ -73,9 +73,11 @@ export class NavigationPanelComponent implements OnInit {
           document.getElementById('nav-left-root-label-filters').style.display = 'none';
         } else {
           document.getElementById('nav-left-root-label-filters').style.display = 'block';
-          if (message === 'bike')
-            if (document.getElementById('nav-left-root-filter-bike'))
+          if (message === 'bike') {
+            if (document.getElementById('nav-left-root-filter-bike')) {
               document.getElementById('nav-left-root-filter-bike').style.display = 'block';
+            }
+          }
         }
       }
     });
@@ -91,7 +93,6 @@ export class NavigationPanelComponent implements OnInit {
 
   ngOnInit() {
     this.filterService.listenBikeFiltersLabels().subscribe(m => {
-      console.log('Ok filters labels => ', m);
       this.bikeFiltersLabels = m;
     });
   }
@@ -199,29 +200,33 @@ export class NavigationPanelComponent implements OnInit {
   }
 
   applyStockFilter(inStock) {
-    let filter: Filter = new Filter(FilterType.STOCK);
+    const filter: Filter = new Filter(FilterType.STOCK);
     filter.inStock = inStock;
 
     this.filterService.handleFilter(filter);
   }
 
   applyPriceFilter(minPrice?, maxPrice?) {
-    let filter: Filter = new Filter(FilterType.PRICE);
-    if (minPrice) filter.minPrice = minPrice;
-    if (maxPrice) filter.maxPrice = maxPrice;
+    const filter: Filter = new Filter(FilterType.PRICE);
+    if (minPrice) {
+      filter.minPrice = minPrice;
+    }
+    if (maxPrice) {
+      filter.maxPrice = maxPrice;
+    }
 
     this.filterService.handleFilter(filter);
   }
 
   applyColorFilter(color, event) {
-    let filter: Filter = new Filter(FilterType.BIKE_COLOR);
+    const filter: Filter = new Filter(FilterType.BIKE_COLOR);
     filter.bikeColor = [color, event.checked];
 
     this.filterService.handleFilter(filter);
   }
 
   applySizeFilter(size, event) {
-    let filter: Filter = new Filter(FilterType.BIKE_SIZE);
+    const filter: Filter = new Filter(FilterType.BIKE_SIZE);
     filter.bikeSize = [size, event.checked];
 
     this.filterService.handleFilter(filter);

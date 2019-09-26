@@ -42,7 +42,7 @@ export class Filter {
   bikeSize?: [string, boolean];
   bikeColor?: [string, boolean];
   brand?: string;
-  inStock?: boolean = false;
+  inStock? = false;
 
   constructor(type: FilterType) {
     this.typeFilter = type;
