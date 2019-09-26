@@ -134,7 +134,7 @@ public class ProductResource {
         @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size
     ) {
-        List<Product> products = productRepository.getBikeByCategory(new PageRequest(page, size), category);
+        List<Product> products = productRepository.getBikeByCategory(pageable, category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -150,7 +150,7 @@ public class ProductResource {
         @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size
     ) {
-        List<Product> products = productRepository.getPartByCategory(new PageRequest(page, size), category);
+        List<Product> products = productRepository.getPartByCategory(pageable, category);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -168,7 +168,7 @@ public class ProductResource {
         @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size
     ) {
-        List<Product> products = productRepository.getPartByCategoryType(new PageRequest(page, size), categoryType);
+        List<Product> products = productRepository.getPartByCategoryType(pageable, categoryType);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -210,7 +210,7 @@ public class ProductResource {
         @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size
     ) {
-        List<Product> products = productRepository.getAllParts(new PageRequest(page, size));
+        List<Product> products = productRepository.getAllParts(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

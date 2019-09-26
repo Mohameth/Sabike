@@ -112,6 +112,18 @@ export class CommandService {
   }
 
   // SABIKE
+  history(id: number): Promise<ICommand[]> {
+    return this.http
+      .get<ICommand[]>(`${this.resourceUrl}/history/${id}`, { observe: 'response' })
+      .toPromise()
+      .then(msg => {
+        return Promise.resolve(msg.body);
+      })
+      .catch(error => {
+        return Promise.reject(error.json().error);
+      });
+  }
+
   observeCart(): Observable<ICommand> {
     return this.cart.asObservable();
   }
